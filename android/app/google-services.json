@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "380638935304",
+    "project_id": "india-daily-999",
+    "storage_bucket": "india-daily-999.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380638935304:android:bd350df07c3931412094bd",
+        "android_client_info": {
+          "package_name": "app.indiadaily.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380638935304-oln891rkjt922dsud9h3k3jp24sa9pqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBNQwF6NT82ETX0UU6MBuLqPyCtsjIXLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380638935304-oln891rkjt922dsud9h3k3jp24sa9pqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
