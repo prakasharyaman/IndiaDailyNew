@@ -29,6 +29,9 @@ class DataRepository {
     });
     // sort articles by published date
     articles.sort((b, a) => a.publishedAt.compareTo(b.publishedAt));
+    articles.removeWhere((element) =>
+        element.source.name == "123telugu.com" ||
+        element.source.name == "Tellybest.com");
     return articles;
   }
 
@@ -68,7 +71,7 @@ class DataRepository {
     await database
         .collection('news')
         .doc('newsShots')
-        .collection('all')
+        .collection("all")
         .where(where ?? "category", whereIn: equals ?? kNewsShotCategories)
         .limit(limit)
         .get(GetOptions(

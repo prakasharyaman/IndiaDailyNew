@@ -15,31 +15,28 @@ class UserSettings extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: kAppTitle(context),
-          bottom: TabBar(
-            indicatorColor: kPrimaryRed,
-            labelColor: kPrimaryRed,
-            unselectedLabelStyle: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontFamily: GoogleFonts.archivoBlack().fontFamily),
-            labelStyle: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontFamily: GoogleFonts.archivoBlack().fontFamily),
-            tabs: const [
-              Tab(
-                text: 'Topics',
-              ),
-              Tab(
-                text: 'Settings',
-              ),
-              Tab(
-                text: 'History',
-              )
-            ],
-          ),
+        appBar: TabBar(
+          indicatorColor: kPrimaryRed,
+          labelColor: kPrimaryRed,
+          unselectedLabelStyle: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontFamily: GoogleFonts.archivoBlack().fontFamily),
+          labelStyle: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontFamily: GoogleFonts.archivoBlack().fontFamily),
+          tabs: const [
+            Tab(
+              text: 'Topics',
+            ),
+            Tab(
+              text: 'Settings',
+            ),
+            Tab(
+              text: 'History',
+            )
+          ],
         ),
         body: const TabBarView(children: [
           UsertopicPreferencesUpdate(),
@@ -75,6 +72,7 @@ class _UsertopicPreferencesUpdateState
   AppController appController = Get.find<AppController>();
   String updateButtonText = 'Update';
   List<String> selectedTopics = [];
+
   @override
   Widget build(BuildContext context) {
     return Stack(

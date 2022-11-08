@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants.dart';
 
@@ -21,10 +22,10 @@ class CategoryTag extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
           child: Text(
             tag.capitalizeFirst.toString(),
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.white,
+                  fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                ),
           ),
         ),
       ),

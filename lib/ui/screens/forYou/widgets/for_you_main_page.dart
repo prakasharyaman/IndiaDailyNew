@@ -8,12 +8,13 @@ import 'package:indiadaily/models/article.dart';
 import 'package:indiadaily/models/news_shot.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/constants.dart';
+import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
 import 'package:indiadaily/ui/widgets/bottom_sheet_tile.dart';
 import 'package:indiadaily/ui/widgets/custom/custom_cached_image.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class ForYouMainPage extends StatelessWidget {
+class ForYouMainPage extends GetView<ForYouController> {
   const ForYouMainPage(
       {super.key, required this.newsShot, required this.articles});
   final NewsShot newsShot;
@@ -351,7 +352,8 @@ class ForYouMainPage extends StatelessWidget {
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        GoogleFonts.archivoBlack().fontFamily,
                                     color: Colors.white),
                           ),
                         ),

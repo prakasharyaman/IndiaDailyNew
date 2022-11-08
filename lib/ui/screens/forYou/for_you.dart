@@ -24,7 +24,9 @@ class ForYou extends GetView<ForYouController> {
     return Obx(() {
       switch (controller.forYouStatus.value) {
         case ForYouStatus.loading:
-          return const Loading();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         case ForYouStatus.loaded:
           return const ForYouPage();
 
@@ -65,18 +67,23 @@ class ForYouPage extends GetView<ForYouController> {
                 videos: _.forYouVideos,
                 newsShots: _.forYouNewsShots);
             return Scaffold(
-              appBar: forYouAppBar(context),
-              body: Swiper(
-                onIndexChanged: ((value) {
-                  currentIndex = value;
-                }),
-                controller: _.swiperController,
-                scrollDirection: Axis.vertical,
-                loop: false,
-                itemCount: (forYouWidgets.length - 1),
-                itemBuilder: ((context, index) {
-                  return forYouWidgets[index];
-                }),
+              // appBar: forYouAppBar(context),
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  controller.loadForYouPage();
+                },
+                child: Swiper(
+                  onIndexChanged: ((value) {
+                    currentIndex = value;
+                  }),
+                  controller: _.swiperController,
+                  scrollDirection: Axis.vertical,
+                  loop: false,
+                  itemCount: (forYouWidgets.length - 1),
+                  itemBuilder: ((context, index) {
+                    return forYouWidgets[index];
+                  }),
+                ),
               ),
             );
           }),

@@ -7,10 +7,12 @@ import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/for_you.dart';
 import 'package:indiadaily/ui/screens/user/user_settings.dart';
 
+import '../../common/app_title.dart';
+
 class Home extends GetView<HomeController> {
   Home({super.key});
   final List<Widget> pages = [
-    const Discover(),
+    Discover(),
     const ForYou(),
     const UserSettings(),
   ];
@@ -30,6 +32,21 @@ class Home extends GetView<HomeController> {
       drawer: homeDrawer(context),
       child: Scaffold(
           key: controller.homeKey,
+          appBar: AppBar(
+            title: kAppTitle(context),
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(
+                FontAwesomeIcons.barsStaggered,
+                color: Theme.of(context).textTheme.headline3?.color,
+              ),
+              onPressed: () {
+                controller.advancedDrawerController.showDrawer();
+              },
+            ),
+            //TODO: replace with user settings
+            actions: [],
+          ),
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
           bottomNavigationBar: Obx(() {
