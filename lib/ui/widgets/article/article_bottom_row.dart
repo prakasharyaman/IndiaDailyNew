@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/article.dart';
-import 'package:indiadaily/services/share_services.dart';
+import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../bottom_sheet_tile.dart';
@@ -18,10 +19,48 @@ class ArticleBottomRow extends StatefulWidget {
 
 class _ArticleBottomRowState extends State<ArticleBottomRow> {
   late Article article;
+  bool isSaved = false;
   @override
   void initState() {
     super.initState();
+    checkIfSaved();
     article = widget.article;
+  }
+
+  checkIfSaved() {
+    if (getIt<StorageServices>().savedArticles.contains(widget.article)) {
+      setState(() {
+        isSaved = true;
+      });
+    }
+  }
+
+  /// saves post to storage
+  saveToStorage() async {
+    EasyLoading.show();
+    try {
+      await getIt<StorageServices>().saveArticle(article: widget.article);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess('Post Saved');
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint(e.toString());
+      EasyLoading.showError('Couldn\'t save');
+    }
+  }
+
+  /// remove post from storage
+  removePostFromStorage() async {
+    EasyLoading.show();
+    try {
+      await getIt<StorageServices>().removeArticle(article: widget.article);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess('Post removed');
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint(e.toString());
+      EasyLoading.showError('Couldn\'t remove');
+    }
   }
 
   @override
@@ -47,8 +86,17 @@ class _ArticleBottomRowState extends State<ArticleBottomRow> {
             icon: const Icon(Icons.share)),
         IconButton(
             tooltip: "Save this post.",
-            onPressed: () {},
-            icon: const Icon(Icons.add)),
+            onPressed: () {
+              if (!isSaved) {
+                saveToStorage();
+              } else {
+                removePostFromStorage();
+              }
+              setState(() {
+                isSaved = !isSaved;
+              });
+            },
+            icon: Icon(isSaved ? Icons.check : Icons.add)),
         IconButton(
             tooltip: "Show more options.",
             onPressed: () {

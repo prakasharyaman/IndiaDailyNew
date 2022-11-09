@@ -49,7 +49,7 @@ class Article {
         'description': description,
         'url': url,
         'urlToImage': urlToImage,
-        'publishedAt': publishedAt
+        'publishedAt': publishedAt.toIso8601String()
       };
 
   Article clone() => Article(

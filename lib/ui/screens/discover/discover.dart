@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:indiadaily/ui/common/app_title.dart';
 import 'package:indiadaily/ui/constants.dart';
+import 'package:indiadaily/ui/screens/discover/saved/saved_posts.dart';
 import 'package:indiadaily/ui/screens/discover/topicPage/controller/topic_bindings.dart';
 import 'package:indiadaily/ui/screens/discover/topicPage/topic_page.dart';
+import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/widgets/category_tag.dart';
 
 class Discover extends StatelessWidget {
-  Discover({super.key});
-  final discoverArticlesCategories = kdiscoverArticlesCategories;
+  const Discover({super.key});
+
   @override
   Widget build(BuildContext context) {
+    var discoverArticlesCategories = kdiscoverArticlesCategories;
     discoverArticlesCategories.shuffle();
     return Scaffold(
       // appBar: AppBar(
@@ -27,11 +29,21 @@ class Discover extends StatelessWidget {
           // saved posts and boah
           SliverGrid.count(
             crossAxisCount: 2,
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
+            mainAxisSpacing: 0,
+            crossAxisSpacing: 0,
             childAspectRatio: 1.5,
             children: <Widget>[
-              gridItem(title: 'saved', onTap: () {}),
+              gridItem(
+                  title: 'saved',
+                  onTap: () {
+                    Get.to(const SavedPosts(),
+                        transition: Transition.rightToLeft);
+                  }),
+              gridItem(
+                  title: 'yourFeed',
+                  onTap: () {
+                    Get.find<HomeController>().changeBottomNavigationIndex(1);
+                  }),
             ],
           ),
           const SliverToBoxAdapter(
@@ -61,8 +73,8 @@ class Discover extends StatelessWidget {
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5,
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
               childAspectRatio: 1.5,
             ),
           ),
@@ -74,7 +86,7 @@ class Discover extends StatelessWidget {
   /// build a grid item with title and onTap funcion
   Card gridItem({required String title, required Function onTap}) {
     return Card(
-      margin: EdgeInsets.zero,
+      margin: const EdgeInsets.all(5),
       shape: const RoundedRectangleBorder(),
       child: GestureDetector(
         onTap: () {

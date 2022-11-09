@@ -44,4 +44,12 @@ class ShareServices {
   shareLink({required String url}) async {
     await Share.share("$url\nMore at: https://bit.ly/indiadaily ");
   }
+
+  shareAppLink() async {
+    try {
+      await Share.share("Check out this App: https://bit.ly/indiadaily ");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 }

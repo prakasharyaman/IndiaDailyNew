@@ -35,7 +35,7 @@ class NewsShot {
         'decription': decription,
         'images': images,
         'read-more': readMore,
-        'time': time,
+        'time': time.toIso8601String(),
         'title': title
       };
 

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
@@ -25,6 +26,8 @@ class AppController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // remove the splash screen
+    FlutterNativeSplash.remove();
     //run every time auth state changes
     ever(user, handleAuthChanged);
     //bind to user model

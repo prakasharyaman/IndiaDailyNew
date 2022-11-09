@@ -1,15 +1,11 @@
 import 'dart:math';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/cache_services.dart';
-import 'package:indiadaily/ui/common/app_title.dart';
 import 'package:indiadaily/ui/screens/error/error_screen.dart';
-import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
-import 'package:indiadaily/ui/screens/loading/loading.dart';
 import 'package:indiadaily/ui/widgets/newsShot/news_shot.dart';
 import 'package:indiadaily/ui/widgets/video/video_player_page.dart';
 import 'widgets/for_you_main_page.dart';
@@ -87,67 +83,6 @@ class ForYouPage extends GetView<ForYouController> {
               ),
             );
           }),
-    );
-  }
-
-  AppBar forYouAppBar(BuildContext context) {
-    return AppBar(
-      title: kAppTitle(context),
-      centerTitle: true,
-      leading: IconButton(
-        icon: Icon(
-          FontAwesomeIcons.barsStaggered,
-          color: Theme.of(context).textTheme.headline3?.color,
-        ),
-        onPressed: () {
-          Get.find<HomeController>().advancedDrawerController.showDrawer();
-        },
-      ),
-      //TODO: replace with user settings
-      actions: [
-        PopupMenuButton(
-            onSelected: ((value) {
-              if (value == 2) {
-                Get.toNamed('/settings');
-              }
-            }),
-            elevation: 10,
-            tooltip: "for you options",
-            itemBuilder: (context) {
-              return [
-                // refresh button
-                PopupMenuItem(
-                  value: 0,
-                  onTap: () {
-                    controller.loadForYouPage();
-                  },
-                  child: Text('Refresh',
-                      style: Theme.of(context).textTheme.titleSmall
-                      // ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                ),
-                // back to top
-                PopupMenuItem(
-                  value: 1,
-                  onTap: () {
-                    controller.swiperController.move(0);
-                  },
-                  child: Text('Back to top',
-                      style: Theme.of(context).textTheme.titleSmall
-                      // ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                ),
-                // back to top
-                PopupMenuItem(
-                  value: 2,
-                  child: Text('Settings',
-                      style: Theme.of(context).textTheme.titleSmall
-                      // ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                ),
-              ];
-            }),
-      ],
     );
   }
 

@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/for_you.dart';
 import 'package:indiadaily/ui/screens/user/user_settings.dart';
-
 import '../../common/app_title.dart';
 
 class Home extends GetView<HomeController> {
   Home({super.key});
   final List<Widget> pages = [
-    Discover(),
+    const Discover(),
     const ForYou(),
     const UserSettings(),
   ];
@@ -45,7 +46,7 @@ class Home extends GetView<HomeController> {
               },
             ),
             //TODO: replace with user settings
-            actions: [],
+            actions: const [],
           ),
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
@@ -119,7 +120,11 @@ class Home extends GetView<HomeController> {
                 controller.changeBottomNavigationIndex(1);
               },
               leading: const Icon(FontAwesomeIcons.house),
-              title: const Text('For You'),
+              title: Text(
+                'For You',
+                style: TextStyle(
+                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+              ),
             ),
             //discover tile
             ListTile(
@@ -128,7 +133,11 @@ class Home extends GetView<HomeController> {
                 controller.changeBottomNavigationIndex(0);
               },
               leading: const Icon(FontAwesomeIcons.compass),
-              title: const Text('Discover'),
+              title: Text(
+                'Discover',
+                style: TextStyle(
+                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+              ),
             ),
             //TODO: add market here
             //market tile
@@ -147,7 +156,11 @@ class Home extends GetView<HomeController> {
                 controller.changeBottomNavigationIndex(2);
               },
               leading: const Icon(FontAwesomeIcons.solidUser),
-              title: const Text('Profile'),
+              title: Text(
+                'Me',
+                style: TextStyle(
+                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+              ),
             ),
             //  settings
             ListTile(
@@ -156,28 +169,36 @@ class Home extends GetView<HomeController> {
                 controller.changeBottomNavigationIndex(0);
               },
               leading: const Icon(FontAwesomeIcons.gear),
-              title: const Text('Settings'),
+              title: Text(
+                'Settings',
+                style: TextStyle(
+                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+              ),
             ),
             //  share App
             ListTile(
               onTap: () {
                 controller.advancedDrawerController.hideDrawer();
-                controller.changeBottomNavigationIndex(0);
+                ShareServices().shareAppLink();
               },
               leading: const Icon(FontAwesomeIcons.shareNodes),
-              title: const Text('Share App'),
+              title: Text(
+                'Share App',
+                style: TextStyle(
+                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+              ),
             ),
 
             const Spacer(),
 
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
               child: Text(
                 'Terms of Service | Privacy Policy',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.archivo().fontFamily),
                 textAlign: TextAlign.start,
               ),
             ),

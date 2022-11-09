@@ -69,7 +69,7 @@ class ForYouController extends GetxController {
     // load artilces data from cache
     forYouArticles = await dataRepository.getNewsArticles(
         where: "category", equals: ["source", "general"], loadFromCache: true);
-    debugPrint(selectedCategories.toString());
+    // debugPrint(selectedCategories.toString());
 
     if (!selectedCategories.contains('all')) {
       selectedCategories.add('all');

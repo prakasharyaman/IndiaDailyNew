@@ -4,23 +4,25 @@ import '../constants.dart';
 
 Widget kAppTitle(context) {
   return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-          text: 'India',
+    textAlign: TextAlign.center,
+    text: TextSpan(
+      text: 'India',
+      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            color: Theme.of(context).textTheme.headline4?.color,
+            fontFamily: GoogleFonts.archivoBlack().fontFamily,
+            // fontFamily: GoogleFonts.montserratSubrayada().fontFamily,
+          ),
+      children: [
+        TextSpan(
+          text: 'Daily',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).textTheme.headline4?.color,
+                color: kPrimaryRed,
                 fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                // fontFamily: GoogleFonts.montserratSubrayada().fontFamily,
               ),
-          children: [
-            TextSpan(
-              text: 'Daily',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: kPrimaryRed,
-                    fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                  ),
-            ),
-          ]));
+        ),
+      ],
+    ),
+  );
 }
 
 Widget kCenterAppTitle = Row(

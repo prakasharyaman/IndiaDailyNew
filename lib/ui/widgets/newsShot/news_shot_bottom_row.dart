@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
-import 'package:indiadaily/services/share_services.dart';
+import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
 import '../bottom_sheet_tile.dart';
@@ -18,10 +19,48 @@ class NewsShotBottomRow extends StatefulWidget {
 
 class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
   late NewsShot newsShot;
+  bool isSaved = false;
   @override
   void initState() {
     super.initState();
+    checkIfSaved();
     newsShot = widget.newsShot;
+  }
+
+  checkIfSaved() {
+    if (getIt<StorageServices>().savedNewsShots.contains(widget.newsShot)) {
+      setState(() {
+        isSaved = true;
+      });
+    }
+  }
+
+  /// saves post to storage
+  saveToStorage() async {
+    EasyLoading.show();
+    try {
+      await getIt<StorageServices>().saveNewsShot(newsShot: widget.newsShot);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess('Post Saved');
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint(e.toString());
+      EasyLoading.showError('Couldn\'t save');
+    }
+  }
+
+  /// remove post from storage
+  removeFromStorage() async {
+    EasyLoading.show();
+    try {
+      await getIt<StorageServices>().removeNewsShot(newsShot: widget.newsShot);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess('Post removed');
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint(e.toString());
+      EasyLoading.showError('Couldn\'t remove');
+    }
   }
 
   @override
@@ -52,8 +91,17 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
             icon: const Icon(Icons.share)),
         IconButton(
             tooltip: "Save this post.",
-            onPressed: () {},
-            icon: const Icon(Icons.add)),
+            onPressed: () {
+              if (!isSaved) {
+                saveToStorage();
+              } else {
+                removeFromStorage();
+              }
+              setState(() {
+                isSaved = !isSaved;
+              });
+            },
+            icon: Icon(isSaved ? Icons.check : Icons.add)),
         IconButton(
             tooltip: "Open menu.",
             onPressed: () {
