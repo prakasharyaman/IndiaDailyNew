@@ -7,6 +7,7 @@ import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/for_you.dart';
+import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
 import 'package:indiadaily/ui/screens/user/user_settings.dart';
 import '../../common/app_title.dart';
 
@@ -194,12 +195,18 @@ class Home extends GetView<HomeController> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-              child: Text(
-                'Terms of Service | Privacy Policy',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
-                    fontFamily: GoogleFonts.archivo().fontFamily),
-                textAlign: TextAlign.start,
+              child: GestureDetector(
+                onTap: () {
+                  launchAppUrl(
+                      url: 'https://www.otft.in/india-daily-privacy-policy');
+                },
+                child: Text(
+                  'Terms of Service | Privacy Policy',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white,
+                      fontFamily: GoogleFonts.archivo().fontFamily),
+                  textAlign: TextAlign.start,
+                ),
               ),
             ),
           ],

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
+import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/notification/notification_news_shot_page.dart';
@@ -185,7 +187,7 @@ class AppController extends GetxController {
         .then((DocumentSnapshot doc) {
       final appData = doc.data() as Map<String, dynamic>;
       int cloudBuildNumber = appData['buildNumber'];
-      if (cloudBuildNumber < int.parse(packageInfo.buildNumber)) {
+      if (cloudBuildNumber > int.parse(packageInfo.buildNumber)) {
         showUpdateAvailableBottomSheet();
       } else {
         debugPrint('Running On Latest Version $packageInfo.buildNumber');
@@ -249,10 +251,14 @@ SizedBox updateBottomSheetWidget(BuildContext context, Color primaryColor) {
         ),
 
         // an animate icon to update
-        const Expanded(
+        Expanded(
             child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Icon(FontAwesomeIcons.googlePlay),
+          padding: const EdgeInsets.all(10.0),
+          child: Icon(
+            FontAwesomeIcons.googlePlay,
+            color: kPrimaryRed,
+            size: 100,
+          ),
         )),
         // row wit later and update button
         Row(
@@ -279,8 +285,10 @@ SizedBox updateBottomSheetWidget(BuildContext context, Color primaryColor) {
               onPressed: () async {
                 launchAppUrl(
                     url:
-                        'https://play.google.com/store/apps/details?id=app.indiadaily.android');
+                        'https://play.google.com/store/apps/details?id=app.indiadaily.android',
+                    openExternal: true);
               },
+              style: ElevatedButton.styleFrom(elevation: 10),
               child: Text(
                 'Update',
                 style: Theme.of(context)
@@ -291,6 +299,9 @@ SizedBox updateBottomSheetWidget(BuildContext context, Color primaryColor) {
             ),
           ],
         ),
+        const SizedBox(
+          height: 20,
+        )
       ]),
     ),
   );
