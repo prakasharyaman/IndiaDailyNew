@@ -166,7 +166,7 @@ class Home extends GetView<HomeController> {
             ListTile(
               onTap: () {
                 controller.advancedDrawerController.hideDrawer();
-                controller.changeBottomNavigationIndex(0);
+                Get.toNamed('/settings');
               },
               leading: const Icon(FontAwesomeIcons.gear),
               title: Text(

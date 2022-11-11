@@ -1,10 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
+import 'package:indiadaily/ui/screens/notification/notification_news_shot_page.dart';
+import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/index.dart';
 import '../../models/user_model.dart';
 
 enum AppStatus {
@@ -26,12 +33,16 @@ class AppController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // remove the splash screen
-    FlutterNativeSplash.remove();
+    // // remove the splash screen
+    // FlutterNativeSplash.remove();
     //run every time auth state changes
     ever(user, handleAuthChanged);
     //bind to user model
     user.bindStream(userStream);
+    // subscribe
+    subscribeToTopic();
+    //notification handler
+    setupInteractedMessage();
   }
 
   /// Handles changes in auth behaviour.
@@ -65,6 +76,7 @@ class AppController extends GetxController {
       Get.put<HomeController>(HomeController(), permanent: true);
       Get.put<ForYouController>(ForYouController(), permanent: true);
       appStatus.value = AppStatus.authenticated;
+      checkForUpdates();
     }
   }
 
@@ -112,4 +124,174 @@ class AppController extends GetxController {
       );
     }
   }
+
+  ///subscribe to messaging topics
+  subscribeToTopic() {
+    FirebaseMessaging.instance.subscribeToTopic('newsShots');
+  }
+
+  /// setup interacted with a message like click
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    debugPrint('handling a message');
+    if (message.notification?.android?.channelId == 'news') {
+      var newsShotJson = message.data;
+      NewsShot newsShot = NewsShot.fromJson(newsShotJson);
+      showNotificationPage(newsShot: newsShot);
+    } else {
+      debugPrint('Couldn\'t figure out channel id');
+    }
+  }
+
+  /// naviagets to notification page
+  showNotificationPage({required NewsShot newsShot}) {
+    // show news Shot
+    try {
+      if (Get.currentRoute == '/NotificationNewsShotPage' ||
+          Get.currentRoute == '/notificationNewsShotPage') {
+        Get.back();
+      }
+      Get.to(NotificationNewsShotPage(
+        newsShot: newsShot,
+      ));
+    } catch (e) {
+      debugPrint('Failed to show notification page');
+      debugPrint(e.toString());
+    }
+  }
+
+  /// checks for update on firestore
+  checkForUpdates() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    await FirebaseFirestore.instance
+        .collection('app')
+        .doc('updates')
+        .get()
+        .then((DocumentSnapshot doc) {
+      final appData = doc.data() as Map<String, dynamic>;
+      int cloudBuildNumber = appData['buildNumber'];
+      if (cloudBuildNumber < int.parse(packageInfo.buildNumber)) {
+        showUpdateAvailableBottomSheet();
+      } else {
+        debugPrint('Running On Latest Version $packageInfo.buildNumber');
+      }
+    });
+  }
+
+  /// update availbale bottom sheet
+  showUpdateAvailableBottomSheet() {
+    if (Get.context != null) {
+      showModalBottomSheet(
+          context: Get.context!,
+          isDismissible: false,
+          builder: (context) {
+            var primaryColor = Theme.of(context).primaryColor;
+            return updateBottomSheetWidget(context, primaryColor);
+          });
+    } else {
+      showDailySnackBar(
+          'An Update is Available for India Daily \n Please go to the Play Store to update the app');
+    }
+  }
+}
+
+// bottom sheet to show update
+SizedBox updateBottomSheetWidget(BuildContext context, Color primaryColor) {
+  return SizedBox(
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(children: [
+        // text new update available
+        RichText(
+          text: TextSpan(
+            text: '',
+            style: Theme.of(context).textTheme.headline6,
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Update ',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline3
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: 'Available',
+                style: Theme.of(context).textTheme.headline3?.copyWith(
+                    fontWeight: FontWeight.bold, color: primaryColor),
+              ),
+            ],
+          ),
+        ),
+        const Divider(
+          indent: 40,
+          endIndent: 40,
+        ),
+        // description why to updtae
+        Text(
+          'Please update your app to keep enjoying latest features.',
+          style: Theme.of(context).textTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+
+        // an animate icon to update
+        const Expanded(
+            child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Icon(FontAwesomeIcons.googlePlay),
+        )),
+        // row wit later and update button
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                side: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'Later',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Theme.of(context).primaryColor),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                launchAppUrl(
+                    url:
+                        'https://play.google.com/store/apps/details?id=app.indiadaily.android');
+              },
+              child: Text(
+                'Update',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ]),
+    ),
+  );
 }

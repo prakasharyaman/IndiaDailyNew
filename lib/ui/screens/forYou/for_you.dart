@@ -116,7 +116,7 @@ class ForYouPage extends GetView<ForYouController> {
             .add(ForYouMainPage(newsShot: newsShot!, articles: articlePair!));
         articlePairsIndex++;
         newsShotsIndex++;
-      } else if (index % 6 == 0 && video != null) {
+      } else if (index % 7 == 0 && video != null) {
         forYouWidgets.add(VideoPlayerPage(video: video));
         imageUrlList.add(video.thumbnail);
         videosIndex++;

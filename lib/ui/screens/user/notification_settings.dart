@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -134,7 +135,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
         // more settings
         ListTile(
           onTap: () {
-            //TODO : get to settings
+            Get.toNamed('/settings');
           },
           leading: const Icon(FontAwesomeIcons.gear),
           title: title(context, 'More Settings'),

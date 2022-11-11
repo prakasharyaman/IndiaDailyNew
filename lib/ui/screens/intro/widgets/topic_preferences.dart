@@ -124,6 +124,7 @@ class _TopicPreferencesState extends State<TopicPreferences> {
             'Skipping will show news and posts that you may not like. You can always change the topics you love through settings afterwards.',
         textConfirm: 'Yes Skip',
         onConfirm: () async {
+          Get.back();
           saveTopicPreferences(topicsList: ['all']);
         },
         textCancel: 'Cancel');
