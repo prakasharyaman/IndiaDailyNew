@@ -1,24 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:yahoo_finance_data_reader/yahoo_finance_data_reader.dart';
 import 'package:http/http.dart' as http;
+import 'package:yahoofin/yahoofin.dart';
 
 class MarketRepository {
-  getData({String stockTicker = '^NSEI', int howManyDaysBefore = 7}) async {
-    YahooFinanceDailyReader yahooFinanceDailyReader =
-        const YahooFinanceDailyReader();
-    var xDaysOldDate = DateTime.now()
-            .subtract(Duration(days: howManyDaysBefore))
-            .toUtc()
-            .millisecondsSinceEpoch ~/
-        1000;
-    List<dynamic> prices = await yahooFinanceDailyReader
-        .getDailyData(stockTicker, startTimestamp: xDaysOldDate);
+  YahooFin yahooFin = YahooFin();
 
-    print(prices.length);
+  /// get stock  data using stock name
+  Future<StockQuote> getStockData({required String stockName}) async {
+    StockInfo info = yahooFin.getStockInfo(ticker: stockName);
+    StockQuote stockQuote = await info.getStockData();
+    return stockQuote;
   }
 
+  /// gets index data
   Future<Map<String, dynamic>?> getIndexData(
       {required String indexName}) async {
     Map<String, dynamic>? data;
@@ -43,3 +38,4 @@ var kIndexes = [
   // nifty midcap
   'in%3Bccx',
 ];
+var kDefaultWatchList = ['RELIANCE.NS', 'TATAMOTORS.NS', 'TCS.NS'];

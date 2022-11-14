@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:indiadaily/ui/screens/loading/loading.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
+import 'package:indiadaily/ui/widgets/newsShot/news_shot_row.dart';
 
 class Market extends GetView<MarketController> {
   const Market({super.key});
@@ -12,7 +12,9 @@ class Market extends GetView<MarketController> {
     return Obx(() {
       switch (controller.marketStatus.value) {
         case MarketStatus.loading:
-          return const Loading();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         case MarketStatus.loaded:
           return const MarketPage();
         case MarketStatus.error:
@@ -51,14 +53,145 @@ class MarketPage extends GetView<MarketController> {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: ElevatedButton(
-            child: Text('go'),
-            onPressed: () {
-              controller.getIndexes();
+        // SliverToBoxAdapter(
+        //     child: Padding(
+        //   padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+        //   child: SizedBox(
+        //     height: Get.height * 0.05,
+        //     child: ListTile(
+        //       onTap: () {
+        //         // showSearch(context: context, delegate: delegate)
+        //       },
+        //       shape: const RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.all(Radius.circular(5)),
+        //           side: BorderSide()),
+        //       title: Text(
+        //         'Search',
+        //         style: Theme.of(context).textTheme.bodySmall,
+        //       ),
+        //       trailing: const Icon(Icons.search),
+        //     ),
+        //   ),
+        // )),
+        // SliverToBoxAdapter(
+        //   child: Card(
+        //     elevation: 0.2,
+        //     shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.all(Radius.circular(5)),
+        //         side: BorderSide()),
+        //     child: SizedBox(
+        //       height: Get.height * 0.05,
+        //       width: Get.width,
+        //     ),
+        //   ),
+        // ),
+        SliverToBoxAdapter(child: title(context, 'Watchlist')),
+
+        // watchlist
+        SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext context, int index) {
+            return Card(
+              color: controller.watchList[index].regularMarketChangePercent! < 0
+                  ? Colors.red
+                  : Colors.green,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              elevation: 0.2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        title(
+                            context,
+                            controller.watchList[index].ticker
+                                .toString()
+                                .replaceAll('.NS', '')),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 1, left: 8, right: 8),
+                          child: Text(
+                              controller.watchList[index].metaData!.shortName
+                                  .toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.archivo().fontFamily,
+                                  )),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        title(
+                            context,
+                            controller.watchList[index].currentPrice
+                                .toString()),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 1, left: 8, right: 8),
+                          child: Text(
+                              '${controller.watchList[index].regularMarketChangePercent!.toStringAsPrecision(3)}%',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    // color: controller.watchList[index]
+                                    //             .regularMarketChangePercent! <
+                                    //         0
+                                    //     ? Colors.red
+                                    //     : Colors.green,
+                                    fontFamily:
+                                        GoogleFonts.archivo().fontFamily,
+                                  )),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }, childCount: controller.watchList.length),
+        ),
+        //news headline
+        SliverToBoxAdapter(child: title(context, 'Business News')),
+        // SliverToBoxAdapter(
+        //   child: ElevatedButton(
+        //     child: Text('reload'),
+        //     onPressed: () {
+        //       // controller.x();
+        //     },
+        //   ),
+        // ),
+        // news list
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              // NewsShotRow
+              return Card(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  elevation: 0.2,
+                  child: SizedBox(
+                    height: Get.height * 0.5,
+                    child: NewsShotRow(
+                      newsShot: controller.newsShots[index],
+                    ),
+                  ));
             },
+            childCount: controller.newsShots.length,
           ),
-        )
+        ),
       ],
     );
   }
@@ -91,6 +224,9 @@ class TopIndexCard extends StatelessWidget {
         height: Get.height * 0.1,
         width: Get.width * 0.4,
         child: Card(
+          elevation: 0.5,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5))),
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(

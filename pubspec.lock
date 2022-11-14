@@ -141,13 +141,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.8"
-  dio:
+  equatable:
     dependency: transitive
     description:
-      name: dio
+      name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.6"
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -917,13 +917,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.0"
-  yahoo_finance_data_reader:
+  yahoofin:
     dependency: "direct main"
     description:
-      name: yahoo_finance_data_reader
+      name: yahoofin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.7"
+    version: "0.0.8"
   yaml:
     dependency: transitive
     description:
