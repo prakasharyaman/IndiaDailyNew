@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -9,6 +9,7 @@ import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
+import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/notification/notification_news_shot_page.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -47,11 +48,18 @@ class AppController extends GetxController {
     setupInteractedMessage();
   }
 
+  /// set analytics user id
+  setAnalyticsUserId() async {
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    await analytics.setUserId(id: userModel.value.id);
+  }
+
   /// Handles changes in auth behaviour.
   handleAuthChanged(firebaseUser) async {
     //get user data from firestore
     if (firebaseUser?.uid != null) {
       userModel.value.id = firebaseUser.uid;
+      await setAnalyticsUserId();
       runAppLogic();
     } else if (firebaseUser == null) {
       try {
@@ -77,6 +85,8 @@ class AppController extends GetxController {
     } else {
       Get.put<HomeController>(HomeController(), permanent: true);
       Get.put<ForYouController>(ForYouController(), permanent: true);
+      Get.put<MarketController>(MarketController(), permanent: true);
+
       appStatus.value = AppStatus.authenticated;
       checkForUpdates();
     }

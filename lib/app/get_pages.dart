@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/app/app.dart';
 import 'package:indiadaily/ui/screens/home/home.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
+import 'package:indiadaily/ui/screens/user/notifications_settings.dart';
 import 'package:indiadaily/ui/screens/webView/news_web_view.dart';
 
 List<GetPage> getPages() {
@@ -21,6 +22,12 @@ List<GetPage> getPages() {
       name: '/settings',
       title: 'Settings',
       page: () => const SettingsPage(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: '/notificationsSettings',
+      title: 'NotificationsSettings',
+      page: () => const NotificationsSettings(),
       transition: Transition.rightToLeft,
     ),
   ];

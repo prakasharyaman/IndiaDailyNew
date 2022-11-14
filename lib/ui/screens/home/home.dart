@@ -7,8 +7,8 @@ import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/for_you.dart';
+import 'package:indiadaily/ui/screens/market/market.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
-import 'package:indiadaily/ui/screens/user/user_settings.dart';
 import '../../common/app_title.dart';
 
 class Home extends GetView<HomeController> {
@@ -16,7 +16,7 @@ class Home extends GetView<HomeController> {
   final List<Widget> pages = [
     const Discover(),
     const ForYou(),
-    const UserSettings(),
+    const Market(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,13 @@ class Home extends GetView<HomeController> {
                 controller.advancedDrawerController.showDrawer();
               },
             ),
-            //TODO: replace with user settings
-            actions: const [],
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.toNamed('/notificationsSettings');
+                  },
+                  icon: const Icon(FontAwesomeIcons.bell))
+            ],
           ),
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
@@ -67,8 +72,8 @@ class Home extends GetView<HomeController> {
                     label: 'Home',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.solidUser),
-                    label: 'User Settings',
+                    icon: Icon(FontAwesomeIcons.chartLine),
+                    label: 'Market',
                   ),
                 ],
                 type: BottomNavigationBarType.fixed,

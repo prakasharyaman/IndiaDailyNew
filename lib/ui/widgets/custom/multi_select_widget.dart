@@ -97,6 +97,9 @@ class CustomMultiSelectField<V> extends StatelessWidget {
             onTap: onTap,
           ),
         ),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 100),
+        )
       ],
     );
   }
