@@ -55,6 +55,7 @@ class MarketController extends GetxController {
 
   /// gets watchlist stock data
   getWatchlistStocksData() async {
+    watchList.clear();
     for (var stockName in watchListStocks) {
       try {
         var stockData =
@@ -82,6 +83,7 @@ class MarketController extends GetxController {
 
   /// gets Index Data
   getIndexes() async {
+    indexes.clear();
     for (String indexName in kIndexes) {
       Map<String, dynamic>? indexData =
           await marketRepository.getIndexData(indexName: indexName);

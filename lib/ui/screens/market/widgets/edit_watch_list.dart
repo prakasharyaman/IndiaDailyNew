@@ -52,7 +52,7 @@ class _EditWatchListState extends State<EditWatchList> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // marketController.loadMarketPage();
+        marketController.loadMarketPage();
         return true;
       },
       child: Scaffold(
