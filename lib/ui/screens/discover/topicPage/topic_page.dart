@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/cache_services.dart';
+import 'package:indiadaily/ui/common/app_title.dart';
 import 'package:indiadaily/ui/screens/discover/topicPage/controller/topic_controller.dart';
 import 'package:indiadaily/ui/screens/error/error_screen.dart';
 import 'package:indiadaily/ui/screens/loading/loading.dart';
@@ -44,7 +44,7 @@ class TopicPageBuilder extends GetView<TopicController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: kAppTitle(context, controller.topic.capitalizeFirst),
+          title: kDifferentAppTitle(context, controller.topic.capitalizeFirst),
           centerTitle: false,
         ),
         body: ListView(
@@ -155,17 +155,5 @@ class TopicPageBuilder extends GetView<TopicController> {
     }
     cacheServices.cacheImages(imageUrlList: imageUrlList);
     return widgets;
-  }
-
-  Widget kAppTitle(context, title) {
-    return RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          text: title.toString(),
-          style: Theme.of(context).textTheme.headline6?.copyWith(
-                color: Theme.of(context).primaryColor,
-                fontFamily: GoogleFonts.archivoBlack().fontFamily,
-              ),
-        ));
   }
 }

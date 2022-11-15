@@ -25,6 +25,18 @@ Widget kAppTitle(context) {
   );
 }
 
+Widget kDifferentAppTitle(context, title) {
+  return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        text: title.toString(),
+        style: Theme.of(context).textTheme.headline6?.copyWith(
+              color: Theme.of(context).primaryColor,
+              fontFamily: GoogleFonts.archivoBlack().fontFamily,
+            ),
+      ));
+}
+
 Widget kCenterAppTitle = Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,

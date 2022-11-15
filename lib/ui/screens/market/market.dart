@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:indiadaily/models/stock_model.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
+import 'package:indiadaily/ui/screens/market/k/list_of_stocks.dart';
+import 'package:indiadaily/ui/screens/market/widgets/edit_watch_list.dart';
+import 'package:indiadaily/ui/screens/market/widgets/stock_index_card.dart';
+import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
+import 'package:indiadaily/ui/widgets/bottom_sheet_tile.dart';
 import 'package:indiadaily/ui/widgets/newsShot/news_shot_row.dart';
+import 'package:search_page/search_page.dart';
+import 'package:yahoofin/yahoofin.dart';
 
 class Market extends GetView<MarketController> {
   const Market({super.key});
@@ -18,7 +27,7 @@ class Market extends GetView<MarketController> {
         case MarketStatus.loaded:
           return const MarketPage();
         case MarketStatus.error:
-          //TODO: add error page
+          //TODO: add error pag
           return const Center(
             child: Text('erroe'),
           );
@@ -32,167 +41,117 @@ class MarketPage extends GetView<MarketController> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: title(context, 'Market')),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8, top: 1, bottom: 8),
-            child: SizedBox(
-              height: Get.height * 0.1,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.indexes.length,
-                  itemBuilder: (context, index) {
-                    var indexData = controller.indexes[index]['data'];
-                    return TopIndexCard(
-                        name: indexData['company'],
-                        pChange: indexData['PERCCHANGE'].toString(),
-                        currentPrice: indexData['pricecurrent']);
-                  }),
-            ),
-          ),
-        ),
-        // SliverToBoxAdapter(
-        //     child: Padding(
-        //   padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-        //   child: SizedBox(
-        //     height: Get.height * 0.05,
-        //     child: ListTile(
-        //       onTap: () {
-        //         // showSearch(context: context, delegate: delegate)
-        //       },
-        //       shape: const RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.all(Radius.circular(5)),
-        //           side: BorderSide()),
-        //       title: Text(
-        //         'Search',
-        //         style: Theme.of(context).textTheme.bodySmall,
-        //       ),
-        //       trailing: const Icon(Icons.search),
-        //     ),
-        //   ),
-        // )),
-        // SliverToBoxAdapter(
-        //   child: Card(
-        //     elevation: 0.2,
-        //     shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.all(Radius.circular(5)),
-        //         side: BorderSide()),
-        //     child: SizedBox(
-        //       height: Get.height * 0.05,
-        //       width: Get.width,
-        //     ),
-        //   ),
-        // ),
-        SliverToBoxAdapter(child: title(context, 'Watchlist')),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          //market heading
+          SliverToBoxAdapter(child: title(context, 'Market')),
+          // indexes cards
+          buildStockIndexCards(),
+          //watchlist heading
+          SliverToBoxAdapter(
+              child: Row(
+            children: [
+              title(context, 'Watchlist'),
+              const Spacer(),
+              IconButton(
+                  onPressed: () {
+                    showWatchListBottomSheet(context);
+                  },
+                  icon: const Icon(FontAwesomeIcons.ellipsis)),
+            ],
+          )),
+          // //serch stocks widget
+          // SliverToBoxAdapter(
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       labelText: 'Enter Name',
+          //       border: OutlineInputBorder(),
+          //       contentPadding: EdgeInsets.zero,
+          //     ),
+          //     style: TextStyle(
+          //         fontSize: Theme.of(context)
+          //             .textTheme
+          //             .bodySmall
+          //             ?.fontSize), // <-- SEE HERE
+          //   ),
+          // ),
+          // watchlist
+          buildWatchList(),
+          // business news headline
+          SliverToBoxAdapter(child: title(context, 'Business News')),
+          // SliverToBoxAdapter(
+          //   child: ElevatedButton(
+          //     child: Text('reload'),
+          //     onPressed: () {
+          //       // controller.x();
+          //     },
+          //   ),
+          // ),
+          // news list
+          buildNewsList(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showStockSearch(context);
+        },
+        child: const Icon(Icons.search),
+      ),
+    );
+  }
 
-        // watchlist
-        SliverList(
-          delegate:
-              SliverChildBuilderDelegate((BuildContext context, int index) {
-            return Card(
-              color: controller.watchList[index].regularMarketChangePercent! < 0
-                  ? Colors.red
-                  : Colors.green,
+  /// list of news shot widgets
+  SliverList buildNewsList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          // NewsShotRow
+          return Card(
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5))),
               elevation: 0.2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        title(
-                            context,
-                            controller.watchList[index].ticker
-                                .toString()
-                                .replaceAll('.NS', '')),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(top: 1, left: 8, right: 8),
-                          child: Text(
-                              controller.watchList[index].metaData!.shortName
-                                  .toString(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    fontFamily:
-                                        GoogleFonts.archivo().fontFamily,
-                                  )),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        title(
-                            context,
-                            controller.watchList[index].currentPrice
-                                .toString()),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(top: 1, left: 8, right: 8),
-                          child: Text(
-                              '${controller.watchList[index].regularMarketChangePercent!.toStringAsPrecision(3)}%',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    // color: controller.watchList[index]
-                                    //             .regularMarketChangePercent! <
-                                    //         0
-                                    //     ? Colors.red
-                                    //     : Colors.green,
-                                    fontFamily:
-                                        GoogleFonts.archivo().fontFamily,
-                                  )),
-                        ),
-                      ],
-                    ),
-                  ],
+              child: SizedBox(
+                height: Get.height * 0.5,
+                child: NewsShotRow(
+                  newsShot: controller.newsShots[index],
                 ),
-              ),
-            );
-          }, childCount: controller.watchList.length),
+              ));
+        },
+        childCount: controller.newsShots.length,
+      ),
+    );
+  }
+
+  /// watch list widgets
+  SliverList buildWatchList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+        StockQuote stockData = controller.watchList[index];
+        return WatchListStock(stockData: stockData);
+      }, childCount: controller.watchList.length),
+    );
+  }
+
+  /// top stock index cards
+  SliverToBoxAdapter buildStockIndexCards() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8, top: 1, bottom: 8),
+        child: SizedBox(
+          height: Get.height * 0.1,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.indexes.length,
+              itemBuilder: (context, index) {
+                var indexData = controller.indexes[index]['data'];
+                return StockIndexCard(
+                    name: indexData['company'],
+                    pChange: indexData['PERCCHANGE'].toString(),
+                    currentPrice: indexData['pricecurrent']);
+              }),
         ),
-        //news headline
-        SliverToBoxAdapter(child: title(context, 'Business News')),
-        // SliverToBoxAdapter(
-        //   child: ElevatedButton(
-        //     child: Text('reload'),
-        //     onPressed: () {
-        //       // controller.x();
-        //     },
-        //   ),
-        // ),
-        // news list
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              // NewsShotRow
-              return Card(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  elevation: 0.2,
-                  child: SizedBox(
-                    height: Get.height * 0.5,
-                    child: NewsShotRow(
-                      newsShot: controller.newsShots[index],
-                    ),
-                  ));
-            },
-            childCount: controller.newsShots.length,
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -205,56 +164,97 @@ class MarketPage extends GetView<MarketController> {
               )),
     );
   }
-}
 
-class TopIndexCard extends StatelessWidget {
-  /// creates a card to index name , pchange and current price
-  const TopIndexCard(
-      {super.key,
-      required this.name,
-      required this.pChange,
-      required this.currentPrice});
-  final String name;
-  final String pChange;
-  final String currentPrice;
-  @override
-  Widget build(BuildContext context) {
-    double change = double.parse(pChange);
-    return SizedBox(
-        height: Get.height * 0.1,
-        width: Get.width * 0.4,
-        child: Card(
-          elevation: 0.5,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5))),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
+  /// shows watch list bottom sheet with its option
+  showWatchListBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        isScrollControlled: true,
+        builder: (_) {
+          return Container(
+            height: Get.height * 0.3,
+            margin: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  name,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                      ),
-                  maxLines: 1,
+                // heading
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: RichText(
+                      text: TextSpan(
+                          text: 'Configure your ',
+                          style: Theme.of(context).textTheme.titleMedium,
+                          children: [
+                        TextSpan(
+                          text: 'Watchlist.',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        )
+                      ])),
                 ),
-                Text(currentPrice.toString(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                        color: change < 0 ? Colors.red : Colors.green),
-                    maxLines: 1),
-                Text(
-                  '$pChange%',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                      color: change < 0 ? Colors.red : Colors.green),
-                  maxLines: 1,
-                ),
+                // add stocks
+                BottomSheetTile(
+                    title: "Add stocks",
+                    icon: Icons.add,
+                    onTap: () {
+                      //TODO: show stocks search
+                      Get.back();
+                    }),
+                BottomSheetTile(
+                    title: "Remove stocks",
+                    icon: Icons.remove,
+                    onTap: () {
+                      Get.back();
+                      Get.to(const EditWatchList(),
+                          transition: Transition.rightToLeft);
+                    }),
               ],
-            ),
-          ),
-        ));
+            )),
+          );
+        });
+  }
+
+  showStockSearch(context) {
+    showSearch(
+        context: context,
+        delegate: SearchPage<StockModel>(
+            searchStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                ),
+            showItemsOnEmpty: true,
+            searchLabel: 'Search Stocks',
+            builder: (stock) {
+              return Card(
+                elevation: 0.2,
+                shape: const RoundedRectangleBorder(),
+                child: ListTile(
+                  onTap: () {
+                    Get.back();
+                    //TODO:stock face
+                    // Get.to(EditWatchList());
+                  },
+                  title: title(context, stock.symbol),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      stock.fullName,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                          ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  trailing: const Icon(FontAwesomeIcons.arrowRight),
+                ),
+              );
+            },
+            filter: (stock) => [stock.symbol, stock.fullName],
+            items: nseStocks));
   }
 }
