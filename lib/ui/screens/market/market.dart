@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/models/stock_model.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/market/k/list_of_stocks.dart';
-import 'package:indiadaily/ui/screens/market/widgets/edit_watch_list.dart';
+import 'package:indiadaily/ui/screens/market/pages/edit_watch_list.dart';
+import 'package:indiadaily/ui/screens/market/pages/full_stock_info.dart';
 import 'package:indiadaily/ui/screens/market/widgets/stock_index_card.dart';
 import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
 import 'package:indiadaily/ui/widgets/bottom_sheet_tile.dart';
@@ -61,39 +62,20 @@ class MarketPage extends GetView<MarketController> {
                   icon: const Icon(FontAwesomeIcons.ellipsis)),
             ],
           )),
-          // //serch stocks widget
-          // SliverToBoxAdapter(
-          //   child: TextField(
-          //     decoration: InputDecoration(
-          //       labelText: 'Enter Name',
-          //       border: OutlineInputBorder(),
-          //       contentPadding: EdgeInsets.zero,
-          //     ),
-          //     style: TextStyle(
-          //         fontSize: Theme.of(context)
-          //             .textTheme
-          //             .bodySmall
-          //             ?.fontSize), // <-- SEE HERE
-          //   ),
-          // ),
+
           // watchlist
           buildWatchList(),
           // business news headline
           SliverToBoxAdapter(child: title(context, 'Business News')),
-          // SliverToBoxAdapter(
-          //   child: ElevatedButton(
-          //     child: Text('reload'),
-          //     onPressed: () {
-          //       // controller.x();
-          //     },
-          //   ),
-          // ),
+
           // news list
           buildNewsList(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // showFullStockInfo(context: context, stockName: 'RELIANCE');
+          // controller.deleteWatchList();
           showStockSearch(context);
         },
         child: const Icon(Icons.search),

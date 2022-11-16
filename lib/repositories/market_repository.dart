@@ -8,7 +8,7 @@ class MarketRepository {
 
   /// get stock  data using stock name
   Future<StockQuote> getStockData({required String stockName}) async {
-    StockInfo info = yahooFin.getStockInfo(ticker: stockName);
+    StockInfo info = yahooFin.getStockInfo(ticker: '$stockName.NS');
     StockQuote stockQuote = await info.getStockData();
     return stockQuote;
   }
@@ -26,6 +26,16 @@ class MarketRepository {
     }
     return data;
   }
+
+  /// gets historical data of a stock
+  getStockHistoricalData(
+      {required String stockName,
+      StockRange stockRange = StockRange.oneYear}) async {
+    StockHistory hist = yahooFin.initStockHistory(ticker: "$stockName.NS");
+    StockChart chart = await yahooFin.getChartQuotes(
+        stockHistory: hist, interval: StockInterval.oneDay, period: stockRange);
+    return chart;
+  }
 }
 
 var kIndexes = [
@@ -38,4 +48,4 @@ var kIndexes = [
   // nifty midcap
   'in%3Bccx',
 ];
-var kDefaultWatchList = ['RELIANCE.NS', 'TATAMOTORS.NS', 'TCS.NS'];
+var kDefaultWatchList = ['RELIANCE', 'TATAMOTORS', 'TCS'];

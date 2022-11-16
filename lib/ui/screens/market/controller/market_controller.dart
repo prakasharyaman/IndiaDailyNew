@@ -93,4 +93,9 @@ class MarketController extends GetxController {
     }
     debugPrint('got indexes data');
   }
+
+  deleteWatchList() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.remove('watchList');
+  }
 }

@@ -1,61 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:indiadaily/ui/screens/market/pages/full_stock_info.dart';
 import 'package:yahoofin/yahoofin.dart';
 
 class WatchListStock extends StatelessWidget {
-  const WatchListStock({super.key, required this.stockData});
+  const WatchListStock(
+      {super.key, required this.stockData, this.colored = true});
   final StockQuote stockData;
+  final bool colored;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color:
-          stockData.regularMarketChangePercent! < 0 ? Colors.red : Colors.green,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5))),
-      elevation: 0.2,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                title(
-                    context, stockData.ticker.toString().replaceAll('.NS', '')),
-                Padding(
-                  padding: const EdgeInsets.only(top: 1, left: 8, right: 8),
-                  child: Text(stockData.metaData!.shortName.toString(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontFamily: GoogleFonts.archivo().fontFamily,
-                          )),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                title(context, stockData.currentPrice.toString()),
-                Padding(
-                  padding: const EdgeInsets.only(top: 1, left: 8, right: 8),
-                  child: Text(
-                      '${stockData.regularMarketChangePercent!.toStringAsPrecision(3)}%',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            // color: controller.watchList[index]
-                            //             .regularMarketChangePercent! <
-                            //         0
-                            //     ? Colors.red
-                            //     : Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.archivo().fontFamily,
-                          )),
-                ),
-              ],
-            ),
-          ],
+    return GestureDetector(
+      onTap: () {
+        showFullStockInfo(
+            context: context,
+            stockName: stockData.metaData!.shortName.toString(),
+            stockQuote: stockData);
+      },
+      child: Card(
+        color: colored
+            ? stockData.regularMarketChangePercent! < 0
+                ? Colors.red
+                : Colors.green
+            : Theme.of(context).scaffoldBackgroundColor,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        elevation: colored ? 0.2 : 0,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  title(context,
+                      stockData.ticker.toString().replaceAll('.NS', '')),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1, left: 8, right: 8),
+                    child: Text(stockData.metaData!.shortName.toString(),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontFamily: GoogleFonts.archivo().fontFamily,
+                            )),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  title(context, stockData.currentPrice.toString()),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1, left: 8, right: 8),
+                    child: Text(
+                        '${stockData.regularMarketChangePercent!.toStringAsPrecision(3)}%',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              // color: controller.watchList[index]
+                              //             .regularMarketChangePercent! <
+                              //         0
+                              //     ? Colors.red
+                              //     : Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.archivo().fontFamily,
+                            )),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
