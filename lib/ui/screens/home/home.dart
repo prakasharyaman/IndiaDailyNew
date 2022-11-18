@@ -145,21 +145,21 @@ class Home extends GetView<HomeController> {
                     fontFamily: GoogleFonts.archivoBlack().fontFamily),
               ),
             ),
-            //TODO: add market here
+
             //market tile
-            // ListTile(
-            //   onTap: () {
-            //     controller.advancedDrawerController.hideDrawer();
-            //     controller.changeBottomNavigationIndex(2);
-            //   },
-            //   leading: const Icon(FontAwesomeIcons.chartLine),
-            //   title: const Text('Market'),
-            // ),
-            // user settings
             ListTile(
               onTap: () {
                 controller.advancedDrawerController.hideDrawer();
                 controller.changeBottomNavigationIndex(2);
+              },
+              leading: const Icon(FontAwesomeIcons.chartLine),
+              title: const Text('Market'),
+            ),
+            // user settings
+            ListTile(
+              onTap: () {
+                controller.advancedDrawerController.hideDrawer();
+                Get.toNamed('/notificationsSettings');
               },
               leading: const Icon(FontAwesomeIcons.solidUser),
               title: Text(

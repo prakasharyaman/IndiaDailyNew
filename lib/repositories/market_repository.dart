@@ -28,9 +28,9 @@ class MarketRepository {
   }
 
   /// gets historical data of a stock
-  getStockHistoricalData(
+  Future<StockChart> getStockHistoricalData(
       {required String stockName,
-      StockRange stockRange = StockRange.oneYear}) async {
+      StockRange stockRange = StockRange.oneMonth}) async {
     StockHistory hist = yahooFin.initStockHistory(ticker: "$stockName.NS");
     StockChart chart = await yahooFin.getChartQuotes(
         stockHistory: hist, interval: StockInterval.oneDay, period: stockRange);

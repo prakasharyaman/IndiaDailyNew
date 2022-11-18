@@ -73,6 +73,7 @@ class MarketController extends GetxController {
   getWatchListStocks() async {
     var prefs = await SharedPreferences.getInstance();
     watchListStocks = prefs.getStringList('watchList') ?? kDefaultWatchList;
+    print(watchListStocks);
   }
 
   /// get business news shots
@@ -97,5 +98,27 @@ class MarketController extends GetxController {
   deleteWatchList() async {
     var prefs = await SharedPreferences.getInstance();
     prefs.remove('watchList');
+  }
+
+  /// saves a stock to watchlist
+  saveToWatchList({required String stockName}) async {
+    var prefs = await SharedPreferences.getInstance();
+    var stockInWatchList =
+        prefs.getStringList('watchList') ?? kDefaultWatchList;
+    if (!stockInWatchList.contains(stockName)) {
+      stockInWatchList.add(stockName);
+    }
+    await prefs.setStringList('watchList', stockInWatchList);
+  }
+
+  /// remove From StockList
+  removeFromWatchList({required String stockName}) async {
+    var prefs = await SharedPreferences.getInstance();
+    var stockInWatchList =
+        prefs.getStringList('watchList') ?? kDefaultWatchList;
+    if (stockInWatchList.contains(stockName)) {
+      stockInWatchList.remove(stockName);
+    }
+    await prefs.setStringList('watchList', stockInWatchList);
   }
 }

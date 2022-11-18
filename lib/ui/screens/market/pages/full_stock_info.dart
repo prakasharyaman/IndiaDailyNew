@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
@@ -35,65 +36,154 @@ class FullStockInfo extends StatefulWidget {
 
 class _FullStockInfoState extends State<FullStockInfo> {
   MarketController marketController = Get.find<MarketController>();
-  late StockQuote? stockData;
-  late String stockName;
-  bool stockDataReady = false;
-  bool stockHistoricalDataReady = false;
+  StockChart? stockChart;
+  StockQuote? stockQuote;
+  bool isInWatchList = false;
+
+  /// defines the mode of stockdata , if it's available 1 or loading 0 or not 2;
+  int stockQuoteMode = 0;
+  int stockHistoricalDataMode = 0;
+
   @override
   void initState() {
     super.initState();
-    // stockData = widget.stockQuote;
-    // if (widget.stockQuote == null) {
-    //   loadStockQuote(stockName: widget.stockName);
-    // } else {
-    //   stockData = widget.stockQuote;
-    //   stockDataReady = true;
-    //   stockName = widget.stockName;
-    //   setState(() {
-    //     stockDataReady;
-    //   });
-    // }
+    if (widget.stockQuote == null) {
+      loadStockQuote(stockName: widget.stockName);
+    } else {
+      stockQuote = widget.stockQuote;
+      stockQuoteMode = 1;
+    }
+    print(widget.stockName);
+    if (marketController.watchListStocks.contains(widget.stockName)) {
+      setState(() {
+        isInWatchList = true;
+      });
+    }
+    loadStockHistoricalData(stockName: widget.stockName);
+  }
+
+  ///saves the stock is in watchlist
+  saveToWatchList({required String stockName}) async {
+    try {
+      EasyLoading.show();
+      await marketController.saveToWatchList(stockName: stockName);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess('Saved to watchlist');
+    } catch (e) {
+      debugPrint(e.toString());
+      EasyLoading.showError('Cannot save to watchlist');
+    }
+  }
+
+  /// removes the stock from watchlist
+  removeFromWatchList({required String stockName}) async {
+    try {
+      EasyLoading.show();
+      await marketController.removeFromWatchList(stockName: stockName);
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess('Removed from watchlist');
+    } catch (e) {
+      debugPrint(e.toString());
+      EasyLoading.showError('Cannot remove from watchlist');
+    }
   }
 
   /// loads stock quote .. change and other stuff
-  loadStockQuote({required String stockName}) async {}
+  loadStockQuote({required String stockName}) async {
+    try {
+      var stockqot = await marketController.marketRepository
+          .getStockData(stockName: stockName);
+
+      setState(() {
+        stockQuote = stockqot;
+        stockQuoteMode = 1;
+      });
+    } catch (e) {
+      setState(() {
+        stockQuoteMode = 2;
+      });
+      debugPrint(e.toString());
+    }
+  }
 
   /// loads historical data
-  loadStockHistoricalData() async {}
+  loadStockHistoricalData({required String stockName}) async {
+    try {
+      stockChart = await marketController.marketRepository
+          .getStockHistoricalData(stockName: stockName);
+      if (stockChart != null) {
+        setState(() {
+          stockChart;
+          stockHistoricalDataMode = 1;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        stockHistoricalDataMode = 2;
+      });
+      debugPrint(e.toString());
+    }
+  }
 
   /// build
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
+        // add remove from watchlist
         Align(
           alignment: Alignment.centerRight,
           child: IconButton(
+            tooltip: !isInWatchList
+                ? 'Add stock in watchlist'
+                : 'Remove stock from Watchlist',
             onPressed: () {
-              //TODO
-              // remove from favourite
+              if (isInWatchList) {
+                removeFromWatchList(stockName: widget.stockName);
+              } else {
+                saveToWatchList(stockName: widget.stockName);
+              }
+              setState(() {
+                isInWatchList = !isInWatchList;
+              });
             },
             icon: Icon(
-              Icons.favorite,
-              color: kPrimaryRed,
+              isInWatchList ? Icons.favorite : Icons.favorite_border,
+              color: isInWatchList ? kPrimaryRed : Colors.grey,
             ),
           ),
         ),
         // stock name and info with add to favourite button
-        WatchListStock(
-          stockData: widget.stockQuote!,
-          colored: false,
-        ),
+        stockQuoteMode == 1
+            ? WatchListStock(
+                stockData: stockQuote!,
+                colored: false,
+              )
+            : SizedBox(
+                height: Get.height * 0.2,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
         // stock Historical dats
-        const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: LineChartSample2(),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(10.0),
+        //   child: stockHistoricalDataMode == 1
+        //       ? StockHistoricalChart(
+        //           stockChart: stockChart!,
+        //         )
+        //       : const LinearProgressIndicator(),
+        // ),
         // // stock additional info
         SizedBox(
-            height: Get.height * 0.5,
-            width: Get.width,
-            child: buildStockAdditionalInfo(stockQuote: widget.stockQuote!)),
+          height: Get.height * 0.5,
+          width: Get.width,
+          child: stockQuoteMode == 1
+              ? buildStockAdditionalInfo(stockQuote: stockQuote!)
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+        ),
       ],
     );
   }
@@ -171,4 +261,6 @@ class _FullStockInfoState extends State<FullStockInfo> {
       ],
     );
   }
+
+  showErrorScreen() {}
 }

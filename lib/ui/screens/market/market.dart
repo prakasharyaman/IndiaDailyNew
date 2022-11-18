@@ -217,9 +217,9 @@ class MarketPage extends GetView<MarketController> {
                 shape: const RoundedRectangleBorder(),
                 child: ListTile(
                   onTap: () {
-                    Get.back();
-                    //TODO:stock face
-                    // Get.to(EditWatchList());
+                    // Get.back();
+                    showFullStockInfo(
+                        context: context, stockName: stock.symbol);
                   },
                   title: title(context, stock.symbol),
                   subtitle: Padding(

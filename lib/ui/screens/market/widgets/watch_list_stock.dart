@@ -14,7 +14,7 @@ class WatchListStock extends StatelessWidget {
       onTap: () {
         showFullStockInfo(
             context: context,
-            stockName: stockData.metaData!.shortName.toString(),
+            stockName: stockData.ticker.toString().replaceAll('.NS', ''),
             stockQuote: stockData);
       },
       child: Card(
