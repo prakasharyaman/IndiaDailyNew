@@ -3,7 +3,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
-import 'package:indiadaily/ui/screens/market/widgets/historical_chart.dart';
 import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
 import 'package:yahoofin/yahoofin.dart';
 
@@ -53,7 +52,7 @@ class _FullStockInfoState extends State<FullStockInfo> {
       stockQuote = widget.stockQuote;
       stockQuoteMode = 1;
     }
-    print(widget.stockName);
+
     if (marketController.watchListStocks.contains(widget.stockName)) {
       setState(() {
         isInWatchList = true;

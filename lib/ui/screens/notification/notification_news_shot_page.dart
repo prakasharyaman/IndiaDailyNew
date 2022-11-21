@@ -53,7 +53,7 @@ class _NotificationNewsShotPageState extends State<NotificationNewsShotPage> {
     return Scaffold(
       appBar: AppBar(
         title: kAppTitle(context),
-        centerTitle: false,
+        centerTitle: true,
       ),
       body: RepaintBoundary(
         key: globalKey,

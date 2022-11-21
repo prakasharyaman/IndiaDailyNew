@@ -153,7 +153,11 @@ class Home extends GetView<HomeController> {
                 controller.changeBottomNavigationIndex(2);
               },
               leading: const Icon(FontAwesomeIcons.chartLine),
-              title: const Text('Market'),
+              title: Text(
+                'Market',
+                style: TextStyle(
+                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+              ),
             ),
             // user settings
             ListTile(

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/models/stock_model.dart';
+import 'package:indiadaily/ui/screens/error/error_screen.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/market/k/list_of_stocks.dart';
 import 'package:indiadaily/ui/screens/market/pages/edit_watch_list.dart';
@@ -28,10 +29,9 @@ class Market extends GetView<MarketController> {
         case MarketStatus.loaded:
           return const MarketPage();
         case MarketStatus.error:
-          //TODO: add error pag
-          return const Center(
-            child: Text('erroe'),
-          );
+          return ErrorScreen(onTap: () {
+            controller.loadMarketPage();
+          });
       }
     });
   }
@@ -185,8 +185,8 @@ class MarketPage extends GetView<MarketController> {
                     title: "Add stocks",
                     icon: Icons.add,
                     onTap: () {
-                      //TODO: show stocks search
                       Get.back();
+                      showStockSearch(context);
                     }),
                 BottomSheetTile(
                     title: "Remove stocks",

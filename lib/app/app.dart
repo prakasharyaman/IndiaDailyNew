@@ -53,7 +53,6 @@ class App extends StatelessWidget {
       // If you do not have a themeMode switch, uncomment this line
       // to let the device system mode control the theme mode:
       // themeMode: ThemeMode.system,
-
       themeMode: ThemeMode.system,
       initialBinding: AppBindings(),
       getPages: getPages(),

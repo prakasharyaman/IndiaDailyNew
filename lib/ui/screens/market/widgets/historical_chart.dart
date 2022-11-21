@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:yahoofin/yahoofin.dart';
@@ -24,7 +23,7 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
       timeStamp.add(value.toDouble());
     }
     for (int i = 0; i < (closeList.length - 1); i++) {
-      spots.add(FlSpot(closeList[i], timeStamp[i]));
+      spots.add(FlSpot(timeStamp[i], closeList[i]));
     }
 
     return spots;
@@ -111,18 +110,20 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 5,
+            interval: (timestampList.length / 2) + 1,
             getTitlesWidget: (_, g) {
-              return Text('g');
+              //TODO:make it so
+              return Text('time');
             },
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 5,
+            interval: (closeList.length / 2) + 1,
             getTitlesWidget: (_, g) {
-              return Text('g');
+              //TODO:make it so
+              return Text('price');
             },
             reservedSize: 42,
           ),
@@ -132,10 +133,10 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 2400,
-      maxX: 3000,
-      minY: timestampList.last,
-      maxY: timestampList.first,
+      minX: timestampList.reduce(min),
+      maxX: timestampList.reduce(max),
+      minY: closeList.reduce(min),
+      maxY: closeList.reduce(max),
       lineBarsData: [
         LineChartBarData(
           spots: lineChartData,

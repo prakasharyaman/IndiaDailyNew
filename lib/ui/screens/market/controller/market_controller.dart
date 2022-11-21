@@ -73,7 +73,7 @@ class MarketController extends GetxController {
   getWatchListStocks() async {
     var prefs = await SharedPreferences.getInstance();
     watchListStocks = prefs.getStringList('watchList') ?? kDefaultWatchList;
-    print(watchListStocks);
+    // print(watchListStocks);
   }
 
   /// get business news shots
