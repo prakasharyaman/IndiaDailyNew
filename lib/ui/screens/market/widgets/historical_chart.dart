@@ -17,7 +17,7 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
     List<double> closeList = [];
     List<double> timeStamp = [];
     for (var value in stockChart.chartQuotes!.close!) {
-      closeList.add(value.toDouble());
+      closeList.add(value.round().toDouble());
     }
     for (var value in stockChart.chartQuotes!.timestamp!) {
       timeStamp.add(value.toDouble());
@@ -55,24 +55,11 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.70,
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-          // color: Color(0xff232d37),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            right: 18,
-            left: 12,
-            top: 24,
-            bottom: 12,
-          ),
-          child: LineChart(
-            mainData(),
-          ),
+      aspectRatio: 1.8,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 30.0),
+        child: LineChart(
+          mainData(),
         ),
       ),
     );
@@ -108,9 +95,8 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
+            showTitles: false,
             reservedSize: 30,
-            interval: (timestampList.length / 2) + 1,
             getTitlesWidget: (_, g) {
               //TODO:make it so
               return Text('time');
@@ -119,45 +105,40 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
-            interval: (closeList.length / 2) + 1,
+            showTitles: false,
+            reservedSize: 1,
             getTitlesWidget: (_, g) {
               //TODO:make it so
               return Text('price');
             },
-            reservedSize: 42,
           ),
         ),
       ),
       borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        show: false,
       ),
-      minX: timestampList.reduce(min),
-      maxX: timestampList.reduce(max),
-      minY: closeList.reduce(min),
-      maxY: closeList.reduce(max),
+      minX: timestampList.last,
+      maxX: timestampList.first,
+      minY: 3000,
+      maxY: 2000,
       lineBarsData: [
         LineChartBarData(
           spots: lineChartData,
-          isCurved: true,
-          color: Colors.yellow,
-          // gradient: LinearGradient(
-          //   colors: gradientColors,
-          // ),
-          barWidth: 5,
-          isStrokeCapRound: true,
+          isCurved: false,
+          color: closeList.first > closeList.last ? Colors.red : Colors.green,
+          barWidth: 3,
+          isStrokeCapRound: false,
           dotData: FlDotData(
             show: false,
           ),
-          // belowBarData: BarAreaData(
-          //   show: true,
-          //   gradient: LinearGradient(
-          //     colors: gradientColors
-          //         .map((color) => color.withOpacity(0.3))
-          //         .toList(),
-          //   ),
-          // ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: [Colors.green, Colors.greenAccent]
+                  .map((color) => color.withOpacity(0.3))
+                  .toList(),
+            ),
+          ),
         ),
       ],
     );

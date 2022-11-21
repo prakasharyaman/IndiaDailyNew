@@ -6,6 +6,8 @@ import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
 import 'package:yahoofin/yahoofin.dart';
 
+import '../widgets/historical_chart.dart';
+
 showFullStockInfo(
     {required BuildContext context,
     required String stockName,
@@ -153,26 +155,26 @@ class _FullStockInfoState extends State<FullStockInfo> {
           ),
         ),
         // stock name and info with add to favourite button
-        stockQuoteMode == 1
-            ? WatchListStock(
-                stockData: stockQuote!,
-                colored: false,
-              )
-            : SizedBox(
-                height: Get.height * 0.2,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+        // stockQuoteMode == 1
+        //     ? WatchListStock(
+        //         stockData: stockQuote!,
+        //         colored: false,
+        //       )
+        //     : SizedBox(
+        //         height: Get.height * 0.2,
+        //         child: const Center(
+        //           child: CircularProgressIndicator(),
+        //         ),
+        //       ),
         // stock Historical dats
-        // Padding(
-        //   padding: const EdgeInsets.all(10.0),
-        //   child: stockHistoricalDataMode == 1
-        //       ? StockHistoricalChart(
-        //           stockChart: stockChart!,
-        //         )
-        //       : const LinearProgressIndicator(),
-        // ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: stockHistoricalDataMode == 1
+              ? StockHistoricalChart(
+                  stockChart: stockChart!,
+                )
+              : const LinearProgressIndicator(),
+        ),
         // // stock additional info
         SizedBox(
           height: Get.height * 0.5,
