@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
 import 'package:yahoofin/yahoofin.dart';
@@ -129,63 +128,96 @@ class _FullStockInfoState extends State<FullStockInfo> {
   /// build
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        // add remove from watchlist
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            tooltip: !isInWatchList
-                ? 'Add stock in watchlist'
-                : 'Remove stock from Watchlist',
-            onPressed: () {
-              if (isInWatchList) {
-                removeFromWatchList(stockName: widget.stockName);
-              } else {
-                saveToWatchList(stockName: widget.stockName);
-              }
-              setState(() {
-                isInWatchList = !isInWatchList;
-              });
-            },
-            icon: Icon(
-              isInWatchList ? Icons.favorite : Icons.favorite_border,
-              color: isInWatchList ? kPrimaryRed : Colors.grey,
+    return Scaffold(
+      body: ListView(
+        children: [
+          // add remove from watchlist
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: IconButton(
+          //     tooltip: !isInWatchList
+          //         ? 'Add stock in watchlist'
+          //         : 'Remove stock from Watchlist',
+          //     onPressed: () {
+          //       if (isInWatchList) {
+          //         removeFromWatchList(stockName: widget.stockName);
+          //       } else {
+          //         saveToWatchList(stockName: widget.stockName);
+          //       }
+          //       setState(() {
+          //         isInWatchList = !isInWatchList;
+          //       });
+          //     },
+          //     icon: Icon(
+          //       isInWatchList ? Icons.favorite : Icons.favorite_border,
+          //       color: isInWatchList ? kPrimaryRed : Colors.grey,
+          //     ),
+          //   ),
+          // ),
+          const SizedBox(
+            height: 5,
+          ),
+          Center(
+            child: ElevatedButton.icon(
+              label: Text(
+                  isInWatchList ? 'Remove from watchlist' : 'Add to watchlist'),
+              style: ElevatedButton.styleFrom(elevation: 10),
+              // tooltip: !isInWatchList
+              //     ? 'Add stock in watchlist'
+              //     : 'Remove stock from Watchlist',
+              onPressed: () {
+                if (isInWatchList) {
+                  removeFromWatchList(stockName: widget.stockName);
+                } else {
+                  saveToWatchList(stockName: widget.stockName);
+                }
+                setState(() {
+                  isInWatchList = !isInWatchList;
+                });
+              },
+              icon: Icon(
+                isInWatchList ? Icons.remove : Icons.favorite,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-        // stock name and info with add to favourite button
-        // stockQuoteMode == 1
-        //     ? WatchListStock(
-        //         stockData: stockQuote!,
-        //         colored: false,
-        //       )
-        //     : SizedBox(
-        //         height: Get.height * 0.2,
-        //         child: const Center(
-        //           child: CircularProgressIndicator(),
-        //         ),
-        //       ),
-        // stock Historical dats
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: stockHistoricalDataMode == 1
-              ? StockHistoricalChart(
-                  stockChart: stockChart!,
+          const SizedBox(
+            height: 5,
+          ),
+          // stock name and info with add to favourite button
+          stockQuoteMode == 1
+              ? WatchListStock(
+                  stockData: stockQuote!,
+                  colored: false,
                 )
-              : const LinearProgressIndicator(),
-        ),
-        // // stock additional info
-        SizedBox(
-          height: Get.height * 0.5,
-          width: Get.width,
-          child: stockQuoteMode == 1
-              ? buildStockAdditionalInfo(stockQuote: stockQuote!)
-              : const Center(
-                  child: CircularProgressIndicator(),
+              : SizedBox(
+                  height: Get.height * 0.2,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-        ),
-      ],
+
+          // stock Historical dats
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: stockHistoricalDataMode == 1
+                ? StockHistoricalChart(
+                    stockChart: stockChart!,
+                  )
+                : const LinearProgressIndicator(),
+          ),
+          // // stock additional info
+          SizedBox(
+            height: Get.height * 0.5,
+            width: Get.width,
+            child: stockQuoteMode == 1
+                ? buildStockAdditionalInfo(stockQuote: stockQuote!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -195,31 +227,36 @@ class _FullStockInfoState extends State<FullStockInfo> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // hish , low , volume
-        tripleInfoRow(
-            h1: 'Day High',
-            t1: stockQuote.dayHigh.toString(),
-            h2: 'Day Low',
-            t2: stockQuote.dayLow.toString(),
-            h3: 'Day Vol.',
-            t3: stockQuote.regularMarketVolume.toString()),
-        const Divider(),
+        Card(
+          margin: const EdgeInsets.all(10),
+          child: tripleInfoRow(
+              h1: 'Day High',
+              t1: stockQuote.dayHigh.toString(),
+              h2: 'Day Low',
+              t2: stockQuote.dayLow.toString(),
+              h3: 'Day Vol.',
+              t3: stockQuote.regularMarketVolume.toString()),
+        ),
+
         // 50d change , 52 w high%, 52w low %
-        tripleInfoRow(
-            h1: '50d Change',
-            t1: stockQuote.fiftyDayAverageChangePercent!.toStringAsPrecision(2),
-            h2: '52w high',
-            t2: stockQuote.fiftyTwoWeekHighChangePercent!
-                .toStringAsPrecision(2),
-            h3: '52w Low',
-            t3: stockQuote.fiftyTwoWeekLowChangePercent!
-                .toStringAsPrecision(2)),
-        const Divider(),
+        Card(
+          margin: const EdgeInsets.all(10),
+          child: tripleInfoRow(
+              h1: '50d Change',
+              t1: (stockQuote.fiftyDayAverageChangePercent! *
+                      stockQuote.currentPrice!)
+                  .toStringAsPrecision(2),
+              h2: '52w high',
+              t2: '${stockQuote.fiftyTwoWeekHighChangePercent!.toStringAsPrecision(2)}%',
+              h3: '52w Low',
+              t3: '${stockQuote.fiftyTwoWeekLowChangePercent!.toStringAsPrecision(2)}%'),
+        ),
       ],
     );
   }
 
   /// three columns with information
-  tripleInfoRow(
+  Widget tripleInfoRow(
       {required String h1,
       required String t1,
       required String h2,
@@ -257,7 +294,10 @@ class _FullStockInfoState extends State<FullStockInfo> {
         ),
         Text(
           text,
-          style: Theme.of(context).textTheme.titleSmall,
+          style: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(fontWeight: FontWeight.bold),
         )
       ],
     );

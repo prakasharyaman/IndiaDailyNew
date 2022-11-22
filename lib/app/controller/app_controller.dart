@@ -9,7 +9,6 @@ import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
-import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/notification/notification_news_shot_page.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -85,7 +84,6 @@ class AppController extends GetxController {
     } else {
       Get.put<HomeController>(HomeController(), permanent: true);
       Get.put<ForYouController>(ForYouController(), permanent: true);
-      Get.put<MarketController>(MarketController(), permanent: true);
 
       appStatus.value = AppStatus.authenticated;
       checkForUpdates();

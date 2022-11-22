@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:yahoofin/yahoofin.dart';
+import 'package:date_format/date_format.dart';
 
 class StockHistoricalChart extends StatefulWidget {
   const StockHistoricalChart({super.key, required this.stockChart});
@@ -22,6 +23,7 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
     for (var value in stockChart.chartQuotes!.timestamp!) {
       timeStamp.add(value.toDouble());
     }
+
     for (int i = 0; i < (closeList.length - 1); i++) {
       spots.add(FlSpot(timeStamp[i], closeList[i]));
     }
@@ -55,129 +57,11 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.8,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 30.0),
-        child: LineChart(
-          mainData(),
-        ),
-      ),
-    );
-  }
-
-  LineChartData mainData() {
-    return LineChartData(
-      gridData: FlGridData(
-        show: false,
-        drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Colors.transparent,
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: Colors.transparent,
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-            reservedSize: 30,
-            getTitlesWidget: (_, g) {
-              //TODO:make it so
-              return Text('time');
-            },
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-            reservedSize: 1,
-            getTitlesWidget: (_, g) {
-              //TODO:make it so
-              return Text('price');
-            },
-          ),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: false,
-      ),
-      minX: timestampList.last,
-      maxX: timestampList.first,
-      minY: 3000,
-      maxY: 2000,
-      lineBarsData: [
-        LineChartBarData(
-          spots: lineChartData,
-          isCurved: false,
-          color: closeList.first > closeList.last ? Colors.red : Colors.green,
-          barWidth: 3,
-          isStrokeCapRound: false,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: [Colors.green, Colors.greenAccent]
-                  .map((color) => color.withOpacity(0.3))
-                  .toList(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class LineChartSample2 extends StatefulWidget {
-  const LineChartSample2({super.key});
-
-  @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
-}
-
-class _LineChartSample2State extends State<LineChartSample2> {
-  List<Color> gradientColors = [
-    Colors.red,
-    Colors.green,
-  ];
-
-  bool showAvg = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.70,
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-          // color: Color(0xff232d37),
-        ),
+      aspectRatio: 1.2,
+      child: Card(
+        margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.only(
-            right: 18,
-            left: 12,
-            top: 24,
-            bottom: 12,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
           child: LineChart(
             mainData(),
           ),
@@ -186,129 +70,100 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    var style = Theme.of(context).textTheme.titleMedium;
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = Text('MAR', style: style);
-        break;
-      case 5:
-        text = Text('JUN', style: style);
-        break;
-      case 8:
-        text = Text('SEP', style: style);
-        break;
-      default:
-        text = Text('', style: style);
-        break;
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    var style = Theme.of(context).textTheme.titleMedium;
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
-  }
-
   LineChartData mainData() {
     return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Colors.transparent,
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: Colors.transparent,
-            strokeWidth: 1,
-          );
-        },
-      ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
         topTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
-          ),
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
         ),
         leftTitles: AxisTitles(
+          axisNameSize: 45,
+          axisNameWidget: Row(
+            children: [
+              const SizedBox(
+                width: 20,
+              ),
+              RotatedBox(
+                quarterTurns: 1,
+                child: Text(closeList.reduce(min).toInt().toString()),
+              ),
+              const Spacer(),
+              RotatedBox(
+                  quarterTurns: 1,
+                  child: Text(
+                      (((closeList.reduce(max) - closeList.reduce(min)) / 2) +
+                              closeList.reduce(min).round())
+                          .toInt()
+                          .toString())),
+              const Spacer(),
+              RotatedBox(
+                  quarterTurns: 1,
+                  child: Text(closeList.reduce(max).toInt().toString()))
+            ],
+          ),
+          //     sideTitles: SideTitles(
+          //   reservedSize: 45,
+          //   showTitles: true,
+          //   interval: (closeList.reduce(max) - closeList.reduce(min)) / 2,
+          // )
+        ),
+        bottomTitles: AxisTitles(
+          axisNameWidget: Row(
+            children: [
+              const SizedBox(
+                width: 45,
+              ),
+              Text(formatDate(
+                  DateTime.fromMillisecondsSinceEpoch(
+                      timestampList.first.toInt() * 1000),
+                  [d, ' ', M])),
+              const Spacer(),
+              Text(formatDate(
+                  DateTime.fromMillisecondsSinceEpoch(
+                      timestampList[timestampList.length ~/ 2].toInt() * 1000),
+                  [d, ' ', M])),
+              const Spacer(),
+              Text(formatDate(DateTime.now(), [d, ' ', M]))
+            ],
+          ),
+          axisNameSize: 20,
           sideTitles: SideTitles(
-            showTitles: true,
-            interval: 1,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            showTitles: false,
           ),
         ),
       ),
       borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        show: false,
       ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
+      minX: timestampList.first,
+      maxX: timestampList.last,
+      minY: closeList.reduce(min) * 0.98,
+      maxY: closeList.reduce(max) * 1.02,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: gradientColors,
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
+          spots: lineChartData,
+          isCurved: false,
+          color: closeList.last > closeList.first ? Colors.green : Colors.red,
+          barWidth: 3,
+          isStrokeCapRound: false,
           dotData: FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: gradientColors
-                  .map((color) => color.withOpacity(0.3))
-                  .toList(),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                closeList.last > closeList.first ? Colors.green : Colors.red,
+                closeList.last > closeList.first
+                    ? Colors.greenAccent
+                    : Colors.redAccent,
+              ].map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),

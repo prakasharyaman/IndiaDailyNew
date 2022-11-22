@@ -42,43 +42,48 @@ class MarketPage extends GetView<MarketController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          //market heading
-          SliverToBoxAdapter(child: title(context, 'Market')),
-          // indexes cards
-          buildStockIndexCards(),
-          //watchlist heading
-          SliverToBoxAdapter(
-              child: Row(
-            children: [
-              title(context, 'Watchlist'),
-              const Spacer(),
-              IconButton(
-                  onPressed: () {
-                    showWatchListBottomSheet(context);
-                  },
-                  icon: const Icon(FontAwesomeIcons.ellipsis)),
-            ],
-          )),
+    return RefreshIndicator(
+      onRefresh: () async {
+        controller.loadMarketPage();
+      },
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            //market heading
+            SliverToBoxAdapter(child: title(context, 'Market')),
+            // indexes cards
+            buildStockIndexCards(),
+            //watchlist heading
+            SliverToBoxAdapter(
+                child: Row(
+              children: [
+                title(context, 'Watchlist'),
+                const Spacer(),
+                IconButton(
+                    onPressed: () {
+                      showWatchListBottomSheet(context);
+                    },
+                    icon: const Icon(FontAwesomeIcons.ellipsis)),
+              ],
+            )),
 
-          // watchlist
-          buildWatchList(),
-          // business news headline
-          SliverToBoxAdapter(child: title(context, 'Business News')),
+            // watchlist
+            buildWatchList(),
+            // business news headline
+            SliverToBoxAdapter(child: title(context, 'Business News')),
 
-          // news list
-          buildNewsList(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // showFullStockInfo(context: context, stockName: 'RELIANCE');
-          // controller.deleteWatchList();
-          showStockSearch(context);
-        },
-        child: const Icon(Icons.search),
+            // news list
+            buildNewsList(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // showFullStockInfo(context: context, stockName: 'RELIANCE');
+            // controller.deleteWatchList();
+            showStockSearch(context);
+          },
+          child: const Icon(Icons.search),
+        ),
       ),
     );
   }

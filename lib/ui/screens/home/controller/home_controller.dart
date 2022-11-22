@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
+import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 
 class HomeController extends GetxController {
   GlobalKey<ScaffoldState> homeKey = GlobalKey<ScaffoldState>();
@@ -11,7 +12,11 @@ class HomeController extends GetxController {
   var bottomNavigationIndex = 1.obs;
 
   /// Changes the value of the index of bottom navigation bar at home.
-  changeBottomNavigationIndex(int index) {
+  changeBottomNavigationIndex(int index) async {
+    if (index == 2) {
+      // ignore: await_only_futures
+      await Get.put<MarketController>(MarketController(), permanent: true);
+    }
     bottomNavigationIndex.value = index;
   }
 }
