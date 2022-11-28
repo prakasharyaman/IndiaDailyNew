@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
@@ -17,6 +18,7 @@ class ForYou extends GetView<ForYouController> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'forYou');
     return Obx(() {
       switch (controller.forYouStatus.value) {
         case ForYouStatus.loading:

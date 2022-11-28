@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:indiadaily/repositories/user_repository.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
@@ -28,6 +29,7 @@ enum AppStatus {
 class AppController extends GetxController {
   Rx<AppStatus> appStatus = AppStatus.loading.obs;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  UserRepository userRepository = UserRepository();
   Rxn<User> user = Rxn<User>();
   var userModel = UserModel().obs;
   List<String> userTopicPreferences = [];
@@ -35,16 +37,10 @@ class AppController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // // remove the splash screen
-    // FlutterNativeSplash.remove();
     //run every time auth state changes
     ever(user, handleAuthChanged);
     //bind to user model
     user.bindStream(userStream);
-    // subscribe
-    subscribeToTopic();
-    //notification handler
-    setupInteractedMessage();
   }
 
   /// set analytics user id
@@ -58,7 +54,13 @@ class AppController extends GetxController {
     //get user data from firestore
     if (firebaseUser?.uid != null) {
       userModel.value.id = firebaseUser.uid;
+      // subscribe
+      subscribeToTopic();
+      //notification handler
+      setupInteractedMessage();
+      // analytics
       await setAnalyticsUserId();
+      // runs the main app logic
       runAppLogic();
     } else if (firebaseUser == null) {
       try {
@@ -78,10 +80,17 @@ class AppController extends GetxController {
     // if profile is not set
     // else show home and put controllers
     if (!await getValue(of: 'introShown')) {
+      // updates device model and date of joining
+      userRepository.logUserFirstTimeLogin(userId: userModel.value.id!);
+      // shows intro at root
       appStatus.value = AppStatus.showIntro;
     } else if (!await getValue(of: 'shownTopicPreferences')) {
+      // shows topic preferences
       appStatus.value = AppStatus.showTopicPreferences;
     } else {
+      // update activity
+      userRepository.updateLastActive(userId: userModel.value.id!);
+      // go straight to home
       Get.put<HomeController>(HomeController(), permanent: true);
       Get.put<ForYouController>(ForYouController(), permanent: true);
 
@@ -198,7 +207,7 @@ class AppController extends GetxController {
       if (cloudBuildNumber > int.parse(packageInfo.buildNumber)) {
         showUpdateAvailableBottomSheet();
       } else {
-        debugPrint('Running On Latest Version $packageInfo.buildNumber');
+        debugPrint('Running On Latest Version ${packageInfo.buildNumber}');
       }
     });
   }

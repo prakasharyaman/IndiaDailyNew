@@ -125,6 +125,9 @@ class _TopicPreferencesState extends State<TopicPreferences> {
         textConfirm: 'Yes Skip',
         onConfirm: () async {
           Get.back();
+          appController.userRepository.updateUserProfile(
+              userId: appController.userModel.value.id!,
+              profile: {'skipped': true});
           saveTopicPreferences(topicsList: ['all']);
         },
         textCancel: 'Cancel');
@@ -135,6 +138,9 @@ class _TopicPreferencesState extends State<TopicPreferences> {
     EasyLoading.show(status: 'Loading...');
     await appController.saveUserTopicPrefernces(topics: topicsList);
     await appController.setValue(of: "shownTopicPreferences", to: true);
+    appController.userRepository.updateUserProfile(
+        userId: appController.userModel.value.id!,
+        profile: {'topics': topicsList});
     EasyLoading.dismiss();
     appController.runAppLogic();
   }
