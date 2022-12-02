@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -5,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
+import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
+import 'package:indiadaily/util/string_utils.dart';
 import '../bottom_sheet_tile.dart';
 
 class NewsShotBottomRow extends StatefulWidget {
@@ -20,6 +23,7 @@ class NewsShotBottomRow extends StatefulWidget {
 class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
   late NewsShot newsShot;
   bool isSaved = false;
+  bool logoError = false;
   @override
   void initState() {
     super.initState();
@@ -73,20 +77,35 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 16,
-            backgroundColor: Colors.black,
+            radius: 14,
+            backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
             child: CircleAvatar(
-              radius: 15,
+              radius: 13,
               backgroundColor: Theme.of(context).backgroundColor,
-              backgroundImage: NetworkImage(
-                  'https://www.google.com/s2/favicons?domain=${newsShot.readMore}&sz=64'
-                  //     'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=' +
-                  // newsShot.readMore +
-                  // '&size=128',
-                  ),
+              backgroundImage: !logoError
+                  ? CachedNetworkImageProvider(
+                      'https://www.google.com/s2/favicons?domain=${Uri.parse(newsShot.readMore).host}&sz=64',
+                      errorListener: () {
+                      setState(() {
+                        logoError = true;
+                      });
+                    })
+                  : const CachedNetworkImageProvider(
+                      'https://picsum.photos/64'),
             ),
           ),
-          Spacer(),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            newsShot.readMore == 'None'
+                ? 'Tap for more'
+                : getDomain(url: newsShot.readMore),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontFamily: 'FF Infra',
+                ),
+          ),
+          const Spacer(),
           IconButton(
               tooltip: "Share this post.",
               onPressed: () {

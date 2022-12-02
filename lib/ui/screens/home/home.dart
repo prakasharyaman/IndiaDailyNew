@@ -58,27 +58,30 @@ class Home extends GetView<HomeController> {
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
           bottomNavigationBar: Obx(() {
-            return BottomNavigationBar(
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              backgroundColor: kOffWhite,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.compass),
-                  label: 'Discover',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.house),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.chartLine),
-                  label: 'Market',
-                ),
-              ],
-              type: BottomNavigationBarType.fixed,
-              currentIndex: controller.bottomNavigationIndex.value,
-              onTap: controller.changeBottomNavigationIndex,
+            return Visibility(
+              visible: controller.isBottombarVisible.value,
+              child: BottomNavigationBar(
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                backgroundColor: kOffWhite,
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(FontAwesomeIcons.compass),
+                    label: 'Discover',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(FontAwesomeIcons.house),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(FontAwesomeIcons.chartLine),
+                    label: 'Market',
+                  ),
+                ],
+                type: BottomNavigationBarType.fixed,
+                currentIndex: controller.bottomNavigationIndex.value,
+                onTap: controller.changeBottomNavigationIndex,
+              ),
             );
           })),
     );

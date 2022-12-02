@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/cache_services.dart';
 import 'package:indiadaily/ui/screens/error/error_screen.dart';
+import 'package:indiadaily/ui/screens/forYou/alternate_for_you.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
-import 'package:indiadaily/ui/screens/forYou/new_home_page.dart';
+import 'package:indiadaily/ui/screens/forYou/x.dart';
 import 'package:indiadaily/ui/widgets/newsShot/news_shot.dart';
 import 'package:indiadaily/ui/widgets/video/video_player_page.dart';
 import 'widgets/for_you_main_page.dart';
@@ -27,7 +28,7 @@ class ForYou extends GetView<ForYouController> {
             child: CircularProgressIndicator(),
           );
         case ForYouStatus.loaded:
-          return const NewHomePage();
+          return const AlternateForYou();
 
         case ForYouStatus.error:
           return ErrorScreen(

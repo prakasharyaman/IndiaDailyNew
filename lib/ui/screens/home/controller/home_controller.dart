@@ -8,6 +8,9 @@ class HomeController extends GetxController {
   AdvancedDrawerController advancedDrawerController =
       AdvancedDrawerController();
 
+  /// checks if bottom bar is visible or not
+  Rx<bool> isBottombarVisible = true.obs;
+
   /// bottom navigation bar Index reactive
   var bottomNavigationIndex = 1.obs;
 

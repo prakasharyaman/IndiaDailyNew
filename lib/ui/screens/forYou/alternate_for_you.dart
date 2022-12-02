@@ -1,16 +1,12 @@
 import 'dart:math';
-import 'package:card_swiper/card_swiper.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/cache_services.dart';
-import 'package:indiadaily/ui/screens/error/error_screen.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
-import 'package:indiadaily/ui/screens/forYou/new_home_page.dart';
-import 'package:indiadaily/ui/widgets/newsShot/news_shot.dart';
+import 'package:indiadaily/ui/widgets/newsShot/list_news_shot.dart';
 import 'package:indiadaily/ui/widgets/video/video_player_page.dart';
+import 'package:nested_scroll_views/nested_scroll_views.dart';
 import 'widgets/for_you_main_page.dart';
 import 'widgets/second_two_article_page.dart';
 import 'widgets/two_article_page.dart';
@@ -31,40 +27,32 @@ class AlternateForYou extends GetView<ForYouController> {
           return true;
         }
       },
-      child: GetBuilder<ForYouController>(
-          id: 'forYouPage',
-          assignId: true,
-          autoRemove: false,
-          builder: (_) {
-            List<Widget> forYouWidgets = createWidgetList(
-                articlePairs: _.articlePairs,
-                videos: _.forYouVideos,
-                newsShots: _.forYouNewsShots);
-            PageController _pageController = PageController();
-            ScrollController _listScrollController = ScrollController();
-            ScrollController _activeScrollController;
-            Drag _drag;
-            return Scaffold(
-              // appBar: forYouAppBar(context),
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  controller.loadForYouPage();
+      child: SafeArea(
+        child: GetBuilder<ForYouController>(
+            id: 'forYouPage',
+            assignId: true,
+            autoRemove: false,
+            builder: (_) {
+              List<Widget> forYouWidgets = createWidgetList(
+                  articlePairs: _.articlePairs,
+                  videos: _.forYouVideos,
+                  newsShots: _.forYouNewsShots);
+
+              return NestedPageView(
+                wantKeepAlive: true,
+                scrollDirection: Axis.vertical,
+                onPageChanged: (index) {
+                  if (index < currentIndex) {
+                    controller.showBottomNavigationBar();
+                  } else {
+                    controller.hideBottomNavigationBar();
+                  }
+                  currentIndex = index;
                 },
-                child: Swiper(
-                  onIndexChanged: ((value) {
-                    currentIndex = value;
-                  }),
-                  controller: _.swiperController,
-                  scrollDirection: Axis.vertical,
-                  loop: false,
-                  itemCount: (forYouWidgets.length - 1),
-                  itemBuilder: ((context, index) {
-                    return forYouWidgets[index];
-                  }),
-                ),
-              ),
-            );
-          }),
+                children: forYouWidgets,
+              );
+            }),
+      ),
     );
   }
 
@@ -74,6 +62,8 @@ class AlternateForYou extends GetView<ForYouController> {
     required List<NewsShot> newsShots,
     required List<Video> videos,
   }) {
+    videos.clear();
+
     /// to generate randomness
     Random random = Random();
     List<Widget> forYouWidgets = [];
@@ -104,7 +94,7 @@ class AlternateForYou extends GetView<ForYouController> {
         videosIndex++;
       } else if (index % 3 != 0 && newsShot != null && index != 0) {
         forYouWidgets.add(
-          NewsShotPage(
+          ListNewsShot(
             newsShot: newsShot,
           ),
         );
@@ -135,7 +125,7 @@ class AlternateForYou extends GetView<ForYouController> {
           articlePair == null &&
           index != 0 &&
           newsShot != null) {
-        forYouWidgets.add(NewsShotPage(newsShot: newsShot));
+        forYouWidgets.add(ListNewsShot(newsShot: newsShot));
         imageUrlList.add(newsShot.images);
         newsShotsIndex++;
       }

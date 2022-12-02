@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/app/controller/app_controller.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/repositories/data_repository.dart';
+import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:quiver/iterables.dart';
 
 enum ForYouStatus { loading, loaded, error }
@@ -11,6 +12,9 @@ enum ForYouStatus { loading, loaded, error }
 class ForYouController extends GetxController {
   /// Instance of App Controller
   AppController appController = Get.find<AppController>();
+
+  /// Instance of home controller
+  HomeController homeController = Get.find<HomeController>();
 
   /// For you Status reactive
   Rx<ForYouStatus> forYouStatus = ForYouStatus.loading.obs;
@@ -100,5 +104,15 @@ class ForYouController extends GetxController {
     forYouStatus.value = ForYouStatus.loaded;
     debugPrint('Updating from cloud');
     update([forYouPageBuilderId]);
+  }
+
+  /// hides bottom bar
+  hideBottomNavigationBar() {
+    homeController.isBottombarVisible.value = false;
+  }
+
+  /// shows bottom nav bar
+  showBottomNavigationBar() {
+    homeController.isBottombarVisible.value = true;
   }
 }
