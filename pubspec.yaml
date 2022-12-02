@@ -72,10 +72,13 @@ flutter:
   assets:
     - assets/images/
   fonts:
+    - family: FF Infra Bold
+      fonts:  
+        - asset : assets/fonts/infra_bold.ttf
     - family: FF Infra
       fonts:
-        # - asset : assets/fonts/infra_regular.ttf   
-        - asset : assets/fonts/infra_bold.ttf
+        - asset : assets/fonts/infra_regular.ttf   
+              
 
 flutter_native_splash:
   color: "#f53030"

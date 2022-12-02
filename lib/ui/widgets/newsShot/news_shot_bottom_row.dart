@@ -73,12 +73,17 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(
-              'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=' +
-                  newsShot.readMore +
-                  '&size=128',
+            radius: 16,
+            backgroundColor: Colors.black,
+            child: CircleAvatar(
+              radius: 15,
+              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundImage: NetworkImage(
+                  'https://www.google.com/s2/favicons?domain=${newsShot.readMore}&sz=64'
+                  //     'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=' +
+                  // newsShot.readMore +
+                  // '&size=128',
+                  ),
             ),
           ),
           Spacer(),

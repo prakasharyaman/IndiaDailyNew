@@ -15,12 +15,17 @@ class NewHomePage extends GetView<ForYouController> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 20),
+        ),
         // app bar
         SliverAppBar(
           floating: true,
           centerTitle: false,
+          expandedHeight: 80,
           title: kAppTitle(context),
         ),
+
         // list of news shots
         SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -58,7 +63,6 @@ class NewHomePage extends GetView<ForYouController> {
                                   .textTheme
                                   .bodySmall
                                   ?.copyWith(
-                                      fontWeight: FontWeight.w900,
                                       color: kPrimaryRed,
                                       fontFamily: 'FF Infra'),
                               children: [
@@ -78,7 +82,7 @@ class NewHomePage extends GetView<ForYouController> {
                         newsShot.title,
                         style: const TextStyle(
                             fontFamily: 'FF Infra',
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w100,
                             wordSpacing: -0.5,
                             letterSpacing: -0.5,
                             fontSize: 20),
@@ -88,10 +92,10 @@ class NewHomePage extends GetView<ForYouController> {
                       newsShot: newsShot,
                       globalKey: GlobalKey(),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Divider(),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    //   child: Divider(),
+                    // ),
                   ],
                 ),
               );
