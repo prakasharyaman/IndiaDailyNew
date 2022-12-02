@@ -75,10 +75,10 @@ class ForYouMainPage extends GetView<ForYouController> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     article.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'FFInfra',
+                        ),
                   ),
                 )),
             // source name and menu
@@ -322,10 +322,10 @@ class ForYouMainPage extends GetView<ForYouController> {
                   child: Text(
                     newsShot.title,
                     maxLines: 3,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontFamily: GoogleFonts.libreBaskerville().fontFamily,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontFamily: 'FFInfra',
                         color: Colors.white,
-                        fontWeight: FontWeight.w900),
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
                 // source and timeago

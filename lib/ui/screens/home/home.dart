@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/services/index.dart';
+import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/for_you.dart';
@@ -34,52 +35,50 @@ class Home extends GetView<HomeController> {
       drawer: homeDrawer(context),
       child: Scaffold(
           key: controller.homeKey,
-          appBar: AppBar(
-            title: kAppTitle(context),
-            centerTitle: true,
-            leading: IconButton(
-              icon: Icon(
-                FontAwesomeIcons.barsStaggered,
-                color: Theme.of(context).textTheme.headline3?.color,
-              ),
-              onPressed: () {
-                controller.advancedDrawerController.showDrawer();
-              },
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Get.toNamed('/notificationsSettings');
-                  },
-                  icon: const Icon(FontAwesomeIcons.bell))
-            ],
-          ),
+          // appBar: AppBar(
+          //   title: kAppTitle(context),
+          //   centerTitle: true,
+          //   leading: IconButton(
+          //     icon: Icon(
+          //       FontAwesomeIcons.barsStaggered,
+          //       color: Theme.of(context).textTheme.headline3?.color,
+          //     ),
+          //     onPressed: () {
+          //       controller.advancedDrawerController.showDrawer();
+          //     },
+          //   ),
+          //   actions: [
+          //     IconButton(
+          //         onPressed: () {
+          //           Get.toNamed('/notificationsSettings');
+          //         },
+          //         icon: const Icon(FontAwesomeIcons.bell))
+          //   ],
+          // ),
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
           bottomNavigationBar: Obx(() {
-            return Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: BottomNavigationBar(
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.compass),
-                    label: 'Discover',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.house),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.chartLine),
-                    label: 'Market',
-                  ),
-                ],
-                type: BottomNavigationBarType.fixed,
-                currentIndex: controller.bottomNavigationIndex.value,
-                onTap: controller.changeBottomNavigationIndex,
-              ),
+            return BottomNavigationBar(
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              backgroundColor: kOffWhite,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(FontAwesomeIcons.compass),
+                  label: 'Discover',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(FontAwesomeIcons.house),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(FontAwesomeIcons.chartLine),
+                  label: 'Market',
+                ),
+              ],
+              type: BottomNavigationBarType.fixed,
+              currentIndex: controller.bottomNavigationIndex.value,
+              onTap: controller.changeBottomNavigationIndex,
             );
           })),
     );

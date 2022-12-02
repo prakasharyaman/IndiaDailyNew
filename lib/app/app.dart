@@ -20,13 +20,14 @@ class App extends StatelessWidget {
         scheme: FlexScheme.red,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         scaffoldBackground: kOffWhite,
-        appBarElevation: 0.5,
-        appBarBackground: Colors.white,
+        appBarBackground: kOffWhite,
+
         subThemesData: const FlexSubThemesData(
             appBarCenterTitle: true,
             fabSchemeColor: SchemeColor.primary,
-            bottomNavigationBarElevation: 5,
-            cardElevation: 2,
+            bottomNavigationBarElevation: 2,
+            cardRadius: 2,
+            cardElevation: 0,
             blendOnColors: false,
             blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,

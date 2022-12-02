@@ -5,7 +5,7 @@ description: A trusted news app.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.1.9+19
+version: 0.2.0+20
 
 environment:
   sdk: '>=2.18.4 <3.0.0'
@@ -71,6 +71,12 @@ flutter:
 
   assets:
     - assets/images/
+  fonts:
+    - family: FF Infra
+      fonts:
+        # - asset : assets/fonts/infra_regular.ttf   
+        - asset : assets/fonts/infra_bold.ttf
+
 flutter_native_splash:
   color: "#f53030"
   image: assets//images/splash.png

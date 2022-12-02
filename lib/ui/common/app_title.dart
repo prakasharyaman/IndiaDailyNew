@@ -7,7 +7,7 @@ Widget kAppTitle(context) {
     textAlign: TextAlign.center,
     text: TextSpan(
       text: 'India',
-      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+      style: Theme.of(context).textTheme.headline4?.copyWith(
             color: Theme.of(context).textTheme.headline4?.color,
             fontFamily: GoogleFonts.archivoBlack().fontFamily,
             // fontFamily: GoogleFonts.montserratSubrayada().fontFamily,
@@ -15,7 +15,7 @@ Widget kAppTitle(context) {
       children: [
         TextSpan(
           text: 'Daily',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          style: Theme.of(context).textTheme.headline4?.copyWith(
                 color: kPrimaryRed,
                 fontFamily: GoogleFonts.archivoBlack().fontFamily,
               ),

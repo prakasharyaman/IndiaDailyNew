@@ -66,49 +66,51 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
   @override
   Widget build(BuildContext context) {
     return // functions
-        Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Text(
-            'Tap to read more.',
-            maxLines: 1,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(decoration: TextDecoration.none),
+        Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.transparent,
+            backgroundImage: NetworkImage(
+              'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=' +
+                  newsShot.readMore +
+                  '&size=128',
+            ),
           ),
-        )),
-        IconButton(
-            tooltip: "Share this post.",
-            onPressed: () {
-              ShareServices().convertWidgetToImageAndShare(
-                  context, widget.globalKey, newsShot.title, '');
-            },
-            icon: const Icon(Icons.share)),
-        IconButton(
-            tooltip: "Save this post.",
-            onPressed: () {
-              if (!isSaved) {
-                saveToStorage();
-              } else {
-                removeFromStorage();
-              }
-              setState(() {
-                isSaved = !isSaved;
-              });
-            },
-            icon: Icon(isSaved ? Icons.check : Icons.add)),
-        IconButton(
-            tooltip: "Open menu.",
-            onPressed: () {
-              buildNewsShotBottomSheet();
-            },
-            icon: const Icon(Icons.more_vert)),
-      ],
+          Spacer(),
+          IconButton(
+              tooltip: "Share this post.",
+              onPressed: () {
+                ShareServices().convertWidgetToImageAndShare(
+                    context, widget.globalKey, newsShot.title, '');
+              },
+              icon: const Icon(Icons.share)),
+          IconButton(
+              tooltip: "Save this post.",
+              onPressed: () {
+                if (!isSaved) {
+                  saveToStorage();
+                } else {
+                  removeFromStorage();
+                }
+                setState(() {
+                  isSaved = !isSaved;
+                });
+              },
+              icon: Icon(isSaved ? Icons.check : Icons.add)),
+          IconButton(
+              padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
+              tooltip: "Open menu.",
+              onPressed: () {
+                buildNewsShotBottomSheet();
+              },
+              icon: const Icon(Icons.more_vert)),
+        ],
+      ),
     );
   }
 
