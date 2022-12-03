@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
-import 'package:indiadaily/ui/widgets/article/article_row.dart';
-import 'package:indiadaily/ui/widgets/newsShot/news_shot_row.dart';
-
+import 'package:indiadaily/ui/screens/newsShot/widgets/small_news_shot_card.dart';
 import '../../article/widget/row_article.dart';
 
 class SavedPosts extends StatelessWidget {
@@ -75,7 +73,7 @@ class SavedPosts extends StatelessWidget {
           children: [
             SizedBox(
                 height: Get.height * 0.4,
-                child: NewsShotRow(newsShot: newsShot)),
+                child: SmallNewsShotCard(newsShot: newsShot)),
             const Divider(),
           ],
         ));

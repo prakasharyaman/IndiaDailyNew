@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:indiadaily/ui/common/brandings.dart';
 import 'package:indiadaily/ui/widgets/custom/bulleted_list.dart';
 import 'package:indiadaily/ui/widgets/custom/custom_cached_image.dart';
-import 'package:indiadaily/ui/widgets/newsShot/news_shot_bottom_row.dart';
+import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
+import 'package:indiadaily/ui/screens/newsShot/widgets/news_shot_bottom_row.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import 'package:nested_scroll_views/nested_scroll_views.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -13,23 +15,26 @@ import '../../screens/webView/default_web_view.dart';
 
 class NewsShotPage extends StatelessWidget {
   const NewsShotPage(
-      {super.key, required this.newsShot, this.showGreeting = false});
+      {super.key,
+      required this.newsShot,
+      this.showGreeting = false,
+      this.sharing = false});
   final bool showGreeting;
   final NewsShot newsShot;
+  final bool sharing;
   @override
   Widget build(BuildContext context) {
-    GlobalKey globalKey = GlobalKey();
-    return GestureDetector(
-      onTap: () {
-        Get.to(DefaultWebView(url: newsShot.readMore));
-      },
-      child: RepaintBoundary(
-        key: globalKey,
-        child: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Stack(
-            children: [
-              NestedListView(
+    ScreenshotController screenshotController = ScreenshotController();
+    return Screenshot(
+      controller: screenshotController,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Get.to(DefaultWebView(url: newsShot.readMore));
+              },
+              child: NestedListView(
                 children: [
                   const SizedBox(
                     height: 10,
@@ -106,25 +111,26 @@ class NewsShotPage extends StatelessWidget {
                           getBulletPoints(paragraph: newsShot.decription),
                     ),
                   ),
+                  Visibility(visible: sharing, child: const Brandings()),
                   // just some space
                   SizedBox(
                     height: Get.height * 0.1,
                   ),
                 ],
               ),
-              // bottom action row
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: NewsShotBottomRow(
-                    newsShot: newsShot,
-                    globalKey: globalKey,
-                  ),
+            ),
+            // bottom action row
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: NewsShotBottomRow(
+                  screenshotController: screenshotController,
+                  newsShot: newsShot,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

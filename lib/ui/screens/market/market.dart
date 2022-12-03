@@ -11,8 +11,8 @@ import 'package:indiadaily/ui/screens/market/pages/edit_watch_list.dart';
 import 'package:indiadaily/ui/screens/market/pages/full_stock_info.dart';
 import 'package:indiadaily/ui/screens/market/widgets/stock_index_card.dart';
 import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
+import 'package:indiadaily/ui/screens/newsShot/widgets/small_news_shot_card.dart';
 import 'package:indiadaily/ui/widgets/bottom_sheet_tile.dart';
-import 'package:indiadaily/ui/widgets/newsShot/news_shot_row.dart';
 import 'package:search_page/search_page.dart';
 import 'package:yahoofin/yahoofin.dart';
 
@@ -102,7 +102,7 @@ class MarketPage extends GetView<MarketController> {
               elevation: 0.2,
               child: SizedBox(
                 height: Get.height * 0.5,
-                child: NewsShotRow(
+                child: SmallNewsShotCard(
                   newsShot: controller.newsShots[index],
                 ),
               ));

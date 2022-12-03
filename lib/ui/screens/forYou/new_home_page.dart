@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/common/app_title.dart';
 import 'package:indiadaily/ui/constants.dart';
-import 'package:indiadaily/ui/widgets/newsShot/news_shot_bottom_row.dart';
+import 'package:indiadaily/ui/screens/newsShot/widgets/news_shot_bottom_row.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'controller/for_you_controller.dart';
 

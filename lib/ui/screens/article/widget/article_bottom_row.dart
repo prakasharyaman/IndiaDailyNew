@@ -6,13 +6,16 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/article.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
-import '../bottom_sheet_tile.dart';
+import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
+import '../../../widgets/bottom_sheet_tile.dart';
 
 class ArticleBottomRow extends StatefulWidget {
   const ArticleBottomRow(
-      {super.key, required this.article, required this.globalKey});
+      {super.key, required this.article, required this.screenshotController});
   final Article article;
-  final GlobalKey globalKey;
+
+  final ScreenshotController screenshotController;
+
   @override
   State<ArticleBottomRow> createState() => _ArticleBottomRowState();
 }
@@ -20,10 +23,13 @@ class ArticleBottomRow extends StatefulWidget {
 class _ArticleBottomRowState extends State<ArticleBottomRow> {
   late Article article;
   bool isSaved = false;
+  late ScreenshotController screenshotController;
   bool logoError = false;
   @override
   void initState() {
     super.initState();
+    screenshotController = widget.screenshotController;
+
     checkIfSaved();
     article = widget.article;
   }
@@ -103,8 +109,8 @@ class _ArticleBottomRowState extends State<ArticleBottomRow> {
           IconButton(
               tooltip: "Share this post.",
               onPressed: () {
-                ShareServices().convertWidgetToImageAndShare(
-                    context, widget.globalKey, article.title, "");
+                ShareServices()
+                    .shareThisPost(screenshotController: screenshotController);
               },
               icon: const Icon(Icons.share)),
           IconButton(

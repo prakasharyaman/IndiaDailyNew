@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:indiadaily/models/index.dart';
+import 'package:indiadaily/ui/screens/newsShot/news_shot_page.dart';
+import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:ui' as ui;
 // ignore: depend_on_referenced_packages
@@ -13,6 +18,28 @@ class ShareServices {
   // List<String> articleStorageList = [];
   // static const String newsShotListKey = 'newsShotList';
   // static const String articleListKey = 'articleList';
+  shareThisPost({required ScreenshotController screenshotController}) async {
+    try {
+      EasyLoading.show();
+      await screenshotController.capture().then((capturedImage) async {
+        final pth = await getApplicationDocumentsDirectory();
+        var directory = pth.path;
+        File imgFile = File('$directory/screenshot.png');
+        XFile xFile = XFile(imgFile.path);
+        imgFile.writeAsBytes(capturedImage!).then((value) async {
+          await Share.shareXFiles(
+            [xFile],
+            text: "More at: https://bit.ly/indiadaily",
+          );
+          EasyLoading.dismiss();
+        }).catchError((onError) {
+          debugPrint(onError);
+        });
+      });
+    } catch (e) {
+      EasyLoading.showError('Sharing Failed');
+    }
+  }
 
   void convertWidgetToImageAndShare(BuildContext context,
       GlobalKey containerKey, String title, String url) async {

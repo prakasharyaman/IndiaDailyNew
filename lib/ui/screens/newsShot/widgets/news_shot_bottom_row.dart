@@ -7,14 +7,18 @@ import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
+import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
 import 'package:indiadaily/util/string_utils.dart';
-import '../bottom_sheet_tile.dart';
+import '../../../widgets/bottom_sheet_tile.dart';
 
 class NewsShotBottomRow extends StatefulWidget {
-  const NewsShotBottomRow(
-      {super.key, required this.newsShot, required this.globalKey});
+  const NewsShotBottomRow({
+    super.key,
+    required this.newsShot,
+    required this.screenshotController,
+  });
   final NewsShot newsShot;
-  final GlobalKey globalKey;
+  final ScreenshotController screenshotController;
   @override
   State<NewsShotBottomRow> createState() => _NewsShotBottomRowState();
 }
@@ -23,9 +27,11 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
   late NewsShot newsShot;
   bool isSaved = false;
   bool logoError = false;
+  late ScreenshotController screenshotController;
   @override
   void initState() {
     super.initState();
+    screenshotController = widget.screenshotController;
     checkIfSaved();
     newsShot = widget.newsShot;
   }
@@ -83,8 +89,9 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
               backgroundColor: Theme.of(context).backgroundColor,
               backgroundImage: !logoError
                   ? CachedNetworkImageProvider(
-                      'https://www.google.com/s2/favicons?domain=${Uri.parse(newsShot.readMore).host}&sz=64',
-                      errorListener: () {
+                      newsShot.readMore.length > 10
+                          ? 'https://www.google.com/s2/favicons?domain=${Uri.parse(newsShot.readMore).host}&sz=64'
+                          : 'https://picsum.photos/64', errorListener: () {
                       setState(() {
                         logoError = true;
                       });
@@ -108,8 +115,8 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
           IconButton(
               tooltip: "Share this post.",
               onPressed: () {
-                ShareServices().convertWidgetToImageAndShare(
-                    context, widget.globalKey, newsShot.title, '');
+                ShareServices()
+                    .shareThisPost(screenshotController: screenshotController);
               },
               icon: const Icon(Icons.share)),
           IconButton(
