@@ -4,7 +4,7 @@ import '../constants.dart';
 
 Widget kAppTitle(context) {
   return RichText(
-    textAlign: TextAlign.center,
+    textAlign: TextAlign.left,
     text: TextSpan(
       text: 'India',
       style: Theme.of(context).textTheme.headline4?.copyWith(

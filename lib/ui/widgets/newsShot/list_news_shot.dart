@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/ui/widgets/custom/bulleted_list.dart';
 import 'package:indiadaily/ui/widgets/custom/custom_cached_image.dart';
 import 'package:indiadaily/util/string_utils.dart';
@@ -11,7 +12,9 @@ import '../../screens/webView/default_web_view.dart';
 import 'news_shot_bottom_row.dart';
 
 class ListNewsShot extends StatelessWidget {
-  const ListNewsShot({super.key, required this.newsShot});
+  const ListNewsShot(
+      {super.key, required this.newsShot, this.showGreeting = false});
+  final bool showGreeting;
   final NewsShot newsShot;
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,24 @@ class ListNewsShot extends StatelessWidget {
             children: [
               NestedListView(
                 children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  // greetings
+                  Visibility(
+                    visible: showGreeting,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20),
+                      child: Text(
+                        "Good ${greeting()}",
+                        style: Theme.of(context).textTheme.headline6?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.prompt().fontFamily,
+                            ),
+                      ),
+                    ),
+                  ),
                   //image
                   Padding(
                     padding: const EdgeInsets.symmetric(

@@ -21,6 +21,7 @@ String getCategory({required String category}) {
   return '${(nonoCategory.contains(category) ? Random().nextBool() ? 'Latest' : 'Trending' : category).toUpperCase()}  ';
 }
 
+/// gives the name of domain , from  a url string by wiping out the www and other stuff
 String getDomain({required String url}) {
   return Uri.parse(url)
       .host
@@ -35,4 +36,17 @@ String getDomain({required String url}) {
       .toString();
 }
 
-List<String> nonoCategory = ['general', 'sources', 'all'];
+/// Gives the greeting based on the local time like morning and afternoon.
+/// Join good in front before using
+String greeting() {
+  var hour = DateTime.now().hour;
+  if (hour < 12) {
+    return 'Morning';
+  }
+  if (hour < 17) {
+    return 'Afternoon';
+  }
+  return 'Evening';
+}
+
+List<String> nonoCategory = ['general', 'sources', 'all', 'source'];

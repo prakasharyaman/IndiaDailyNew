@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/cache_services.dart';
 import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
+import 'package:indiadaily/ui/screens/forYou/widgets/my_home_page.dart';
+import 'package:indiadaily/ui/screens/forYou/widgets/nested_two_article_page.dart';
 import 'package:indiadaily/ui/widgets/newsShot/list_news_shot.dart';
 import 'package:indiadaily/ui/widgets/video/video_player_page.dart';
 import 'package:nested_scroll_views/nested_scroll_views.dart';
@@ -18,10 +20,11 @@ class AlternateForYou extends GetView<ForYouController> {
   @override
   Widget build(BuildContext context) {
     var currentIndex = 0;
+    NestedPageController nestedPageController = NestedPageController();
     return WillPopScope(
       onWillPop: () async {
         if (currentIndex > 0) {
-          controller.swiperController.move(0);
+          nestedPageController.jumpTo(0);
           return false;
         } else {
           return true;
@@ -40,6 +43,7 @@ class AlternateForYou extends GetView<ForYouController> {
 
               return NestedPageView(
                 wantKeepAlive: true,
+                controller: nestedPageController,
                 scrollDirection: Axis.vertical,
                 onPageChanged: (index) {
                   if (index < currentIndex) {
@@ -84,8 +88,10 @@ class AlternateForYou extends GetView<ForYouController> {
           ? articlePairs[articlePairsIndex]
           : null;
       if (index == 0) {
-        forYouWidgets
-            .add(ForYouMainPage(newsShot: newsShot!, articles: articlePair!));
+        forYouWidgets.add(ListNewsShot(
+          newsShot: newsShot!,
+          showGreeting: true,
+        ));
         articlePairsIndex++;
         newsShotsIndex++;
       } else if (index % 7 == 0 && video != null) {
@@ -103,8 +109,8 @@ class AlternateForYou extends GetView<ForYouController> {
         newsShotsIndex++;
       } else if (index % 3 == 0 && articlePair != null && index != 0) {
         forYouWidgets.add(random.nextBool()
-            ? TwoArticlePage(articles: articlePair)
-            : SecondTwoArticlePage(articles: articlePair));
+            ? NestedTwoArticlePage(articles: articlePair)
+            : NestedTwoArticlePage(articles: articlePair));
         for (var element in articlePair) {
           imageUrlList.add(element.urlToImage);
         }
@@ -115,8 +121,8 @@ class AlternateForYou extends GetView<ForYouController> {
           index != 0 &&
           articlePair != null) {
         forYouWidgets.add(random.nextBool()
-            ? TwoArticlePage(articles: articlePair)
-            : SecondTwoArticlePage(articles: articlePair));
+            ? NestedTwoArticlePage(articles: articlePair)
+            : NestedTwoArticlePage(articles: articlePair));
         for (var element in articlePair) {
           imageUrlList.add(element.urlToImage);
         }

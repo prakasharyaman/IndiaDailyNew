@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
-import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import '../bottom_sheet_tile.dart';
@@ -99,7 +98,7 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
           ),
           Text(
             newsShot.readMore == 'None'
-                ? 'Tap for more'
+                ? newsShot.author
                 : getDomain(url: newsShot.readMore),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontFamily: 'FF Infra',

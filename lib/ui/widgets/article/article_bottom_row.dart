@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -5,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/article.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import '../bottom_sheet_tile.dart';
 
 class ArticleBottomRow extends StatefulWidget {
@@ -20,6 +20,7 @@ class ArticleBottomRow extends StatefulWidget {
 class _ArticleBottomRowState extends State<ArticleBottomRow> {
   late Article article;
   bool isSaved = false;
+  bool logoError = false;
   @override
   void initState() {
     super.initState();
@@ -65,45 +66,68 @@ class _ArticleBottomRowState extends State<ArticleBottomRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Text(
-              "${article.source.name} ${timeago.format(article.publishedAt, locale: 'en_short')}",
-              maxLines: 1,
-              style: Theme.of(context).textTheme.bodySmall),
-        )),
-        IconButton(
-            tooltip: "Share this post.",
-            onPressed: () {
-              ShareServices().convertWidgetToImageAndShare(
-                  context, widget.globalKey, article.title, "");
-            },
-            icon: const Icon(Icons.share)),
-        IconButton(
-            tooltip: "Save this post.",
-            onPressed: () {
-              if (!isSaved) {
-                saveToStorage();
-              } else {
-                removePostFromStorage();
-              }
-              setState(() {
-                isSaved = !isSaved;
-              });
-            },
-            icon: Icon(isSaved ? Icons.check : Icons.add)),
-        IconButton(
-            tooltip: "Show more options.",
-            onPressed: () {
-              buildArticleBottomSheet();
-            },
-            icon: const Icon(Icons.more_vert)),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 14,
+            backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+            child: CircleAvatar(
+              radius: 13,
+              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundImage: !logoError
+                  ? CachedNetworkImageProvider(
+                      'https://www.google.com/s2/favicons?domain=${Uri.parse(article.url).host}&sz=64',
+                      errorListener: () {
+                      setState(() {
+                        logoError = true;
+                      });
+                    })
+                  : const CachedNetworkImageProvider(
+                      'https://picsum.photos/64'),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            article.source.name.capitalizeFirst.toString(),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontFamily: 'FF Infra',
+                ),
+          ),
+          const Spacer(),
+          IconButton(
+              tooltip: "Share this post.",
+              onPressed: () {
+                ShareServices().convertWidgetToImageAndShare(
+                    context, widget.globalKey, article.title, "");
+              },
+              icon: const Icon(Icons.share)),
+          IconButton(
+              tooltip: "Save this post.",
+              onPressed: () {
+                if (!isSaved) {
+                  saveToStorage();
+                } else {
+                  removePostFromStorage();
+                }
+                setState(() {
+                  isSaved = !isSaved;
+                });
+              },
+              icon: Icon(isSaved ? Icons.check : Icons.add)),
+          IconButton(
+              tooltip: "Show more options.",
+              onPressed: () {
+                buildArticleBottomSheet();
+              },
+              icon: const Icon(Icons.more_vert)),
+        ],
+      ),
     );
   }
 

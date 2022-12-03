@@ -10,7 +10,6 @@ import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/forYou/for_you.dart';
 import 'package:indiadaily/ui/screens/market/market.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
-import '../../common/app_title.dart';
 
 class Home extends GetView<HomeController> {
   Home({super.key});
