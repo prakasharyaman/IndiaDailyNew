@@ -40,18 +40,18 @@ class App extends StatelessWidget {
       ),
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.red,
-        appBarElevation: 0.5,
-        primary: kPrimaryRed,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-        subThemesData: const FlexSubThemesData(
-          blendOnColors: false,
-          bottomNavigationBarElevation: 10,
-          fabSchemeColor: SchemeColor.primary,
-          appBarCenterTitle: true,
-          blendTextTheme: false,
-          cardElevation: 2,
-        ),
         scaffoldBackground: kOffBlack,
+        appBarBackground: kOffBlack,
+
+        subThemesData: const FlexSubThemesData(
+            appBarCenterTitle: true,
+            fabSchemeColor: SchemeColor.primary,
+            bottomNavigationBarElevation: 2,
+            cardRadius: 2,
+            cardElevation: 0,
+            blendOnColors: false,
+            blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         // To use the playground font, add GoogleFonts package and uncomment
         fontFamily: GoogleFonts.montserrat().fontFamily,

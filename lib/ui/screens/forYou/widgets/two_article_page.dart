@@ -1,30 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:indiadaily/models/index.dart';
-import 'package:indiadaily/ui/widgets/article/article_row.dart';
+// import 'package:flutter/material.dart';
+// import 'package:indiadaily/models/index.dart';
+// import 'package:indiadaily/ui/widgets/article/article_row.dart';
 
-import '../../article/widget/row_article.dart';
+// import '../../article/widget/row_article.dart';
 
-class TwoArticlePage extends StatefulWidget {
-  const TwoArticlePage({super.key, required this.articles});
-  final List<Article> articles;
-  @override
-  State<TwoArticlePage> createState() => _TwoArticlePageState();
-}
+// class TwoArticlePage extends StatefulWidget {
+//   const TwoArticlePage({super.key, required this.articles});
+//   final List<Article> articles;
+//   @override
+//   State<TwoArticlePage> createState() => _TwoArticlePageState();
+// }
 
-class _TwoArticlePageState extends State<TwoArticlePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(child: RowArticle(article: widget.articles[0])),
-          const Divider(
-            indent: 10,
-            endIndent: 10,
-          ),
-          Expanded(child: RowArticle(article: widget.articles[1])),
-        ],
-      ),
-    );
-  }
-}
+// class _TwoArticlePageState extends State<TwoArticlePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           Expanded(child: RowArticle(article: widget.articles[0])),
+//           const Divider(
+//             indent: 10,
+//             endIndent: 10,
+//           ),
+//           Expanded(child: RowArticle(article: widget.articles[1])),
+//         ],
+//       ),
+//     );
+//   }
+// }

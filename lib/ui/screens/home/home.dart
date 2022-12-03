@@ -46,7 +46,6 @@ class Home extends GetView<HomeController> {
             child: BottomNavigationBar(
               showSelectedLabels: false,
               showUnselectedLabels: false,
-              backgroundColor: kOffWhite,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(FontAwesomeIcons.compass),

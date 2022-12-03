@@ -198,13 +198,16 @@ class _FullStockInfoState extends State<FullStockInfo> {
                 ),
 
           // stock Historical dats
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: stockHistoricalDataMode == 1
-                ? StockHistoricalChart(
-                    stockChart: stockChart!,
-                  )
-                : const LinearProgressIndicator(),
+          SizedBox(
+            height: Get.height * 0.4,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: stockHistoricalDataMode == 1
+                  ? StockHistoricalChart(
+                      stockChart: stockChart!,
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+            ),
           ),
           // // stock additional info
           SizedBox(

@@ -1,14 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
-import 'package:indiadaily/models/index.dart';
-import 'package:indiadaily/ui/screens/newsShot/news_shot_page.dart';
 import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:ui' as ui;
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 
@@ -41,32 +36,32 @@ class ShareServices {
     }
   }
 
-  void convertWidgetToImageAndShare(BuildContext context,
-      GlobalKey containerKey, String title, String url) async {
-    List<String> imagePaths = [];
-    final RenderBox box = context.findRenderObject() as RenderBox;
-    return Future.delayed(const Duration(milliseconds: 20), () async {
-      RenderRepaintBoundary? boundary = containerKey.currentContext!
-          .findRenderObject() as RenderRepaintBoundary?;
-      ui.Image image = await boundary!.toImage();
-      final pth = await getApplicationDocumentsDirectory();
-      var directory = pth.path;
+  // void convertWidgetToImageAndShare(BuildContext context,
+  //     GlobalKey containerKey, String title, String url) async {
+  //   List<String> imagePaths = [];
+  //   final RenderBox box = context.findRenderObject() as RenderBox;
+  //   return Future.delayed(const Duration(milliseconds: 20), () async {
+  //     RenderRepaintBoundary? boundary = containerKey.currentContext!
+  //         .findRenderObject() as RenderRepaintBoundary?;
+  //     ui.Image image = await boundary!.toImage();
+  //     final pth = await getApplicationDocumentsDirectory();
+  //     var directory = pth.path;
 
-      ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
-      Uint8List pngBytes = byteData!.buffer.asUint8List();
+  //     ByteData? byteData =
+  //         await image.toByteData(format: ui.ImageByteFormat.png);
+  //     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-      File imgFile = File('$directory/screenshot.png');
-      imagePaths.add(imgFile.path);
-      imgFile.writeAsBytes(pngBytes).then((value) async {
-        await Share.shareFiles(imagePaths,
-            text: "$title\nMore at: https://bit.ly/indiadaily",
-            sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-      }).catchError((onError) {
-        debugPrint(onError);
-      });
-    });
-  }
+  //     File imgFile = File('$directory/screenshot.png');
+  //     imagePaths.add(imgFile.path);
+  //     imgFile.writeAsBytes(pngBytes).then((value) async {
+  //       await Share.shareFiles(imagePaths,
+  //           text: "$title\nMore at: https://bit.ly/indiadaily",
+  //           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  //     }).catchError((onError) {
+  //       debugPrint(onError);
+  //     });
+  //   });
+  // }
 
   shareLink({required String url}) async {
     await Share.share("$url\nMore at: https://bit.ly/indiadaily ");

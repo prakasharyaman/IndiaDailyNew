@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/models/stock_model.dart';
+import 'package:indiadaily/ui/common/app_title.dart';
 import 'package:indiadaily/ui/screens/error/error_screen.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
 import 'package:indiadaily/ui/screens/market/k/list_of_stocks.dart';
@@ -51,6 +52,10 @@ class MarketPage extends GetView<MarketController> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
+            SliverAppBar(
+              title: kAppTitle(context),
+              centerTitle: false,
+            ),
             //market heading
             SliverToBoxAdapter(child: title(context, 'Market')),
             // indexes cards
@@ -96,16 +101,9 @@ class MarketPage extends GetView<MarketController> {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           // NewsShotRow
-          return Card(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              elevation: 0.2,
-              child: SizedBox(
-                height: Get.height * 0.5,
-                child: SmallNewsShotCard(
-                  newsShot: controller.newsShots[index],
-                ),
-              ));
+          return SmallNewsShotCard(
+            newsShot: controller.newsShots[index],
+          );
         },
         childCount: controller.newsShots.length,
       ),

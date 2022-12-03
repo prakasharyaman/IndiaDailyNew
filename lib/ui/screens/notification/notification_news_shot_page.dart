@@ -7,7 +7,6 @@ import 'package:indiadaily/ui/screens/loading/loading.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../widgets/category_tag.dart';
 import '../../widgets/custom/custom_cached_image.dart';
-import '../newsShot/widgets/news_shot_bottom_row.dart';
 import '../webView/default_web_view.dart';
 
 class NotificationNewsShotPage extends StatefulWidget {
