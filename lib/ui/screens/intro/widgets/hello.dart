@@ -11,13 +11,15 @@ class Hello extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
-        Text(
-          'Namaste 🙏🏻 and',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        // Text(
+        //   'Namaste 🙏🏻\nand',
+        //   style: Theme.of(context).textTheme.bodySmall,
+        //   textAlign: TextAlign.center,
+        // ),
         Text(
           'Welcome to',
           style: Theme.of(context).textTheme.bodySmall,
+          textAlign: TextAlign.center,
         ),
         // app title
         Padding(

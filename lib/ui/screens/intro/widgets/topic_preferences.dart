@@ -40,43 +40,34 @@ class _TopicPreferencesState extends State<TopicPreferences> {
           // buttons for skipping and continue
           Align(
             alignment: Alignment.bottomCenter,
-            child: Card(
-              margin: EdgeInsets.zero,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12))),
-              child: SizedBox(
-                width: Get.width,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: TextButton(
-                        onPressed: () {
-                          if (selectedTopics.length < 3) {
-                            EasyLoading.showToast('Select at least 3');
-                          } else {
-                            saveTopicPreferences(topicsList: selectedTopics);
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: kPrimaryRed,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Continue',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    fontFamily:
-                                        GoogleFonts.archivoBlack().fontFamily,
-                                    color: Colors.white),
-                          ),
-                        )),
-                  ),
-                ),
+            child: SizedBox(
+              width: Get.width,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                    onPressed: () {
+                      if (selectedTopics.length < 3) {
+                        EasyLoading.showToast('Select at least 3');
+                      } else {
+                        saveTopicPreferences(topicsList: selectedTopics);
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: kPrimaryRed,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Continue',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                                fontFamily:
+                                    GoogleFonts.archivoBlack().fontFamily,
+                                color: Colors.white),
+                      ),
+                    )),
               ),
             ),
           )
