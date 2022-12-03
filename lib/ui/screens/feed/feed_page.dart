@@ -1,19 +1,14 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indiadaily/models/index.dart';
-import 'package:indiadaily/services/cache_services.dart';
-import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
-import 'package:indiadaily/ui/screens/forYou/widgets/nested_two_article_page.dart';
-import 'package:indiadaily/ui/widgets/video/video_player_page.dart';
+import 'package:indiadaily/ui/screens/article/two_article_page.dart';
 import 'package:nested_scroll_views/nested_scroll_views.dart';
-
+import '../../../models/index.dart';
+import '../../../services/index.dart';
 import '../newsShot/news_shot_page.dart';
+import 'controller.dart';
 
-class AlternateForYou extends GetView<ForYouController> {
-  /// For You page to show when all the data is loaded and no error is found
-  const AlternateForYou({super.key});
-
+class FeedPage extends StatelessWidget {
+  const FeedPage({super.key});
   @override
   Widget build(BuildContext context) {
     var currentIndex = 0;
@@ -21,22 +16,22 @@ class AlternateForYou extends GetView<ForYouController> {
     return WillPopScope(
       onWillPop: () async {
         if (currentIndex > 0) {
-          nestedPageController.jumpTo(0);
+          nestedPageController.animateToPage(0,
+              duration: const Duration(seconds: 1), curve: Curves.easeIn);
           return false;
         } else {
           return true;
         }
       },
       child: SafeArea(
-        child: GetBuilder<ForYouController>(
-            id: 'forYouPage',
+        child: GetBuilder<FeedController>(
+            id: 'feedPage',
             assignId: true,
             autoRemove: false,
-            builder: (_) {
+            builder: (controller) {
               List<Widget> forYouWidgets = createWidgetList(
-                  articlePairs: _.articlePairs,
-                  videos: _.forYouVideos,
-                  newsShots: _.forYouNewsShots);
+                  articlePairs: controller.articlePairs,
+                  newsShots: controller.feedNewsShots);
 
               return NestedPageView(
                 wantKeepAlive: true,
@@ -61,26 +56,18 @@ class AlternateForYou extends GetView<ForYouController> {
   List<Widget> createWidgetList({
     required List<List<Article>> articlePairs,
     required List<NewsShot> newsShots,
-    required List<Video> videos,
   }) {
-    videos.clear();
-
-    /// to generate randomness
-    Random random = Random();
     List<Widget> forYouWidgets = [];
     CacheServices cacheServices = CacheServices();
     List<String> imageUrlList = [];
     int articlePairsLength = (articlePairs.length - 1);
     int newsShotLength = (newsShots.length - 1);
-    int videosLength = (videos.length - 1);
-    int totalPostsLength = articlePairsLength + newsShotLength + videosLength;
+    int totalPostsLength = articlePairsLength + newsShotLength;
     int articlePairsIndex = 0;
     int newsShotsIndex = 0;
-    int videosIndex = 0;
     for (int index = 0; index < (totalPostsLength - 1); index++) {
       var newsShot =
           newsShotsIndex <= newsShotLength ? newsShots[newsShotsIndex] : null;
-      var video = videosIndex <= videosLength ? videos[videosIndex] : null;
       var articlePair = articlePairsIndex <= articlePairsLength
           ? articlePairs[articlePairsIndex]
           : null;
@@ -91,10 +78,6 @@ class AlternateForYou extends GetView<ForYouController> {
         ));
         articlePairsIndex++;
         newsShotsIndex++;
-      } else if (index % 7 == 0 && video != null) {
-        forYouWidgets.add(VideoPlayerPage(video: video));
-        imageUrlList.add(video.thumbnail);
-        videosIndex++;
       } else if (index % 3 != 0 && newsShot != null && index != 0) {
         forYouWidgets.add(
           NewsShotPage(
@@ -105,9 +88,7 @@ class AlternateForYou extends GetView<ForYouController> {
         imageUrlList.add(newsShot.images);
         newsShotsIndex++;
       } else if (index % 3 == 0 && articlePair != null && index != 0) {
-        forYouWidgets.add(random.nextBool()
-            ? NestedTwoArticlePage(articles: articlePair)
-            : NestedTwoArticlePage(articles: articlePair));
+        forYouWidgets.add(TwoArticlePage(articles: articlePair));
         for (var element in articlePair) {
           imageUrlList.add(element.urlToImage);
         }
@@ -117,9 +98,7 @@ class AlternateForYou extends GetView<ForYouController> {
           newsShot == null &&
           index != 0 &&
           articlePair != null) {
-        forYouWidgets.add(random.nextBool()
-            ? NestedTwoArticlePage(articles: articlePair)
-            : NestedTwoArticlePage(articles: articlePair));
+        forYouWidgets.add(TwoArticlePage(articles: articlePair));
         for (var element in articlePair) {
           imageUrlList.add(element.urlToImage);
         }

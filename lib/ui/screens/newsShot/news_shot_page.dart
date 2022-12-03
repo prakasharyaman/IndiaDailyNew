@@ -3,16 +3,16 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/ui/widgets/custom/bulleted_list.dart';
 import 'package:indiadaily/ui/widgets/custom/custom_cached_image.dart';
+import 'package:indiadaily/ui/widgets/newsShot/news_shot_bottom_row.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import 'package:nested_scroll_views/nested_scroll_views.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../models/news_shot.dart';
 import '../../constants.dart';
 import '../../screens/webView/default_web_view.dart';
-import 'news_shot_bottom_row.dart';
 
-class ListNewsShot extends StatelessWidget {
-  const ListNewsShot(
+class NewsShotPage extends StatelessWidget {
+  const NewsShotPage(
       {super.key, required this.newsShot, this.showGreeting = false});
   final bool showGreeting;
   final NewsShot newsShot;
