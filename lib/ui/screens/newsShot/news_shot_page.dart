@@ -66,6 +66,7 @@ class NewsShotPage extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
+                  // time and category
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: RichText(

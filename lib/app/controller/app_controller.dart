@@ -23,7 +23,7 @@ enum AppStatus {
   showIntro,
   loading,
   error,
-  showTopicPreferences
+  showTopicPreferences,
 }
 
 class AppController extends GetxController {

@@ -10,8 +10,9 @@ import '../../../widgets/custom/custom_cached_image.dart';
 
 //TODO: screenshot
 class RowArticle extends StatelessWidget {
-  const RowArticle({super.key, required this.article});
-
+  const RowArticle(
+      {super.key, required this.article, this.showCategory = true});
+  final bool showCategory;
   final Article article;
   @override
   Widget build(BuildContext context) {
@@ -53,13 +54,15 @@ class RowArticle extends StatelessWidget {
                 maxLines: 15,
                 overflow: TextOverflow.ellipsis,
                 text: TextSpan(
-                    text: getCategory(category: article.category),
+                    text: showCategory
+                        ? getCategory(category: article.category)
+                        : "",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontFamily: 'FF Infra Bold', color: kPrimaryRed),
                     children: [
                       TextSpan(
                         text:
-                            '${timeago.format(article.publishedAt, locale: 'en_short')}\n\n',
+                            '${timeago.format(article.publishedAt, locale: showCategory ? "en_short" : "en")}\n\n',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontFamily: 'FF Infra',
                             ),
@@ -73,7 +76,10 @@ class RowArticle extends StatelessWidget {
             ],
           ),
         ),
-        ArticleBottomRow(article: article, globalKey: GlobalKey())
+        ArticleBottomRow(article: article, globalKey: GlobalKey()),
+        const SizedBox(
+          height: 20,
+        )
       ],
     );
   }

@@ -1,16 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/cache_services.dart';
 import 'package:indiadaily/ui/common/app_title.dart';
+import 'package:indiadaily/ui/screens/article/widget/row_article.dart';
 import 'package:indiadaily/ui/screens/discover/topicPage/controller/topic_controller.dart';
 import 'package:indiadaily/ui/screens/error/error_screen.dart';
 import 'package:indiadaily/ui/screens/loading/loading.dart';
-import 'package:indiadaily/ui/widgets/article/article_column.dart';
-import 'package:indiadaily/ui/widgets/article/article_row.dart';
-import 'package:indiadaily/ui/widgets/newsShot/news_shot_row.dart';
+import '../../newsShot/widgets/small_news_shot_card.dart';
 
 class TopicPage extends GetView<TopicController> {
   const TopicPage({super.key});
@@ -56,8 +53,6 @@ class TopicPageBuilder extends GetView<TopicController> {
     required List<Article> articles,
     required List<NewsShot> newsShots,
   }) {
-    /// to generate randomness
-    Random random = Random();
     List<Widget> widgets = [];
     int articleLength = (articles.length - 1);
     int newsShotLength = (newsShots.length - 1);
@@ -72,82 +67,37 @@ class TopicPageBuilder extends GetView<TopicController> {
       var article =
           articleIndex <= articleLength ? articles[articleIndex] : null;
       if (index == 0 && newsShot != null) {
-        widgets.add(SizedBox(
-          height: Get.height * 0.5,
-          child: Column(
-            children: [
-              Expanded(child: NewsShotRow(newsShot: newsShot)),
-              const Divider(),
-            ],
-          ),
+        widgets.add(SmallNewsShotCard(
+          newsShot: newsShot,
+          showCategory: false,
         ));
         imageUrlList.add(newsShot.images);
         newsShotsIndex++;
       } else if (index != 0 && index % 2 == 0 && article != null) {
-        random.nextBool()
-            ? widgets.add(SizedBox(
-                height: Get.height * 0.4,
-                child: Column(
-                  children: [
-                    Expanded(child: ArticleRow(article: article)),
-                    const Divider(),
-                  ],
-                ),
-              ))
-            : widgets.add(SizedBox(
-                height: Get.height * 0.5,
-                child: Column(
-                  children: [
-                    Expanded(child: ArticleColumn(article: article)),
-                    const Divider(),
-                  ],
-                ),
-              ));
+        widgets.add(RowArticle(
+          article: article,
+          showCategory: false,
+        ));
         imageUrlList.add(article.urlToImage);
         articleIndex++;
       } else if (index != 0 && index % 2 != 0 && newsShot != null) {
-        widgets.add(SizedBox(
-          height: Get.height * 0.5,
-          child: Column(
-            children: [
-              Expanded(child: NewsShotRow(newsShot: newsShot)),
-              const Divider(),
-            ],
-          ),
+        widgets.add(SmallNewsShotCard(
+          newsShot: newsShot,
+          showCategory: false,
         ));
         imageUrlList.add(newsShot.images);
         newsShotsIndex++;
       } else if (newsShot == null && article != null) {
-        random.nextBool()
-            ? widgets.add(SizedBox(
-                height: Get.height * 0.4,
-                child: Column(
-                  children: [
-                    Expanded(child: ArticleRow(article: article)),
-                    const Divider(),
-                  ],
-                ),
-              ))
-            : widgets.add(SizedBox(
-                height: Get.height * 0.5,
-                child: Column(
-                  children: [
-                    Expanded(child: ArticleColumn(article: article)),
-                    const Divider(),
-                  ],
-                ),
-              ));
+        widgets.add(RowArticle(
+          article: article,
+          showCategory: false,
+        ));
         imageUrlList.add(article.urlToImage);
         articleIndex++;
       } else if (newsShot != null && article == null) {
-        widgets.add(SizedBox(
-          height: Get.height * 0.5,
-          child: Column(
-            children: [
-              Expanded(child: NewsShotRow(newsShot: newsShot)),
-              const Divider(),
-            ],
-          ),
+        widgets.add(SmallNewsShotCard(
+          newsShot: newsShot,
+          showCategory: false,
         ));
         imageUrlList.add(newsShot.images);
         newsShotsIndex++;

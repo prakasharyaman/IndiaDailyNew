@@ -6,6 +6,8 @@ import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/widgets/article/article_row.dart';
 import 'package:indiadaily/ui/widgets/newsShot/news_shot_row.dart';
 
+import '../../article/widget/row_article.dart';
+
 class SavedPosts extends StatelessWidget {
   const SavedPosts({super.key});
 
@@ -63,7 +65,7 @@ class SavedPosts extends StatelessWidget {
         posts.add(Column(
           children: [
             SizedBox(
-                height: Get.height * 0.4, child: ArticleRow(article: article)),
+                height: Get.height * 0.4, child: RowArticle(article: article)),
             const Divider(),
           ],
         ));

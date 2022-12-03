@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/ui/widgets/article/article_column.dart';
-import 'package:indiadaily/ui/widgets/article/article_row.dart';
+import '../../article/widget/row_article.dart';
 
 class SecondTwoArticlePage extends StatefulWidget {
   const SecondTwoArticlePage({super.key, required this.articles});
@@ -22,7 +22,7 @@ class _SecondTwoArticlePageState extends State<SecondTwoArticlePage> {
         ),
         Expanded(
             flex: 7,
-            child: ArticleRow(
+            child: RowArticle(
               article: widget.articles[1],
             ))
       ],
