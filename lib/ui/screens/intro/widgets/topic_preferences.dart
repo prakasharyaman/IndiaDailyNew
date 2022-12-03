@@ -48,64 +48,34 @@ class _TopicPreferencesState extends State<TopicPreferences> {
                       topRight: Radius.circular(12))),
               child: SizedBox(
                 width: Get.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextButton(
-                            onPressed: () {
-                              showSkipDialog();
-                            },
-                            style: TextButton.styleFrom(
-                                side: BorderSide(color: kPrimaryRed)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Skip',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        fontFamily: GoogleFonts.archivoBlack()
-                                            .fontFamily,
-                                        color: kPrimaryRed),
-                              ),
-                            )),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextButton(
-                            onPressed: () {
-                              if (selectedTopics.length < 3) {
-                                EasyLoading.showToast('Select at least 3');
-                              } else {
-                                saveTopicPreferences(
-                                    topicsList: selectedTopics);
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: kPrimaryRed,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Continue',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        fontFamily: GoogleFonts.archivoBlack()
-                                            .fontFamily,
-                                        color: Colors.white),
-                              ),
-                            )),
-                      ),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: TextButton(
+                        onPressed: () {
+                          if (selectedTopics.length < 3) {
+                            EasyLoading.showToast('Select at least 3');
+                          } else {
+                            saveTopicPreferences(topicsList: selectedTopics);
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: kPrimaryRed,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Continue',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.archivoBlack().fontFamily,
+                                    color: Colors.white),
+                          ),
+                        )),
+                  ),
                 ),
               ),
             ),
@@ -115,27 +85,30 @@ class _TopicPreferencesState extends State<TopicPreferences> {
     );
   }
 
-  /// Prompts user to try selecting topics if he wants to skip.
-  Future<dynamic> showSkipDialog() {
-    return Get.defaultDialog(
-        radius: 12,
-        title: 'Are you sure you want to skip?',
-        middleText:
-            'Skipping will show news and posts that you may not like. You can always change the topics you love through settings afterwards.',
-        textConfirm: 'Yes Skip',
-        onConfirm: () async {
-          Get.back();
-          appController.userRepository.updateUserProfile(
-              userId: appController.userModel.value.id!,
-              profile: {'skipped': true});
-          saveTopicPreferences(topicsList: ['all']);
-        },
-        textCancel: 'Cancel');
-  }
+  // /// Prompts user to try selecting topics if he wants to skip.
+  // Future<dynamic> showSkipDialog() {
+  //   return Get.defaultDialog(
+  //       radius: 12,
+  //       title: 'Are you sure you want to skip?',
+  //       middleText:
+  //           'Skipping will show news and posts that you may not like. You can always change the topics you love through settings afterwards.',
+  //       textConfirm: 'Yes Skip',
+  //       onConfirm: () async {
+  //         Get.back();
+  //         appController.userRepository.updateUserProfile(
+  //             userId: appController.userModel.value.id!,
+  //             profile: {'skipped': true});
+  //         saveTopicPreferences(topicsList: ['all']);
+  //       },
+  //       textCancel: 'Cancel');
+  // }
 
   /// Saves topic preferences.
   saveTopicPreferences({required List<String> topicsList}) async {
     EasyLoading.show(status: 'Loading...');
+    // updates device model and date of joining
+    await appController.userRepository
+        .logUserFirstTimeLogin(userId: appController.userModel.value.id!);
     await appController.saveUserTopicPrefernces(topics: topicsList);
     await appController.setValue(of: "shownTopicPreferences", to: true);
     appController.userRepository.updateUserProfile(
@@ -145,3 +118,27 @@ class _TopicPreferencesState extends State<TopicPreferences> {
     appController.runAppLogic();
   }
 }
+  // Expanded(
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.all(8.0),
+  //                       child: TextButton(
+  //                           onPressed: () {
+  //                             showSkipDialog();
+  //                           },
+  //                           style: TextButton.styleFrom(
+  //                               side: BorderSide(color: kPrimaryRed)),
+  //                           child: Padding(
+  //                             padding: const EdgeInsets.all(8.0),
+  //                             child: Text(
+  //                               'Skip',
+  //                               style: Theme.of(context)
+  //                                   .textTheme
+  //                                   .titleMedium
+  //                                   ?.copyWith(
+  //                                       fontFamily: GoogleFonts.archivoBlack()
+  //                                           .fontFamily,
+  //                                       color: kPrimaryRed),
+  //                             ),
+  //                           )),
+  //                     ),
+  //                   ),

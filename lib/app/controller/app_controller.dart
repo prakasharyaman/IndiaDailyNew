@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/repositories/user_repository.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/constants.dart';
-import 'package:indiadaily/ui/screens/forYou/controller/for_you_controller.dart';
+import 'package:indiadaily/ui/screens/feed/controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/notification/notification_news_shot_page.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
@@ -78,10 +78,8 @@ class AppController extends GetxController {
     userTopicPreferences = await getUserTopicPrefernces();
     // if intro shown
     // if profile is not set
-    // else show home and put controllers
+    // else go home after putting controllers
     if (!await getValue(of: 'introShown')) {
-      // updates device model and date of joining
-      userRepository.logUserFirstTimeLogin(userId: userModel.value.id!);
       // shows intro at root
       appStatus.value = AppStatus.showIntro;
     } else if (!await getValue(of: 'shownTopicPreferences')) {
@@ -92,7 +90,7 @@ class AppController extends GetxController {
       userRepository.updateLastActive(userId: userModel.value.id!);
       // go straight to home
       Get.put<HomeController>(HomeController(), permanent: true);
-      Get.put<ForYouController>(ForYouController(), permanent: true);
+      Get.put<FeedController>(FeedController(), permanent: true);
 
       appStatus.value = AppStatus.authenticated;
       checkForUpdates();

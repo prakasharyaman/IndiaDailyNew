@@ -12,7 +12,7 @@ class Hello extends StatelessWidget {
       children: [
         const Spacer(),
         Text(
-          '❤️',
+          'Namaste 🙏🏻 and',
           style: Theme.of(context).textTheme.bodySmall,
         ),
         Text(

@@ -14,7 +14,10 @@ class UserRepository {
     try {
       DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
       AndroidDeviceInfo deviceInfo = await deviceInfoPlugin.androidInfo;
-      var profile = {'device': deviceInfo, 'joined': getDateAsTimestamp()};
+      var profile = {
+        'device': deviceInfo.model,
+        'joined': getDateAsTimestamp()
+      };
       updateUserProfile(profile: profile, userId: userId);
     } catch (e) {
       debugPrint(e.toString());
