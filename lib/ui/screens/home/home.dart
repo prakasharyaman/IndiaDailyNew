@@ -7,7 +7,6 @@ import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/market/market.dart';
-
 import '../../../services/index.dart';
 import '../settings/page/settings_page.dart';
 
