@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -54,10 +53,6 @@ class AppController extends GetxController {
     //get user data from firestore
     if (firebaseUser?.uid != null) {
       userModel.value.id = firebaseUser.uid;
-      // subscribe
-      subscribeToTopic();
-      //notification handler
-      setupInteractedMessage();
       // analytics
       await setAnalyticsUserId();
       // runs the main app logic
@@ -143,37 +138,37 @@ class AppController extends GetxController {
   }
 
   ///subscribe to messaging topics
-  subscribeToTopic() {
-    FirebaseMessaging.instance.subscribeToTopic('newsShots');
-  }
+  // subscribeToTopic() {
+  //   FirebaseMessaging.instance.subscribeToTopic('newsShots');
+  // }
 
   /// setup interacted with a message like click
-  Future<void> setupInteractedMessage() async {
-    // Get any messages which caused the application to open from
-    // a terminated state.
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+  // Future<void> setupInteractedMessage() async {
+  //   // Get any messages which caused the application to open from
+  //   // a terminated state.
+  //   RemoteMessage? initialMessage =
+  //       await FirebaseMessaging.instance.getInitialMessage();
 
-    // If the message also contains a data property with a "type" of "chat",
-    // navigate to a chat screen
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-    }
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
+  //   // If the message also contains a data property with a "type" of "chat",
+  //   // navigate to a chat screen
+  //   if (initialMessage != null) {
+  //     _handleMessage(initialMessage);
+  //   }
+  //   // Also handle any interaction when the app is in the background via a
+  //   // Stream listener
+  //   FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  // }
 
-  void _handleMessage(RemoteMessage message) {
-    debugPrint('handling a message');
-    if (message.notification?.android?.channelId == 'news') {
-      var newsShotJson = message.data;
-      NewsShot newsShot = NewsShot.fromJson(newsShotJson);
-      showNotificationPage(newsShot: newsShot);
-    } else {
-      debugPrint('Couldn\'t figure out channel id');
-    }
-  }
+  // void _handleMessage(RemoteMessage message) {
+  //   debugPrint('handling a message');
+  //   if (message.notification?.android?.channelId == 'news') {
+  //     var newsShotJson = message.data;
+  //     NewsShot newsShot = NewsShot.fromJson(newsShotJson);
+  //     showNotificationPage(newsShot: newsShot);
+  //   } else {
+  //     debugPrint('Couldn\'t figure out channel id');
+  //   }
+  // }
 
   /// naviagets to notification page
   showNotificationPage({required NewsShot newsShot}) {

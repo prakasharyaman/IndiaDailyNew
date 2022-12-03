@@ -3,7 +3,6 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';

@@ -60,26 +60,26 @@ class FeedController extends GetxController {
       selectedCategories.shuffle();
       selectedCategories = selectedCategories.sublist(0, 8);
     }
-    // load artilces data from cache
-    feedArticles = await dataRepository.getNewsArticles(
-        where: "category", equals: ["source", "general"], loadFromCache: true);
-    // debugPrint(selectedCategories.toString());
+    // // load artilces data from cache
+    // feedArticles = await dataRepository.getNewsArticles(
+    //     where: "category", equals: ["source", "general"], loadFromCache: true);
+    // // debugPrint(selectedCategories.toString());
 
-    if (!selectedCategories.contains('all')) {
-      selectedCategories.add('all');
-    }
-    // divide articles in pairs of two
-    articlePairs = partition(feedArticles, 2).toList();
-    // lod news Shots from cache
-    feedNewsShots = await dataRepository.getNewsShots(
-        equals: selectedCategories, loadFromCache: true);
+    // if (!selectedCategories.contains('all')) {
+    //   selectedCategories.add('all');
+    // }
+    // // divide articles in pairs of two
+    // articlePairs = partition(feedArticles, 2).toList();
+    // // lod news Shots from cache
+    // feedNewsShots = await dataRepository.getNewsShots(
+    //     equals: selectedCategories, loadFromCache: true);
 
-    // loading from cache is done
-    if (feedArticles.length > 10 && feedNewsShots.length > 10) {
-      forYouStatus.value = FeedStatus.loaded;
-      //load the for you page
-      update([feedPageId]);
-    }
+    // // loading from cache is done
+    // if (feedArticles.length > 10 && feedNewsShots.length > 10) {
+    //   forYouStatus.value = FeedStatus.loaded;
+    //   //load the for you page
+    //   update([feedPageId]);
+    // }
 
     // loading data from server
     feedArticles = await dataRepository
