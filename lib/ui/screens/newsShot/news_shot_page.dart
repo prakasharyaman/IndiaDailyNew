@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/ui/common/brandings.dart';
@@ -135,4 +136,24 @@ class NewsShotPage extends StatelessWidget {
       ),
     );
   }
+}
+
+/// shows a news shot in a bottom sheet
+showFullNewsShotAsBottomSheet(BuildContext context, NewsShot newsShot) {
+  showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+          maxHeight: Get.height * 0.9, minHeight: Get.height * 0.9),
+      builder: (context) {
+        return Scaffold(
+          body: NewsShotPage(newsShot: newsShot),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Icon(FontAwesomeIcons.xmark),
+          ),
+        );
+      });
 }

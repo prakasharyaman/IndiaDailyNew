@@ -15,14 +15,17 @@ import 'services/index.dart';
 import 'package:http/http.dart' as http;
 
 /// flutter local notifications global identifier
+@pragma('vm:entry-point')
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 /// stream of payload that contains payload of notifications that were received when the app was in background or foreground.
+@pragma('vm:entry-point')
 final StreamController<String?> backgroundOrForegroundNotificationStream =
     StreamController<String?>.broadcast();
 
 /// stream of payload that contains payload of notifications that were received when the app was terminated.
+@pragma('vm:entry-point')
 final StreamController<String?> terminatedNotificationStream =
     StreamController<String?>.broadcast();
 
@@ -40,45 +43,8 @@ void main() {
     FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
     // firebase crash analytics
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    await FirebaseMessaging.instance.subscribeToTopic('debug');
     // flutter local notifications
-    // check if notification launched the app or not
-    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
-        !kIsWeb && Platform.isLinux
-            ? null
-            : await flutterLocalNotificationsPlugin
-                .getNotificationAppLaunchDetails();
-
-    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-      terminatedNotificationStream
-          .add(notificationAppLaunchDetails!.notificationResponse?.payload);
-    }
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_stat_notification');
-
-    InitializationSettings initializationSettings =
-        const InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse:
-          (NotificationResponse notificationResponse) {
-        debugPrint('did receive notification response');
-        switch (notificationResponse.notificationResponseType) {
-          case NotificationResponseType.selectedNotification:
-            backgroundOrForegroundNotificationStream
-                .add(notificationResponse.payload);
-            break;
-          case NotificationResponseType.selectedNotificationAction:
-            backgroundOrForegroundNotificationStream
-                .add(notificationResponse.payload);
-            break;
-        }
-      },
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
-    );
+    await initializeFlutterLocalNotificationPlugins();
     // register storage service
     getIt.registerSingleton<StorageServices>(StorageServices());
 

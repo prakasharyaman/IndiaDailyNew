@@ -22,22 +22,7 @@ class SmallNewsShotCard extends StatelessWidget {
       controller: screenshotController,
       child: GestureDetector(
         onTap: () {
-          showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              constraints: BoxConstraints(
-                  maxHeight: Get.height * 0.9, minHeight: Get.height * 0.9),
-              builder: (context) {
-                return Scaffold(
-                  body: NewsShotPage(newsShot: newsShot),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: const Icon(FontAwesomeIcons.xmark),
-                  ),
-                );
-              });
+          showFullNewsShotAsBottomSheet(context, newsShot);
         },
         child: Container(
           color: Theme.of(context).scaffoldBackgroundColor,

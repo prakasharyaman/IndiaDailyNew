@@ -7,7 +7,7 @@ import '../../../services/index.dart';
 import '../newsShot/news_shot_page.dart';
 import 'controller.dart';
 
-class FeedPage extends StatelessWidget {
+class FeedPage extends GetView<FeedController> {
   const FeedPage({super.key});
   @override
   Widget build(BuildContext context) {
@@ -29,24 +29,28 @@ class FeedPage extends StatelessWidget {
             assignId: true,
             autoRemove: false,
             builder: (controller) {
-              List<Widget> forYouWidgets = createWidgetList(
-                  articlePairs: controller.articlePairs,
-                  newsShots: controller.feedNewsShots);
+              return Obx(() {
+                List<Widget> forYouWidgets = createWidgetList(
+                    notificationOpenedApp:
+                        controller.notificationOpenedApp.value,
+                    articlePairs: controller.articlePairs,
+                    newsShots: controller.feedNewsShots);
 
-              return NestedPageView(
-                wantKeepAlive: true,
-                controller: nestedPageController,
-                scrollDirection: Axis.vertical,
-                onPageChanged: (index) {
-                  if (index < currentIndex) {
-                    controller.showBottomNavigationBar();
-                  } else {
-                    controller.hideBottomNavigationBar();
-                  }
-                  currentIndex = index;
-                },
-                children: forYouWidgets,
-              );
+                return NestedPageView(
+                  wantKeepAlive: true,
+                  controller: nestedPageController,
+                  scrollDirection: Axis.vertical,
+                  onPageChanged: (index) {
+                    if (index < currentIndex) {
+                      controller.showBottomNavigationBar();
+                    } else {
+                      controller.hideBottomNavigationBar();
+                    }
+                    currentIndex = index;
+                  },
+                  children: forYouWidgets,
+                );
+              });
             }),
       ),
     );
@@ -55,8 +59,10 @@ class FeedPage extends StatelessWidget {
   /// Creates a list of mixed widgets for for you page.
   List<Widget> createWidgetList({
     required List<List<Article>> articlePairs,
+    required bool notificationOpenedApp,
     required List<NewsShot> newsShots,
   }) {
+    print('drawing widgets');
     List<Widget> forYouWidgets = [];
     CacheServices cacheServices = CacheServices();
     List<String> imageUrlList = [];
@@ -73,7 +79,9 @@ class FeedPage extends StatelessWidget {
           : null;
       if (index == 0) {
         forYouWidgets.add(NewsShotPage(
-          newsShot: newsShot!,
+          newsShot: notificationOpenedApp
+              ? controller.notificationNewsShot ?? newsShot!
+              : newsShot!,
           showGreeting: true,
         ));
         articlePairsIndex++;
