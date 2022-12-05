@@ -34,15 +34,13 @@ class FeedPage extends GetView<FeedController> {
       child: GetBuilder<FeedController>(
           id: 'feedPage',
           assignId: true,
-          builder: (controller) {
+          builder: (builderController) {
             debugPrint('Building feed page');
-
             return NestedPageView(
               wantKeepAlive: true,
-              controller: controller.feedPageController,
+              controller: builderController.feedPageController,
               scrollDirection: Axis.vertical,
               onPageChanged: (index) {
-                debugPrint(index.toString());
                 if (index < currentIndex) {
                   controller.showBottomNavigationBar();
                 } else {
@@ -50,7 +48,7 @@ class FeedPage extends GetView<FeedController> {
                 }
                 currentIndex = index;
               },
-              children: controller.feedWidgets,
+              children: builderController.feedWidgets,
             );
           }),
     );

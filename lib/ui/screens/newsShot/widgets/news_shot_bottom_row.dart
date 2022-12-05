@@ -7,7 +7,7 @@ import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
-import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
+import 'package:indiadaily/packages/screenshot/screenshot.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import '../../../widgets/bottom_sheet_tile.dart';
 
@@ -131,7 +131,9 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
                   isSaved = !isSaved;
                 });
               },
-              icon: Icon(isSaved ? Icons.check : Icons.add)),
+              icon: Icon(isSaved
+                  ? Icons.bookmark_added
+                  : Icons.bookmark_add_outlined)),
           IconButton(
               padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
               tooltip: "Open menu.",

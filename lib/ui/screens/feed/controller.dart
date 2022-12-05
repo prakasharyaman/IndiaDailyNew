@@ -55,6 +55,7 @@ class FeedController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // start loading feed page
     loadFeedPage();
     // lister of notification when app is terminated
     listenToTerminatedStateNotificationStream();
@@ -146,18 +147,21 @@ class FeedController extends GetxController {
           debugPrint(e.toString());
         }
         if (receivedNewsShot != null) {
-          if (feedPageController.page != null) {
-            debugPrint('inserting new element at :${feedPageController.page}');
-            feedWidgets.insert(feedPageController.page!.toInt() + 1,
-                NewsShotPage(newsShot: receivedNewsShot));
-            update([feedPageId]);
-            Future.delayed(const Duration(milliseconds: 100), () {
-              feedPageController
-                  .jumpToPage(feedPageController.page!.toInt() + 1);
-            });
-          } else {
-            debugPrint('Feed page controller couldn\'t locate current page');
-          }
+          // just show a bottom sheet , it's by far the most reliable
+          showFullNewsShotAsBottomSheet(Get.context!, receivedNewsShot);
+          // if (feedPageController.page != null) {
+          //   debugPrint(
+          //       'inserting new element at :${feedPageController.page!.toInt() + 1}');
+          //   feedWidgets.insert(feedPageController.page!.toInt() + 1,
+          //       NewsShotPage(newsShot: receivedNewsShot));
+          //   update([feedPageId]);
+          //   Future.delayed(const Duration(milliseconds: 100), () {
+          //     feedPageController
+          //         .jumpToPage(feedPageController.page!.toInt() + 1);
+          //   });
+          // } else {
+          //   debugPrint('Feed page controller couldn\'t locate current page');
+          // }
         }
       }
     });

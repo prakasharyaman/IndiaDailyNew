@@ -3,10 +3,12 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/market/market.dart';
+import 'package:indiadaily/ui/screens/user/notifications_settings.dart';
 import '../../../services/index.dart';
 import '../settings/page/settings_page.dart';
 
@@ -16,35 +18,16 @@ class Home extends GetView<HomeController> {
     const Discover(),
     const Feed(),
     const Market(),
+    const NotificationsSettings()
   ];
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(
+      backdropColor: kPrimaryRed,
       drawer: homeDrawer(context),
       controller: controller.advancedDrawerController,
       child: Scaffold(
           key: controller.homeKey,
-
-          // appBar: AppBar(
-          //   title: kAppTitle(context),
-          //   centerTitle: true,
-          //   leading: IconButton(
-          //     icon: Icon(
-          //       FontAwesomeIcons.barsStaggered,
-          //       color: Theme.of(context).textTheme.headline3?.color,
-          //     ),
-          //     onPressed: () {
-          //       controller.advancedDrawerController.showDrawer();
-          //     },
-          //   ),
-          //   actions: [
-          //     IconButton(
-          //         onPressed: () {
-          //           Get.toNamed('/notificationsSettings');
-          //         },
-          //         icon: const Icon(FontAwesomeIcons.bell))
-          //   ],
-          // ),
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
           bottomNavigationBar: Obx(() {
@@ -65,6 +48,10 @@ class Home extends GetView<HomeController> {
                   BottomNavigationBarItem(
                     icon: Icon(FontAwesomeIcons.chartLine),
                     label: 'Market',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(FontAwesomeIcons.solidUser),
+                    label: 'User',
                   ),
                 ],
                 type: BottomNavigationBarType.fixed,

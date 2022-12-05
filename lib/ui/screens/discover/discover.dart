@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/discover/saved/saved_posts.dart';
 import 'package:indiadaily/ui/screens/discover/topicPage/controller/topic_bindings.dart';
@@ -18,19 +17,27 @@ class Discover extends StatelessWidget {
     var discoverArticlesCategories = kdiscoverArticlesCategories;
     discoverArticlesCategories.shuffle();
     return Scaffold(
-      appBar: AppBar(
-        title: kAppTitle(context),
-        centerTitle: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      body: SafeArea(
         child: CustomScrollView(
           slivers: [
+            // const SliverToBoxAdapter(
+            //   child: SizedBox(
+            //     height: 10,
+            //   ),
+            // ),
+            // app title
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: kAppTitle(context),
+              ),
+            ),
+
             //discover heading
             SliverToBoxAdapter(
               child: title(text: 'Discover', context: context),
             ),
-            divider(),
+            // divider(),
             // saved posts and boah
             SliverGrid.count(
               crossAxisCount: 2,
@@ -58,7 +65,7 @@ class Discover extends StatelessWidget {
             SliverToBoxAdapter(
               child: title(text: 'Topics', context: context),
             ),
-            divider(),
+            // divider(),
             // topics grid
             SliverGrid(
               delegate: SliverChildBuilderDelegate(
@@ -126,12 +133,13 @@ class Discover extends StatelessWidget {
   /// creates a title heading
   Widget title({required String text, required BuildContext context}) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontFamily: GoogleFonts.archivoBlack().fontFamily,
-            ),
+        style: Theme.of(context)
+            .textTheme
+            .headline5
+            ?.copyWith(fontFamily: 'FF Infra Bold'),
       ),
     );
   }

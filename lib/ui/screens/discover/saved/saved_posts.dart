@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
@@ -8,7 +7,6 @@ import '../../article/widget/row_article.dart';
 
 class SavedPosts extends StatelessWidget {
   const SavedPosts({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +14,8 @@ class SavedPosts extends StatelessWidget {
         title: kAppTitle(context, 'Saved Posts'),
         centerTitle: false,
       ),
-      body: getIt<StorageServices>().savedPosts.isNotEmpty
+      body: getIt<StorageServices>().savedNewsShots.isNotEmpty ||
+              getIt<StorageServices>().savedArticles.isNotEmpty
           ? ListView(
               children: getSavedPosts(),
             )
@@ -60,23 +59,10 @@ class SavedPosts extends StatelessWidget {
     for (var element in postsAndTime) {
       if (element['type'] == 'article') {
         var article = element['val'];
-        posts.add(Column(
-          children: [
-            SizedBox(
-                height: Get.height * 0.4, child: RowArticle(article: article)),
-            const Divider(),
-          ],
-        ));
+        posts.add(RowArticle(article: article));
       } else if (element['type'] == 'newsShot') {
         var newsShot = element['val'];
-        posts.add(Column(
-          children: [
-            SizedBox(
-                height: Get.height * 0.4,
-                child: SmallNewsShotCard(newsShot: newsShot)),
-            const Divider(),
-          ],
-        ));
+        posts.add(SmallNewsShotCard(newsShot: newsShot));
       }
     }
     return posts;

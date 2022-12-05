@@ -25,7 +25,6 @@ class App extends StatelessWidget {
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         scaffoldBackground: kOffWhite,
         appBarBackground: kOffWhite,
-
         subThemesData: const FlexSubThemesData(
             appBarCenterTitle: true,
             fabSchemeColor: SchemeColor.primary,

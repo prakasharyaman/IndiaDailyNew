@@ -75,7 +75,8 @@ showANotification({required RemoteMessage message}) async {
   // big text notification
   BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
     // ignore: prefer_interpolation_to_compose_strings
-    '<b>' + notificationBody + '</b>',
+    notificationBody,
+    // '<b>' + notificationBody + '</b>',
     htmlFormatBigText: true,
     contentTitle: notificationTitle,
     htmlFormatContentTitle: true,

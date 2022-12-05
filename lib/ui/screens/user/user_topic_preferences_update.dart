@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/app/controller/app_controller.dart';
 import 'package:indiadaily/ui/common/topic_preferences_list.dart';
 import 'package:indiadaily/ui/constants.dart';
-import 'package:indiadaily/ui/widgets/custom/multi_select_widget.dart';
+import 'package:indiadaily/packages/multi_select_widget.dart';
 
 class UsertopicPreferencesUpdate extends StatefulWidget {
   const UsertopicPreferencesUpdate({super.key});

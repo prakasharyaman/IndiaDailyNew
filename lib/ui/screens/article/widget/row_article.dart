@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/article/widget/article_bottom_row.dart';
-import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
+import 'package:indiadaily/packages/screenshot/screenshot.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../../models/index.dart';
-import '../../../widgets/custom/custom_cached_image.dart';
+import '../../../../packages/custom_cached_image.dart';
 
 class RowArticle extends StatelessWidget {
   const RowArticle(

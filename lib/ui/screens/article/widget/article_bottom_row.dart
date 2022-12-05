@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/article.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
-import 'package:indiadaily/ui/widgets/custom/screenshot/screenshot.dart';
+import 'package:indiadaily/packages/screenshot/screenshot.dart';
 import '../../../widgets/bottom_sheet_tile.dart';
 
 class ArticleBottomRow extends StatefulWidget {
@@ -125,7 +125,9 @@ class _ArticleBottomRowState extends State<ArticleBottomRow> {
                   isSaved = !isSaved;
                 });
               },
-              icon: Icon(isSaved ? Icons.check : Icons.add)),
+              icon: Icon(isSaved
+                  ? Icons.bookmark_added
+                  : Icons.bookmark_add_outlined)),
           IconButton(
               tooltip: "Show more options.",
               onPressed: () {
