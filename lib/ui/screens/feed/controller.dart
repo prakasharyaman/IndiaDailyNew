@@ -16,9 +16,6 @@ class FeedController extends GetxController {
   /// Instance of App Controller
   AppController appController = Get.find<AppController>();
 
-  /// feed Widgets , to change current notification
-  List<Widget> feedWidgets = [];
-
   /// controller for feed page nested page views
   NestedPageController feedPageController = NestedPageController();
 
@@ -51,6 +48,7 @@ class FeedController extends GetxController {
   NewsShot? notificationNewsShot;
   // // reactive in order to show terminated clicked notification
   // Rx<bool> notificationOpenedApp = false.obs;
+  List<Widget> feedWidgets = [];
 
   /// video volume controller
   bool isMute = true;
@@ -79,26 +77,6 @@ class FeedController extends GetxController {
       selectedCategories.shuffle();
       selectedCategories = selectedCategories.sublist(0, 8);
     }
-    // // load artilces data from cache
-    // feedArticles = await dataRepository.getNewsArticles(
-    //     where: "category", equals: ["source", "general"], loadFromCache: true);
-    // // debugPrint(selectedCategories.toString());
-
-    // if (!selectedCategories.contains('all')) {
-    //   selectedCategories.add('all');
-    // }
-    // // divide articles in pairs of two
-    // articlePairs = partition(feedArticles, 2).toList();
-    // // lod news Shots from cache
-    // feedNewsShots = await dataRepository.getNewsShots(
-    //     equals: selectedCategories, loadFromCache: true);
-
-    // // loading from cache is done
-    // if (feedArticles.length > 10 && feedNewsShots.length > 10) {
-    //   forYouStatus.value = FeedStatus.loaded;
-    //   //load the for you page
-    //   update([feedPageId]);
-    // }
     // loading data from server
     feedArticles = await dataRepository
         .getNewsArticles(where: "category", equals: ["source", "general"]);
@@ -152,7 +130,7 @@ class FeedController extends GetxController {
     }
   }
 
-  /// listener for notification tap when the app was in background or foreground state to show notification
+  /// listener for notification tap when the app was in background or foreground state to show notification as bottom sheet
   listenToBackgroundOrForegroundStateNotificationStream() {
     debugPrint(
         'listening To Background Or ForegroundState Notification Stream ');
@@ -168,10 +146,17 @@ class FeedController extends GetxController {
           debugPrint(e.toString());
         }
         if (receivedNewsShot != null) {
-          if (Get.context != null) {
-            showFullNewsShotAsBottomSheet(Get.context!, receivedNewsShot);
+          if (feedPageController.page != null) {
+            debugPrint('inserting new element at :${feedPageController.page}');
+            feedWidgets.insert(feedPageController.page!.toInt() + 1,
+                NewsShotPage(newsShot: receivedNewsShot));
+            update([feedPageId]);
+            Future.delayed(const Duration(milliseconds: 100), () {
+              feedPageController
+                  .jumpToPage(feedPageController.page!.toInt() + 1);
+            });
           } else {
-            debugPrint('get context was null');
+            debugPrint('Feed page controller couldn\'t locate current page');
           }
         }
       }

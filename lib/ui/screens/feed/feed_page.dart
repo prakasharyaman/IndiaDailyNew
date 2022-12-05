@@ -12,6 +12,10 @@ class FeedPage extends GetView<FeedController> {
   @override
   Widget build(BuildContext context) {
     var currentIndex = 0;
+    List<Widget> feedWidgets = createWidgetList(
+        articlePairs: controller.articlePairs,
+        newsShots: controller.feedNewsShots);
+    controller.feedWidgets = feedWidgets;
     return WillPopScope(
       onWillPop: () async {
         if (controller.feedPageController.page != null) {
@@ -32,14 +36,13 @@ class FeedPage extends GetView<FeedController> {
           assignId: true,
           builder: (controller) {
             debugPrint('Building feed page');
-            List<Widget> feedWidgets = createWidgetList(
-                articlePairs: controller.articlePairs,
-                newsShots: controller.feedNewsShots);
+
             return NestedPageView(
               wantKeepAlive: true,
               controller: controller.feedPageController,
               scrollDirection: Axis.vertical,
               onPageChanged: (index) {
+                debugPrint(index.toString());
                 if (index < currentIndex) {
                   controller.showBottomNavigationBar();
                 } else {
@@ -47,7 +50,7 @@ class FeedPage extends GetView<FeedController> {
                 }
                 currentIndex = index;
               },
-              children: feedWidgets,
+              children: controller.feedWidgets,
             );
           }),
     );
