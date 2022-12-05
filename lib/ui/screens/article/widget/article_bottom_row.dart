@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/article.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
-import 'package:indiadaily/packages/screenshot/screenshot.dart';
+import 'package:indiadaily/custom/screenshot/screenshot.dart';
 import '../../../widgets/bottom_sheet_tile.dart';
 
 class ArticleBottomRow extends StatefulWidget {

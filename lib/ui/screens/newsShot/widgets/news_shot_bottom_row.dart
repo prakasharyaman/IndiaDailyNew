@@ -7,7 +7,7 @@ import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/services/index.dart';
 import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/screens/webView/default_web_view.dart';
-import 'package:indiadaily/packages/screenshot/screenshot.dart';
+import 'package:indiadaily/custom/screenshot/screenshot.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import '../../../widgets/bottom_sheet_tile.dart';
 

@@ -8,7 +8,6 @@ import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/market/market.dart';
-import 'package:indiadaily/ui/screens/user/notifications_settings.dart';
 import '../../../services/index.dart';
 import '../settings/page/settings_page.dart';
 
@@ -18,7 +17,7 @@ class Home extends GetView<HomeController> {
     const Discover(),
     const Feed(),
     const Market(),
-    const NotificationsSettings()
+    // const NotificationsSettings()
   ];
   @override
   Widget build(BuildContext context) {
@@ -49,10 +48,10 @@ class Home extends GetView<HomeController> {
                     icon: Icon(FontAwesomeIcons.chartLine),
                     label: 'Market',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.solidUser),
-                    label: 'User',
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(FontAwesomeIcons.solidUser),
+                  //   label: 'User',
+                  // ),
                 ],
                 type: BottomNavigationBarType.fixed,
                 currentIndex: controller.bottomNavigationIndex.value,

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:indiadaily/packages/screenshot/screenshot.dart';
+import 'package:indiadaily/custom/screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';

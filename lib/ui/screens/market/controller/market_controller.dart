@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/repositories/data_repository.dart';
@@ -13,6 +14,8 @@ class MarketController extends GetxController {
   Rx<MarketStatus> marketStatus = MarketStatus.loading.obs;
   MarketRepository marketRepository = MarketRepository();
   DataRepository dataRepository = DataRepository();
+  // scroll controller fro market page
+  ScrollController scrollController = ScrollController();
 
   /// list if news shots related to business to be shown
   List<NewsShot> newsShots = [];
@@ -31,6 +34,17 @@ class MarketController extends GetxController {
   onInit() {
     super.onInit();
     loadMarketPage();
+  }
+
+  scrollAddListner() {
+    scrollController.addListener(() {});
+  }
+
+  scrollListner() {
+    final direction = scrollController.position.userScrollDirection;
+    if (direction == ScrollDirection.forward) {
+      //TODO: hide bottom nav bar
+    }
   }
 
   /// starts loading market data , watchlist , news and indexes

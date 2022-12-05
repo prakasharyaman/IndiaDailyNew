@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/newsShot/news_shot_page.dart';
-import 'package:indiadaily/packages/screenshot/screenshot.dart';
+import 'package:indiadaily/custom/screenshot/screenshot.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
