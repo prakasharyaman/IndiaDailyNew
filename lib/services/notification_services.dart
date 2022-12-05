@@ -2,16 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'app/app.dart';
-import 'firebase_options.dart';
-import 'services/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 /// flutter local notifications global identifier
@@ -19,45 +13,14 @@ import 'package:http/http.dart' as http;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
+/// only contains value of a notification from which was app was launched from a dead state
+@pragma('vm:entry-point')
+String? appTerminatedNotificationPayload;
+
 /// stream of payload that contains payload of notifications that were received when the app was in background or foreground.
 @pragma('vm:entry-point')
 final StreamController<String?> backgroundOrForegroundNotificationStream =
     StreamController<String?>.broadcast();
-
-/// stream of payload that contains payload of notifications that were received when the app was terminated.
-@pragma('vm:entry-point')
-final StreamController<String?> terminatedNotificationStream =
-    StreamController<String?>.broadcast();
-
-void main() {
-  runZonedGuarded<Future<void>>(() async {
-    // ignore: unused_local_variable
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    // firebase initialize
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    // background message handler
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-    // foreground message handler
-    FirebaseMessaging.onMessage.listen(firebaseMessagingBackgroundHandler);
-    // firebase crash analytics
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-    // flutter local notifications
-    await initializeFlutterLocalNotificationPlugins();
-    // register storage service
-    getIt.registerSingleton<StorageServices>(StorageServices());
-
-    // initialize storage services
-    getIt<StorageServices>().initialize();
-    // Setup preferred orientations,
-    // and then run app.
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-        .then((value) => runApp(const App()));
-  },
-      (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
-}
 
 /// initializes flutter local notification
 @pragma('vm:entry-point')
@@ -69,8 +32,8 @@ initializeFlutterLocalNotificationPlugins() async {
       : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
   if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-    terminatedNotificationStream
-        .add(notificationAppLaunchDetails!.notificationResponse?.payload);
+    appTerminatedNotificationPayload =
+        notificationAppLaunchDetails!.notificationResponse?.payload;
   }
 
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -98,32 +61,9 @@ initializeFlutterLocalNotificationPlugins() async {
   );
 }
 
-/// Converts given url image to base64 encoded image string.
+/// shows a flutter local notification using firebase remote [message]
 @pragma('vm:entry-point')
-Future<String> base64encodedImage(String url) async {
-  final http.Response response = await http.get(Uri.parse(url));
-  final String base64Data = base64Encode(response.bodyBytes);
-  return base64Data;
-}
-
-/// notifies when the user engages with a notification
-@pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  // ignore: avoid_print
-  print('notification(${notificationResponse.id}) action tapped: '
-      '${notificationResponse.actionId} ');
-  if (notificationResponse.input?.isNotEmpty ?? false) {
-    // ignore: avoid_print
-    print(
-        'notification action tapped with input: ${notificationResponse.input}');
-  }
-}
-
-/// handles all incoming message from fcm and creates a local notification
-@pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // ignore: avoid_print
-  print('A Background message just showed up :  ${message.messageId}');
+showANotification({required RemoteMessage message}) async {
   // String type = message.data['type'];
   Map<String, dynamic> messageData = message.data;
   // notification payload
@@ -157,4 +97,45 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await flutterLocalNotificationsPlugin.show(message.hashCode + 1,
       notificationTitle, notificationBody, notificationDetails,
       payload: payload);
+  // save to storage
+  await saveNotificationToStorage(notification: payload);
+}
+
+/// saves the notification that was shown to storage
+@pragma('vm:entry-point')
+saveNotificationToStorage({required String notification}) async {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> notifications = prefs.getStringList('notifications') ?? [];
+    if (notifications.length > 50) {
+      notifications = notifications.sublist(
+          (notifications.length - 49), (notifications.length - 1));
+    }
+    notifications.add(notification);
+    await prefs.setStringList('notifications', notifications);
+  } catch (e) {
+    debugPrint('Cannot save notification to storage');
+    debugPrint(e.toString());
+  }
+}
+
+/// Converts given url image to base64 encoded image string.
+@pragma('vm:entry-point')
+Future<String> base64encodedImage(String url) async {
+  final http.Response response = await http.get(Uri.parse(url));
+  final String base64Data = base64Encode(response.bodyBytes);
+  return base64Data;
+}
+
+/// notifies when the user engages with a notification
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  // ignore: avoid_print
+  print('notification(${notificationResponse.id}) action tapped: '
+      '${notificationResponse.actionId} ');
+  if (notificationResponse.input?.isNotEmpty ?? false) {
+    // ignore: avoid_print
+    print(
+        'notification action tapped with input: ${notificationResponse.input}');
+  }
 }

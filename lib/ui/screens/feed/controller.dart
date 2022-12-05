@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/app/controller/app_controller.dart';
-import 'package:indiadaily/main.dart';
 import 'package:indiadaily/repositories/data_repository.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
+import 'package:nested_scroll_views/nested_scroll_views.dart';
 import 'package:quiver/iterables.dart';
 import '../../../models/index.dart';
+import '../../../services/notification_services.dart';
 import '../newsShot/news_shot_page.dart';
 
 enum FeedStatus { loading, loaded, error }
@@ -14,6 +15,12 @@ enum FeedStatus { loading, loaded, error }
 class FeedController extends GetxController {
   /// Instance of App Controller
   AppController appController = Get.find<AppController>();
+
+  /// feed Widgets , to change current notification
+  List<Widget> feedWidgets = [];
+
+  /// controller for feed page nested page views
+  NestedPageController feedPageController = NestedPageController();
 
   /// Instance of home controller
   HomeController homeController = Get.find<HomeController>();
@@ -42,8 +49,8 @@ class FeedController extends GetxController {
 
   /// notification news shot
   NewsShot? notificationNewsShot;
-  // reactive in order to show terminated clicked notification
-  Rx<bool> notificationOpenedApp = false.obs;
+  // // reactive in order to show terminated clicked notification
+  // Rx<bool> notificationOpenedApp = false.obs;
 
   /// video volume controller
   bool isMute = true;
@@ -92,13 +99,19 @@ class FeedController extends GetxController {
     //   //load the for you page
     //   update([feedPageId]);
     // }
-
     // loading data from server
     feedArticles = await dataRepository
         .getNewsArticles(where: "category", equals: ["source", "general"]);
     feedNewsShots =
         await dataRepository.getNewsShots(equals: selectedCategories);
+    //divide articles in a partition
     articlePairs = partition(feedArticles, 2).toList();
+
+    // remove notification news shot from list if it exists in list of cloud news Shots
+    if (notificationNewsShot != null) {
+      feedNewsShots.removeWhere(
+          (element) => element.title == notificationNewsShot!.title);
+    }
 
     // update home status
     forYouStatus.value = FeedStatus.loaded;
@@ -118,26 +131,25 @@ class FeedController extends GetxController {
 
   /// listener for notification tap when the app was in terminated state to show notification
   listenToTerminatedStateNotificationStream() {
-    debugPrint('started listening to terminated payload stream');
-    terminatedNotificationStream.stream.listen((payload) {
-      if (payload != null) {
-        debugPrint(
-            'received a notification payload and app was initially terminated');
-        NewsShot? receivedNewsShot;
-        // try creating a notification from given payload
-        try {
-          NewsShot payloadNewsShot = NewsShot.fromJson(jsonDecode(payload));
-          receivedNewsShot = payloadNewsShot;
-        } catch (e) {
-          debugPrint(e.toString());
-        }
-        if (receivedNewsShot != null) {
-          // firstNewsShot = receivedNewsShot.obs;
-        } else {
-          debugPrint('received news was null');
-        }
+    if (appTerminatedNotificationPayload != null) {
+      debugPrint(
+          'The app was opened from a notification, showing that on the front page');
+      NewsShot? receivedNewsShot;
+      // try creating a notification from given payload
+      try {
+        NewsShot payloadNewsShot = NewsShot.fromJson(
+            jsonDecode(appTerminatedNotificationPayload.toString()));
+        receivedNewsShot = payloadNewsShot;
+      } catch (e) {
+        debugPrint(e.toString());
       }
-    });
+      if (receivedNewsShot != null) {
+        // notificationOpenedApp.value = true;
+        notificationNewsShot = receivedNewsShot;
+      } else {
+        debugPrint('received news was null');
+      }
+    }
   }
 
   /// listener for notification tap when the app was in background or foreground state to show notification
@@ -147,8 +159,6 @@ class FeedController extends GetxController {
     backgroundOrForegroundNotificationStream.stream.listen((payload) async {
       debugPrint('background payload stream received');
       if (payload != null) {
-        debugPrint(
-            'received a notification payload and app was initially terminated');
         NewsShot? receivedNewsShot;
         // try creating a notification from given payload
         try {
@@ -156,12 +166,6 @@ class FeedController extends GetxController {
           receivedNewsShot = payloadNewsShot;
         } catch (e) {
           debugPrint(e.toString());
-        }
-        if (receivedNewsShot != null) {
-          notificationOpenedApp.value = true;
-          notificationNewsShot = receivedNewsShot;
-        } else {
-          debugPrint('received news was null');
         }
         if (receivedNewsShot != null) {
           if (Get.context != null) {

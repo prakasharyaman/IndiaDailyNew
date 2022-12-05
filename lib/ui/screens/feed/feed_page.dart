@@ -12,57 +12,53 @@ class FeedPage extends GetView<FeedController> {
   @override
   Widget build(BuildContext context) {
     var currentIndex = 0;
-    NestedPageController nestedPageController = NestedPageController();
     return WillPopScope(
       onWillPop: () async {
-        if (currentIndex > 0) {
-          nestedPageController.animateToPage(0,
-              duration: const Duration(seconds: 1), curve: Curves.easeIn);
-          return false;
+        if (controller.feedPageController.page != null) {
+          if (controller.feedPageController.page! > 0) {
+            controller.feedPageController.animateToPage(0,
+                duration: const Duration(microseconds: 200),
+                curve: Curves.easeIn);
+            return false;
+          } else {
+            return true;
+          }
         } else {
           return true;
         }
       },
-      child: SafeArea(
-        child: GetBuilder<FeedController>(
-            id: 'feedPage',
-            assignId: true,
-            autoRemove: false,
-            builder: (controller) {
-              return Obx(() {
-                List<Widget> forYouWidgets = createWidgetList(
-                    notificationOpenedApp:
-                        controller.notificationOpenedApp.value,
-                    articlePairs: controller.articlePairs,
-                    newsShots: controller.feedNewsShots);
-
-                return NestedPageView(
-                  wantKeepAlive: true,
-                  controller: nestedPageController,
-                  scrollDirection: Axis.vertical,
-                  onPageChanged: (index) {
-                    if (index < currentIndex) {
-                      controller.showBottomNavigationBar();
-                    } else {
-                      controller.hideBottomNavigationBar();
-                    }
-                    currentIndex = index;
-                  },
-                  children: forYouWidgets,
-                );
-              });
-            }),
-      ),
+      child: GetBuilder<FeedController>(
+          id: 'feedPage',
+          assignId: true,
+          builder: (controller) {
+            debugPrint('Building feed page');
+            List<Widget> feedWidgets = createWidgetList(
+                articlePairs: controller.articlePairs,
+                newsShots: controller.feedNewsShots);
+            return NestedPageView(
+              wantKeepAlive: true,
+              controller: controller.feedPageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (index) {
+                if (index < currentIndex) {
+                  controller.showBottomNavigationBar();
+                } else {
+                  controller.hideBottomNavigationBar();
+                }
+                currentIndex = index;
+              },
+              children: feedWidgets,
+            );
+          }),
     );
   }
 
   /// Creates a list of mixed widgets for for you page.
   List<Widget> createWidgetList({
     required List<List<Article>> articlePairs,
-    required bool notificationOpenedApp,
     required List<NewsShot> newsShots,
   }) {
-    print('drawing widgets');
+    debugPrint('creating feed widgets');
     List<Widget> forYouWidgets = [];
     CacheServices cacheServices = CacheServices();
     List<String> imageUrlList = [];
@@ -79,9 +75,7 @@ class FeedPage extends GetView<FeedController> {
           : null;
       if (index == 0) {
         forYouWidgets.add(NewsShotPage(
-          newsShot: notificationOpenedApp
-              ? controller.notificationNewsShot ?? newsShot!
-              : newsShot!,
+          newsShot: controller.notificationNewsShot ?? newsShot!,
           showGreeting: true,
         ));
         articlePairsIndex++;

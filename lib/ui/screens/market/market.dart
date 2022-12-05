@@ -17,6 +17,8 @@ import 'package:indiadaily/ui/widgets/bottom_sheet_tile.dart';
 import 'package:search_page/search_page.dart';
 import 'package:yahoofin/yahoofin.dart';
 
+import '../loading/loading.dart';
+
 class Market extends GetView<MarketController> {
   const Market({super.key});
 
@@ -25,9 +27,7 @@ class Market extends GetView<MarketController> {
     return Obx(() {
       switch (controller.marketStatus.value) {
         case MarketStatus.loading:
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Loading();
         case MarketStatus.loaded:
           return const MarketPage();
         case MarketStatus.error:

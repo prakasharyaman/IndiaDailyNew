@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -10,13 +11,10 @@ import 'package:indiadaily/ui/common/snackbar.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/feed/controller.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
-import 'package:indiadaily/ui/screens/notification/notification_news_shot_page.dart';
 import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../models/index.dart';
 import '../../models/user_model.dart';
-import '../../ui/screens/newsShot/news_shot_page.dart';
 
 enum AppStatus {
   authenticated,
@@ -57,8 +55,6 @@ class AppController extends GetxController {
       userModel.value.id = firebaseUser.uid;
       // subscribe
       subscribeToTopic();
-      //notification handler
-      setupInteractedMessage();
       // analytics
       await setAnalyticsUserId();
       // runs the main app logic
@@ -144,55 +140,14 @@ class AppController extends GetxController {
   }
 
   ///subscribe to messaging topics
-  subscribeToTopic() {
-    FirebaseMessaging.instance.subscribeToTopic('debug');
-  }
-
-  /// setup interacted with a message like click
-  Future<void> setupInteractedMessage() async {
-    // Get any messages which caused the application to open from
-    // a terminated state.
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-
-    // If the message also contains a data property with a "type" of "chat",
-    // navigate to a chat screen
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
+  subscribeToTopic() async {
+    // subscribe to debug if in debug
+    if (kDebugMode) {
+      debugPrint('app is in debug');
+      await FirebaseMessaging.instance.subscribeToTopic('debug');
     }
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
 
-  void _handleMessage(RemoteMessage message) {
-    debugPrint('handling a message');
-    var newsShotJson = message.data;
-    NewsShot newsShot = NewsShot.fromJson(newsShotJson);
-    showModalBottomSheet(
-        context: Get.context!,
-        builder: (context) {
-          return NewsShotPage(
-            newsShot: newsShot,
-          );
-        });
-  }
-
-  /// naviagets to notification page
-  showNotificationPage({required NewsShot newsShot}) {
-    // show news Shot
-    try {
-      if (Get.currentRoute == '/NotificationNewsShotPage' ||
-          Get.currentRoute == '/notificationNewsShotPage') {
-        Get.back();
-      }
-      Get.to(NotificationNewsShotPage(
-        newsShot: newsShot,
-      ));
-    } catch (e) {
-      debugPrint('Failed to show notification page');
-      debugPrint(e.toString());
-    }
+    await FirebaseMessaging.instance.subscribeToTopic('newsShots');
   }
 
   /// checks for update on firestore
