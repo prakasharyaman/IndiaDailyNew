@@ -21,8 +21,8 @@ class FeedPage extends GetView<FeedController> {
         if (controller.feedPageController.page != null) {
           if (controller.feedPageController.page! > 0) {
             controller.feedPageController.animateToPage(0,
-                duration: const Duration(microseconds: 200),
-                curve: Curves.easeIn);
+                duration: const Duration(microseconds: 300),
+                curve: Curves.easeInOut);
             return false;
           } else {
             return true;

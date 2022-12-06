@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:indiadaily/models/index.dart';
 import 'package:indiadaily/repositories/data_repository.dart';
 import 'package:indiadaily/repositories/market_repository.dart';
+import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yahoofin/yahoofin.dart';
 
@@ -12,7 +13,14 @@ enum MarketStatus { loading, loaded, error }
 class MarketController extends GetxController {
   /// market Status reactive
   Rx<MarketStatus> marketStatus = MarketStatus.loading.obs;
+
+  /// market repo
   MarketRepository marketRepository = MarketRepository();
+
+  /// home controller
+  HomeController homeController = Get.find<HomeController>();
+
+  /// data repo
   DataRepository dataRepository = DataRepository();
   // scroll controller fro market page
   ScrollController scrollController = ScrollController();
@@ -37,13 +45,15 @@ class MarketController extends GetxController {
   }
 
   scrollAddListner() {
-    scrollController.addListener(() {});
+    scrollController.addListener(scrollListner);
   }
 
   scrollListner() {
     final direction = scrollController.position.userScrollDirection;
     if (direction == ScrollDirection.forward) {
-      //TODO: hide bottom nav bar
+      homeController.isBottombarVisible.value = true;
+    } else if (direction == ScrollDirection.reverse) {
+      homeController.isBottombarVisible.value = false;
     }
   }
 
@@ -61,6 +71,9 @@ class MarketController extends GetxController {
       await getWatchlistStocksData();
       // load market page
       marketStatus.value = MarketStatus.loaded;
+      Future.delayed(const Duration(milliseconds: 200), () {
+        scrollAddListner();
+      });
     } catch (e) {
       debugPrint(e.toString());
       marketStatus.value = MarketStatus.error;

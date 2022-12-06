@@ -29,6 +29,7 @@ class _MarketPageState extends State<MarketPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CustomScrollView(
+        controller: controller.scrollController,
         slivers: [
           // sized box for a bit of extra spacing
           const SliverToBoxAdapter(

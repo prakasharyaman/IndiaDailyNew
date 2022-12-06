@@ -3,6 +3,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:indiadaily/custom/hideable_bottom_nav_bar.dart';
 import 'package:indiadaily/ui/constants.dart';
 import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
@@ -30,7 +31,7 @@ class Home extends GetView<HomeController> {
           body: Obx(
               () => pages.elementAt(controller.bottomNavigationIndex.value)),
           bottomNavigationBar: Obx(() {
-            return Visibility(
+            return HideAbleBottomNavigationBar(
               visible: controller.isBottombarVisible.value,
               child: BottomNavigationBar(
                 showSelectedLabels: false,

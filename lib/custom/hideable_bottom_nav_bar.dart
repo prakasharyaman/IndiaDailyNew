@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HideAbleBottomNavigationBar extends StatefulWidget {
+class HideAbleBottomNavigationBar extends StatelessWidget {
   const HideAbleBottomNavigationBar(
-      {super.key, required this.child, required this.visible});
+      {super.key, required this.visible, required this.child});
+
   final Widget child;
   final bool visible;
   @override
-  State<HideAbleBottomNavigationBar> createState() =>
-      _HideAbleBottomNavigationBarState();
-}
-
-class _HideAbleBottomNavigationBarState
-    extends State<HideAbleBottomNavigationBar> {
-  @override
   Widget build(BuildContext context) => AnimatedContainer(
-      height: widget.visible ? kBottomNavigationBarHeight : 0,
+      height: visible ? kBottomNavigationBarHeight : 0,
       duration: const Duration(milliseconds: 200),
-      child: Wrap(children: [widget.child]));
+      child: Wrap(children: [child]));
 }
