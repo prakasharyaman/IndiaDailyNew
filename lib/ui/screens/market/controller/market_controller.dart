@@ -52,7 +52,7 @@ class MarketController extends GetxController {
     try {
       marketStatus.value = MarketStatus.loading;
       // load index data
-      await getIndexes();
+      // await getIndexes();
       // get business news
       await getBusinessNews();
       // get watchlist stocks

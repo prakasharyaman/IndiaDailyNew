@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:indiadaily/ui/screens/market/controller/market_controller.dart';
-import 'package:indiadaily/ui/screens/market/widgets/watch_list_stock.dart';
 import 'package:yahoofin/yahoofin.dart';
 
 import '../widgets/historical_chart.dart';
@@ -12,8 +11,6 @@ showFullStockInfo(
     required String stockName,
     StockQuote? stockQuote}) {
   showModalBottomSheet(
-      elevation: 5,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       isScrollControlled: true,
       constraints: BoxConstraints(
           minHeight: Get.height * 0.8, maxHeight: Get.height * 0.8),
@@ -88,6 +85,15 @@ class _FullStockInfoState extends State<FullStockInfo> {
     }
   }
 
+  /// title
+  Widget title(BuildContext context, String title) {
+    return Text(title,
+        style: Theme.of(context)
+            .textTheme
+            .headline5
+            ?.copyWith(fontFamily: 'FF Infra Bold'));
+  }
+
   /// loads stock quote .. change and other stuff
   loadStockQuote({required String stockName}) async {
     try {
@@ -125,71 +131,128 @@ class _FullStockInfoState extends State<FullStockInfo> {
     }
   }
 
+  // builds stock widget with name add to watchlist and changes
+  stockWidget() {
+    return Stack(
+      children: [
+        Card(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          shape: const RoundedRectangleBorder(),
+          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              // name and full name of stock
+              RichText(
+                text: TextSpan(
+                    text:
+                        '${stockQuote!.ticker.toString().replaceAll('.NS', '')}  ',
+                    style: Theme.of(context).textTheme.headline4?.copyWith(
+                        fontFamily: 'FF Infra Bold',
+                        color: Theme.of(context).textTheme.headline6!.color),
+                    children: [
+                      TextSpan(
+                          text: stockQuote!.metaData!.shortName.toString(),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontFamily: 'FF Infra',
+                                  ))
+                    ]),
+              ),
+              // a simple divider
+              const Divider(),
+              // current price and percent change
+              RichText(
+                text: TextSpan(
+                    text: '${stockQuote!.currentPrice!.toStringAsFixed(2)}  ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        ?.copyWith(fontFamily: 'FF Infra Bold'),
+                    children: [
+                      TextSpan(
+                          text:
+                              "${stockQuote!.regularMarketChangePercent!.toStringAsFixed(2)}%",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                fontFamily: 'FF Infra',
+                                color:
+                                    stockQuote!.regularMarketChangePercent! < 0
+                                        ? Colors.red
+                                        : Colors.green,
+                              ))
+                    ]),
+              ),
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  tooltip: 'Add or remove from watchlist',
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    if (isInWatchList) {
+                      removeFromWatchList(stockName: widget.stockName);
+                    } else {
+                      saveToWatchList(stockName: widget.stockName);
+                    }
+                    setState(() {
+                      isInWatchList = !isInWatchList;
+                    });
+                  },
+                  icon: Icon(
+                    isInWatchList
+                        ? Icons.bookmark_remove
+                        : Icons.bookmark_add_outlined,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: const Icon(
+                    Icons.close_rounded,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   /// build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: [
-          // add remove from watchlist
-          // Align(
-          //   alignment: Alignment.centerRight,
-          //   child: IconButton(
-          //     tooltip: !isInWatchList
-          //         ? 'Add stock in watchlist'
-          //         : 'Remove stock from Watchlist',
-          //     onPressed: () {
-          //       if (isInWatchList) {
-          //         removeFromWatchList(stockName: widget.stockName);
-          //       } else {
-          //         saveToWatchList(stockName: widget.stockName);
-          //       }
-          //       setState(() {
-          //         isInWatchList = !isInWatchList;
-          //       });
-          //     },
-          //     icon: Icon(
-          //       isInWatchList ? Icons.favorite : Icons.favorite_border,
-          //       color: isInWatchList ? kPrimaryRed : Colors.grey,
-          //     ),
-          //   ),
-          // ),
           const SizedBox(
-            height: 5,
+            height: 10,
           ),
-          Center(
-            child: ElevatedButton.icon(
-              label: Text(
-                  isInWatchList ? 'Remove from watchlist' : 'Add to watchlist'),
-              style: ElevatedButton.styleFrom(elevation: 10),
-              // tooltip: !isInWatchList
-              //     ? 'Add stock in watchlist'
-              //     : 'Remove stock from Watchlist',
-              onPressed: () {
-                if (isInWatchList) {
-                  removeFromWatchList(stockName: widget.stockName);
-                } else {
-                  saveToWatchList(stockName: widget.stockName);
-                }
-                setState(() {
-                  isInWatchList = !isInWatchList;
-                });
-              },
-              icon: Icon(
-                isInWatchList ? Icons.remove : Icons.favorite,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
+
           // stock name and info with add to favourite button
           stockQuoteMode == 1
-              ? WatchListStock(
-                  stockData: stockQuote!,
-                  colored: false,
-                )
+              ? stockWidget()
               : SizedBox(
                   height: Get.height * 0.2,
                   child: const Center(
@@ -234,9 +297,9 @@ class _FullStockInfoState extends State<FullStockInfo> {
           margin: const EdgeInsets.all(10),
           child: tripleInfoRow(
               h1: 'Day High',
-              t1: stockQuote.dayHigh.toString(),
+              t1: stockQuote.dayHigh!.toStringAsFixed(2),
               h2: 'Day Low',
-              t2: stockQuote.dayLow.toString(),
+              t2: stockQuote.dayLow!.toStringAsFixed(2),
               h3: 'Day Vol.',
               t3: stockQuote.regularMarketVolume.toString()),
         ),
@@ -248,11 +311,11 @@ class _FullStockInfoState extends State<FullStockInfo> {
               h1: '50d Change',
               t1: (stockQuote.fiftyDayAverageChangePercent! *
                       stockQuote.currentPrice!)
-                  .toStringAsPrecision(2),
+                  .toStringAsFixed(2),
               h2: '52w high',
-              t2: '${stockQuote.fiftyTwoWeekHighChangePercent!.toStringAsPrecision(2)}%',
+              t2: '${stockQuote.fiftyTwoWeekHighChangePercent!.toStringAsFixed(2)}%',
               h3: '52w Low',
-              t3: '${stockQuote.fiftyTwoWeekLowChangePercent!.toStringAsPrecision(2)}%'),
+              t3: '${stockQuote.fiftyTwoWeekLowChangePercent!.toStringAsFixed(2)}%'),
         ),
       ],
     );

@@ -41,58 +41,54 @@ class WatchListStock extends StatelessWidget {
         }
       },
       child: Card(
-        margin: colored ? null : const EdgeInsets.all(10),
-        color: colored
-            ? stockData.regularMarketChangePercent! < 0
-                ? Colors.red
-                : Colors.green
-            : Theme.of(context).cardColor,
-        shape: colored
-            ? const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)))
-            : null,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        shape: const RoundedRectangleBorder(),
+        margin: EdgeInsets.zero,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+          child: Column(
             children: [
-              Column(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   title(context,
                       stockData.ticker.toString().replaceAll('.NS', '')),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 1, left: 8, right: 8),
-                    child: Text(stockData.metaData!.shortName.toString(),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontFamily: GoogleFonts.archivo().fontFamily,
-                            )),
-                  ),
+                  title(context, stockData.currentPrice!.toStringAsFixed(2)),
                 ],
               ),
-              const Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title(context, stockData.currentPrice.toString()),
                   Padding(
-                    padding: const EdgeInsets.only(top: 1, left: 8, right: 8),
-                    child: Text(
-                        '${stockData.regularMarketChangePercent!.toStringAsPrecision(2)}%',
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text(stockData.metaData!.shortName.toString(),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              // color: controller.watchList[index]
-                              //             .regularMarketChangePercent! <
-                              //         0
-                              //     ? Colors.red
-                              //     : Colors.green,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.archivo().fontFamily,
+                              fontFamily: 'FF Infra',
                             )),
+                  ),
+                  Container(
+                    constraints: const BoxConstraints(minWidth: 60),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: stockData.regularMarketChangePercent! < 0
+                          ? Colors.red
+                          : Colors.green,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(
+                          '${stockData.regularMarketChangePercent!.toStringAsFixed(2)}%',
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                  fontFamily: 'FF Infra', color: Colors.white)),
+                    ),
                   ),
                 ],
               ),
+              const Divider()
             ],
           ),
         ),
@@ -101,13 +97,11 @@ class WatchListStock extends StatelessWidget {
   }
 
   /// title
-  Padding title(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontFamily: GoogleFonts.archivoBlack().fontFamily,
-              )),
-    );
+  title(BuildContext context, String title) {
+    return Text(title,
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium
+            ?.copyWith(fontFamily: 'FF Infra Bold'));
   }
 }
