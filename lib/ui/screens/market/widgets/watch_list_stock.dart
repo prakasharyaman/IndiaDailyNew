@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:indiadaily/ui/screens/market/pages/full_stock_info.dart';
 import 'package:yahoofin/yahoofin.dart';
 

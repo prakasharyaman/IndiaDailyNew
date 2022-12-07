@@ -83,12 +83,13 @@ showANotification({required RemoteMessage message}) async {
     htmlFormatSummaryText: true,
   );
   // large icon png to base 64 string
-  String largeIcon = await base64encodedImage(messageData['images']);
+  ByteArrayAndroidBitmap largeIcon =
+      ByteArrayAndroidBitmap(await getByteArrayFromUrl(messageData['images']));
   // android notification details
   AndroidNotificationDetails androidNotificationDetails =
       AndroidNotificationDetails('alert', 'News Alerts',
           channelDescription: 'Latest and trending news alerts',
-          largeIcon: ByteArrayAndroidBitmap.fromBase64String(largeIcon),
+          largeIcon: largeIcon,
           icon: 'ic_stat_notification',
           styleInformation: bigTextStyleInformation);
   // full notifications details
@@ -126,6 +127,13 @@ Future<String> base64encodedImage(String url) async {
   final http.Response response = await http.get(Uri.parse(url));
   final String base64Data = base64Encode(response.bodyBytes);
   return base64Data;
+}
+
+/// Converts given url image to [Uint8List] encoded image string.
+@pragma('vm:entry-point')
+Future<Uint8List> getByteArrayFromUrl(String url) async {
+  final http.Response response = await http.get(Uri.parse(url));
+  return response.bodyBytes;
 }
 
 /// notifies when the user engages with a notification

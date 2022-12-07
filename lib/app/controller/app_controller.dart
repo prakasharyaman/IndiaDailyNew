@@ -26,13 +26,27 @@ enum AppStatus {
 }
 
 class AppController extends GetxController {
+  /// app status
   Rx<AppStatus> appStatus = AppStatus.loading.obs;
+
+  /// analytics instance
+  final FirebaseAnalytics firebaseAnalytics;
+
+  /// auth instance
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  // user repository
   UserRepository userRepository = UserRepository();
+  // user obs
   Rxn<User> user = Rxn<User>();
+  // userModel
   var userModel = UserModel().obs;
+  // userTopicPreferences
   List<String> userTopicPreferences = [];
+
+  AppController(this.firebaseAnalytics);
+  // user stream
   Stream<User?> get userStream => firebaseAuth.authStateChanges();
+
   @override
   void onInit() {
     super.onInit();
@@ -40,12 +54,6 @@ class AppController extends GetxController {
     ever(user, handleAuthChanged);
     //bind to user model
     user.bindStream(userStream);
-  }
-
-  /// set analytics user id
-  setAnalyticsUserId() async {
-    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-    await analytics.setUserId(id: userModel.value.id);
   }
 
   /// Handles changes in auth behaviour.
@@ -56,7 +64,7 @@ class AppController extends GetxController {
       // subscribe
       subscribeToTopic();
       // analytics
-      await setAnalyticsUserId();
+      await firebaseAnalytics.setUserId(id: firebaseUser.uid);
       // runs the main app logic
       runAppLogic();
     } else if (firebaseUser == null) {

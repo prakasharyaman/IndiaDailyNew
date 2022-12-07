@@ -10,8 +10,17 @@ import 'package:indiadaily/app/get_pages.dart';
 import 'package:indiadaily/app/root.dart';
 import 'package:indiadaily/ui/constants.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  // firebase analytics
+  FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.instance;
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -34,7 +43,6 @@ class App extends StatelessWidget {
             blendOnColors: false,
             blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        // To use the playground font, add GoogleFonts package and uncomment
         fontFamily: GoogleFonts.montserrat().fontFamily,
       ),
       darkTheme: FlexThemeData.dark(
@@ -42,7 +50,6 @@ class App extends StatelessWidget {
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         scaffoldBackground: kOffBlack,
         appBarBackground: kOffBlack,
-
         subThemesData: const FlexSubThemesData(
             appBarCenterTitle: true,
             fabSchemeColor: SchemeColor.primary,
@@ -52,19 +59,15 @@ class App extends StatelessWidget {
             blendOnColors: false,
             blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        // To use the playground font, add GoogleFonts package and uncomment
         fontFamily: GoogleFonts.montserrat().fontFamily,
       ),
-      // If you do not have a themeMode switch, uncomment this line
-      // to let the device system mode control the theme mode:
-      // themeMode: ThemeMode.system,
       themeMode: ThemeMode.system,
-      initialBinding: AppBindings(),
+      initialBinding: AppBindings(firebaseAnalytics),
       getPages: getPages(),
       builder: EasyLoading.init(),
       home: const Root(),
       navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+        FirebaseAnalyticsObserver(analytics: firebaseAnalytics),
       ],
     );
   }
