@@ -9,6 +9,7 @@ import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/market/market.dart';
+import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
 import '../../../services/index.dart';
 import '../settings/page/settings_page.dart';
 
@@ -18,7 +19,6 @@ class Home extends GetView<HomeController> {
     const Discover(),
     const Feed(),
     const Market(),
-    // const NotificationsSettings()
   ];
   @override
   Widget build(BuildContext context) {
@@ -49,10 +49,6 @@ class Home extends GetView<HomeController> {
                     icon: Icon(FontAwesomeIcons.chartLine),
                     label: 'Market',
                   ),
-                  // BottomNavigationBarItem(
-                  //   icon: Icon(FontAwesomeIcons.solidUser),
-                  //   label: 'User',
-                  // ),
                 ],
                 type: BottomNavigationBarType.fixed,
                 currentIndex: controller.bottomNavigationIndex.value,
@@ -184,8 +180,9 @@ class Home extends GetView<HomeController> {
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
               child: GestureDetector(
                 onTap: () {
-                  launchAppUrl(
-                      url: 'https://www.otft.in/india-daily-privacy-policy');
+                  //   launchAppUrl(
+                  //       url: 'https://www.otft.in/india-daily-privacy-policy');
+                  // },
                 },
                 child: Text(
                   'Terms of Service | Privacy Policy',

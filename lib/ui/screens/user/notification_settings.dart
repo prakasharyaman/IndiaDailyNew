@@ -62,86 +62,90 @@ class _NotificationSettingsState extends State<NotificationSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        // notifications
-        ListTile(
-          leading: const Icon(FontAwesomeIcons.bell),
-          title: title(context, 'Notifications'),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 1,
+        title: Text(
+          'My Subscriptions',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
         ),
-        // alerts
-        SwitchListTile(
-            title: settingTitle(context, "Alerts"),
-            value: true,
-            onChanged: (_) {
-              EasyLoading.showToast('Cannot change alerts');
-            }),
-        //breaking
-        SwitchListTile(
-            title: settingTitle(context, "Breaking News"),
-            subtitle: settingDescription(context, '~ 1 per day'),
-            value: userSettings['breaking'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'breaking', to: _);
-            }),
-        //business
-        SwitchListTile(
-            title: settingTitle(context, "Business"),
-            subtitle: settingDescription(context, '~ 2 per day'),
-            value: userSettings['business'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'business', to: _);
-            }),
-        //science
-        SwitchListTile(
-            title: settingTitle(context, "Science"),
-            subtitle: settingDescription(context, '~ 3 per week'),
-            value: userSettings['science'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'science', to: _);
-            }),
-        //entertainment
-        SwitchListTile(
-            title: settingTitle(context, "Bollywood"),
-            subtitle: settingDescription(context, '~ 1 per day'),
-            value: userSettings['entertainment'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'entertainment', to: _);
-            }),
-        //health
-        SwitchListTile(
-            title: settingTitle(context, "Health"),
-            subtitle: settingDescription(context, '~ 1 per day'),
-            value: userSettings['health'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'health', to: _);
-            }),
-        //sports
-        SwitchListTile(
-            title: settingTitle(context, "Sports"),
-            subtitle: settingDescription(context, '~ 5 per week'),
-            value: userSettings['sports'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'sports', to: _);
-            }),
-        //technology
-        SwitchListTile(
-            title: settingTitle(context, "Technology"),
-            subtitle: settingDescription(context, '~ 4 per week'),
-            value: userSettings['technology'] ?? false,
-            onChanged: (_) {
-              changeUserSetting(of: 'technology', to: _);
-            }),
-        // more settings
-        ListTile(
-          onTap: () {
-            Get.toNamed('/settings');
-          },
-          leading: const Icon(FontAwesomeIcons.gear),
-          title: title(context, 'More Settings'),
-          trailing: const Icon(FontAwesomeIcons.arrowRight),
-        ),
-      ],
+      ),
+      body: ListView(
+        children: [
+          // notifications
+          ListTile(
+            leading: const Icon(FontAwesomeIcons.bell),
+            title: title(context, 'Notifications'),
+          ),
+          // alerts
+          SwitchListTile(
+              title: settingTitle(context, "Alerts"),
+              value: true,
+              onChanged: (_) {
+                EasyLoading.showToast('Cannot change alerts');
+              }),
+          //breaking
+          SwitchListTile(
+              title: settingTitle(context, "Breaking News"),
+              subtitle: settingDescription(context, '~ 1 per day'),
+              value: userSettings['breaking'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'breaking', to: _);
+              }),
+          //business
+          SwitchListTile(
+              title: settingTitle(context, "Business"),
+              subtitle: settingDescription(context, '~ 2 per day'),
+              value: userSettings['business'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'business', to: _);
+              }),
+          //science
+          SwitchListTile(
+              title: settingTitle(context, "Science"),
+              subtitle: settingDescription(context, '~ 3 per week'),
+              value: userSettings['science'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'science', to: _);
+              }),
+          //entertainment
+          SwitchListTile(
+              title: settingTitle(context, "Bollywood"),
+              subtitle: settingDescription(context, '~ 1 per day'),
+              value: userSettings['entertainment'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'entertainment', to: _);
+              }),
+          //health
+          SwitchListTile(
+              title: settingTitle(context, "Health"),
+              subtitle: settingDescription(context, '~ 1 per day'),
+              value: userSettings['health'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'health', to: _);
+              }),
+          //sports
+          SwitchListTile(
+              title: settingTitle(context, "Sports"),
+              subtitle: settingDescription(context, '~ 5 per week'),
+              value: userSettings['sports'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'sports', to: _);
+              }),
+          //technology
+          SwitchListTile(
+              title: settingTitle(context, "Technology"),
+              subtitle: settingDescription(context, '~ 4 per week'),
+              value: userSettings['technology'] ?? false,
+              onChanged: (_) {
+                changeUserSetting(of: 'technology', to: _);
+              }),
+        ],
+      ),
     );
   }
 

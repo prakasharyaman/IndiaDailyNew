@@ -46,12 +46,34 @@ class NewsShotPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 20),
-                      child: Text(
-                        "Good ${greeting()}",
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.prompt().fontFamily,
-                            ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // greeting
+                          Text(
+                            "Good ${greeting()}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: GoogleFonts.prompt().fontFamily,
+                                ),
+                          ),
+                          const Spacer(),
+                          // notifications button
+                          IconButton(
+                              onPressed: () {
+                                Get.toNamed('/notificationsHistory');
+                              },
+                              icon: const Icon(Icons.notifications_outlined)),
+                          // settings button
+                          IconButton(
+                              onPressed: () {
+                                Get.toNamed('/settings');
+                              },
+                              icon: const Icon(Icons.settings_outlined))
+                        ],
                       ),
                     ),
                   ),

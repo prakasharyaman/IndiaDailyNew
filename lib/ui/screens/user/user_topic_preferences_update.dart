@@ -23,58 +23,71 @@ class _UsertopicPreferencesUpdateState
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        CustomMultiSelectField(
-            title: 'Update the topics you would love to read?',
-            subtitle: 'Select at least 3',
-            initialValue: appController.userTopicPreferences,
-            onTap: (_) {
-              selectedTopics = List<String>.from(_);
-            },
-            items: kTopicPreferencesList),
-        // elevated card with text button that says update
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: SizedBox(
-            width: Get.width,
-            child: Card(
-              margin: EdgeInsets.zero,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12))),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextButton(
-                    onPressed: () {
-                      if (selectedTopics.length < 3) {
-                        EasyLoading.showToast('Select at least 3');
-                      } else {
-                        saveTopicPreferences(topicsList: selectedTopics);
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: kPrimaryRed,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        updateButtonText,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                fontFamily:
-                                    GoogleFonts.archivoBlack().fontFamily,
-                                color: Colors.white),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 1,
+        title: Text(
+          'Topic Preferences',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Stack(
+        children: [
+          CustomMultiSelectField(
+              title: 'Update the topics you would love to read?',
+              subtitle: 'Select at least 3',
+              initialValue: appController.userTopicPreferences,
+              onTap: (_) {
+                selectedTopics = List<String>.from(_);
+              },
+              items: kTopicPreferencesList),
+          // elevated card with text button that says update
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              width: Get.width,
+              child: Card(
+                margin: EdgeInsets.zero,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12))),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextButton(
+                      onPressed: () {
+                        if (selectedTopics.length < 3) {
+                          EasyLoading.showToast('Select at least 3');
+                        } else {
+                          saveTopicPreferences(topicsList: selectedTopics);
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: kPrimaryRed,
                       ),
-                    )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          updateButtonText,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.archivoBlack().fontFamily,
+                                  color: Colors.white),
+                        ),
+                      )),
+                ),
               ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
