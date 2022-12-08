@@ -9,9 +9,7 @@ import 'package:indiadaily/ui/screens/discover/discover.dart';
 import 'package:indiadaily/ui/screens/feed/feed.dart';
 import 'package:indiadaily/ui/screens/home/controller/home_controller.dart';
 import 'package:indiadaily/ui/screens/market/market.dart';
-import 'package:indiadaily/ui/screens/settings/page/settings_page.dart';
 import '../../../services/index.dart';
-import '../settings/page/settings_page.dart';
 
 class Home extends GetView<HomeController> {
   Home({super.key});
@@ -101,7 +99,7 @@ class Home extends GetView<HomeController> {
               },
               leading: const Icon(FontAwesomeIcons.house),
               title: Text(
-                'For You',
+                'Feed',
                 style: TextStyle(
                     fontFamily: GoogleFonts.archivoBlack().fontFamily),
               ),
@@ -133,19 +131,7 @@ class Home extends GetView<HomeController> {
                     fontFamily: GoogleFonts.archivoBlack().fontFamily),
               ),
             ),
-            // user settings
-            ListTile(
-              onTap: () {
-                controller.advancedDrawerController.hideDrawer();
-                Get.toNamed('/notificationsSettings');
-              },
-              leading: const Icon(FontAwesomeIcons.solidUser),
-              title: Text(
-                'Me',
-                style: TextStyle(
-                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
-              ),
-            ),
+
             //  settings
             ListTile(
               onTap: () {

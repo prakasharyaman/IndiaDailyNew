@@ -27,106 +27,114 @@ class _MarketPageState extends State<MarketPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        controller: controller.scrollController,
-        slivers: [
-          // sized box for a bit of extra spacing
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 10),
-          ),
+    return WillPopScope(
+      onWillPop: () async {
+        controller.homeController.changeBottomNavigationIndex(1);
+        return false;
+      },
+      child: SafeArea(
+        child: CustomScrollView(
+          controller: controller.scrollController,
+          slivers: [
+            // sized box for a bit of extra spacing
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 10),
+            ),
 
-          //market heading
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Market',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
+            //market heading
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Market',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontFamily: GoogleFonts.archivoBlack().fontFamily),
+                ),
               ),
             ),
-          ),
 
-          // today's date
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                formatDate(DateTime.now(), [d, ' ', MM]),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                    color: Theme.of(context).textTheme.headline4?.color),
+            // today's date
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  formatDate(DateTime.now(), [d, ' ', MM]),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                      color: Theme.of(context).textTheme.headline4?.color),
+                ),
               ),
             ),
-          ),
 
-          // search field
-          SearchStockWidget(
-            onTap: () {
-              showStockSearch();
-            },
-          ),
-
-          // my stocks heading
-
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
-              child: Row(
-                children: [
-                  Text(
-                    'My Stocks',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                        ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        showWatchListBottomSheet();
-                      },
-                      icon: const Icon(FontAwesomeIcons.ellipsis)),
-                ],
-              ),
-            ),
-          ),
-
-          // my stocks cards
-          SliverList(
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              StockQuote stockData = controller.watchList[index];
-              return WatchListStock(stockData: stockData);
-            }, childCount: controller.watchList.length),
-          ),
-
-          // business news
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                'Business News',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontFamily: GoogleFonts.archivoBlack().fontFamily),
-              ),
-            ),
-          ),
-
-          // business news list
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                // NewsShotRow
-                return SmallNewsShotCard(
-                  newsShot: controller.newsShots[index],
-                  showCategory: false,
-                );
+            // search field
+            SearchStockWidget(
+              onTap: () {
+                showStockSearch();
               },
-              childCount: controller.newsShots.length,
             ),
-          )
-        ],
+
+            // my stocks heading
+
+            SliverToBoxAdapter(
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'My Stocks',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                          ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          showWatchListBottomSheet();
+                        },
+                        icon: const Icon(FontAwesomeIcons.ellipsis)),
+                  ],
+                ),
+              ),
+            ),
+
+            // my stocks cards
+            SliverList(
+              delegate:
+                  SliverChildBuilderDelegate((BuildContext context, int index) {
+                StockQuote stockData = controller.watchList[index];
+                return WatchListStock(stockData: stockData);
+              }, childCount: controller.watchList.length),
+            ),
+
+            // business news
+            SliverToBoxAdapter(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  'Business News',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontFamily: GoogleFonts.archivoBlack().fontFamily),
+                ),
+              ),
+            ),
+
+            // business news list
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  // NewsShotRow
+                  return SmallNewsShotCard(
+                    newsShot: controller.newsShots[index],
+                    showCategory: false,
+                  );
+                },
+                childCount: controller.newsShots.length,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -137,7 +145,7 @@ class _MarketPageState extends State<MarketPage> {
         context: context,
         delegate: SearchPage<StockModel>(
             searchStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                  fontFamily: 'FF Infra Bold',
                 ),
             showItemsOnEmpty: true,
             searchLabel: 'Search Stocks',
