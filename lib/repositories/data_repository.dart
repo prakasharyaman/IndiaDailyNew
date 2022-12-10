@@ -12,13 +12,14 @@ class DataRepository {
       {String? where,
       List<String>? equals,
       bool loadFromCache = false,
-      int limit = 300}) async {
+      int limit = 80}) async {
     List<Article> articles = [];
     await database
         .collection('news')
         .doc('articles')
         .collection('articles')
         .where(where ?? "category", whereIn: equals ?? kArticlesCategories)
+        .orderBy('timestamp', descending: true)
         .limit(limit)
         .get(GetOptions(
             source: loadFromCache ? Source.cache : Source.serverAndCache))
@@ -66,13 +67,14 @@ class DataRepository {
       {String? where,
       List<String>? equals,
       bool loadFromCache = false,
-      int limit = 200}) async {
+      int limit = 60}) async {
     List<NewsShot> shots = [];
     await database
         .collection('news')
         .doc('newsShots')
         .collection("all")
         .where(where ?? "category", whereIn: equals ?? kNewsShotCategories)
+        .orderBy('timestamp', descending: true)
         .limit(limit)
         .get(GetOptions(
             source: loadFromCache ? Source.cache : Source.serverAndCache))
