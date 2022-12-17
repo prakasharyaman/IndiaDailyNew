@@ -108,10 +108,8 @@ class BulletedList extends StatelessWidget {
                         '',
                       )
                     : item is String
-                        ? Text(
-                            item,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          )
+                        ? Text(item,
+                            style: Theme.of(context).textTheme.bodyMedium)
                         : item is Widget
                             ? item
                             : Text(

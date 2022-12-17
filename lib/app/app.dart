@@ -43,7 +43,7 @@ class _AppState extends State<App> {
             blendOnColors: false,
             blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        fontFamily: GoogleFonts.montserrat().fontFamily,
+        fontFamily: 'FF Infra',
       ),
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.red,

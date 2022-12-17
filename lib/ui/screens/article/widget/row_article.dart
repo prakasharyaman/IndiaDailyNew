@@ -32,6 +32,7 @@ class RowArticle extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: Text(
                   article.title,
+                  maxLines: 5,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontFamily: 'FF Infra Bold',
                       ),
@@ -85,7 +86,7 @@ class RowArticle extends StatelessWidget {
                             ),
                             TextSpan(
                               text: article.description,
-                              style: Theme.of(context).textTheme.bodyLarge,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ]),
                     ),
