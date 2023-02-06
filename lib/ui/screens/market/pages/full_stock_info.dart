@@ -90,7 +90,7 @@ class _FullStockInfoState extends State<FullStockInfo> {
     return Text(title,
         style: Theme.of(context)
             .textTheme
-            .headline5
+            .headlineSmall
             ?.copyWith(fontFamily: 'FF Infra Bold'));
   }
 
@@ -150,9 +150,9 @@ class _FullStockInfoState extends State<FullStockInfo> {
                 text: TextSpan(
                     text:
                         '${stockQuote!.ticker.toString().replaceAll('.NS', '')}  ',
-                    style: Theme.of(context).textTheme.headline4?.copyWith(
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontFamily: 'FF Infra Bold',
-                        color: Theme.of(context).textTheme.headline6!.color),
+                        color: Theme.of(context).textTheme.titleLarge!.color),
                     children: [
                       TextSpan(
                           text: stockQuote!.metaData!.shortName.toString(),
@@ -170,7 +170,7 @@ class _FullStockInfoState extends State<FullStockInfo> {
                     text: '${stockQuote!.currentPrice!.toStringAsFixed(2)}  ',
                     style: Theme.of(context)
                         .textTheme
-                        .headline5
+                        .headlineSmall
                         ?.copyWith(fontFamily: 'FF Infra Bold'),
                     children: [
                       TextSpan(

@@ -7,15 +7,15 @@ Widget kAppTitle(context) {
     textAlign: TextAlign.left,
     text: TextSpan(
       text: 'India',
-      style: Theme.of(context).textTheme.headline4?.copyWith(
-            color: Theme.of(context).textTheme.headline4?.color,
+      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            color: Theme.of(context).textTheme.headlineMedium?.color,
             fontFamily: GoogleFonts.archivoBlack().fontFamily,
             // fontFamily: GoogleFonts.montserratSubrayada().fontFamily,
           ),
       children: [
         TextSpan(
           text: 'Daily',
-          style: Theme.of(context).textTheme.headline4?.copyWith(
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: kPrimaryRed,
                 fontFamily: GoogleFonts.archivoBlack().fontFamily,
               ),
@@ -30,7 +30,7 @@ Widget kDifferentAppTitle(context, title) {
       textAlign: TextAlign.center,
       text: TextSpan(
         text: title.toString(),
-        style: Theme.of(context).textTheme.headline6?.copyWith(
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Theme.of(context).primaryColor,
               fontFamily: GoogleFonts.archivoBlack().fontFamily,
             ),

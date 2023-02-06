@@ -145,7 +145,7 @@ class Discover extends StatelessWidget {
         text,
         style: Theme.of(context)
             .textTheme
-            .headline5
+            .headlineSmall
             ?.copyWith(fontFamily: 'FF Infra Bold'),
       ),
     );

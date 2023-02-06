@@ -20,7 +20,7 @@ class SearchStockWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 color: Theme.of(context)
                     .textTheme
-                    .headline4!
+                    .headlineMedium!
                     .color!
                     .withOpacity(0.05),
                 child: Row(
@@ -32,7 +32,7 @@ class SearchStockWidget extends StatelessWidget {
                     // search icon
                     Icon(
                       Icons.search,
-                      color: Theme.of(context).textTheme.headline4!.color,
+                      color: Theme.of(context).textTheme.headlineMedium!.color,
                     ),
                     // space again
                     const SizedBox(
@@ -42,7 +42,10 @@ class SearchStockWidget extends StatelessWidget {
                     Text(
                       'Search',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Theme.of(context).textTheme.headline4!.color),
+                          color: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .color),
                     )
                   ],
                 ),

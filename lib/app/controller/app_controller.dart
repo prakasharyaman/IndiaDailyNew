@@ -203,18 +203,18 @@ SizedBox updateBottomSheetWidget(BuildContext context, Color primaryColor) {
         RichText(
           text: TextSpan(
             text: "",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             children: <TextSpan>[
               TextSpan(
                 text: 'Update ',
                 style: Theme.of(context)
                     .textTheme
-                    .headline3
+                    .displaySmall
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
               TextSpan(
                 text: 'Available',
-                style: Theme.of(context).textTheme.headline3?.copyWith(
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.bold, color: primaryColor),
               ),
             ],

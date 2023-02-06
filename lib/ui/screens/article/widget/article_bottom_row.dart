@@ -83,7 +83,7 @@ class _ArticleBottomRowState extends State<ArticleBottomRow> {
             backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
             child: CircleAvatar(
               radius: 13,
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).colorScheme.background,
               backgroundImage: !logoError
                   ? CachedNetworkImageProvider(
                       'https://www.google.com/s2/favicons?domain=${Uri.parse(article.url).host}&sz=64',

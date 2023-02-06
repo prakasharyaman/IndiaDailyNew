@@ -7,6 +7,7 @@ import 'package:indiadaily/custom/bulleted_list.dart';
 import 'package:indiadaily/custom/custom_cached_image.dart';
 import 'package:indiadaily/custom/screenshot/screenshot.dart';
 import 'package:indiadaily/ui/screens/newsShot/widgets/news_shot_bottom_row.dart';
+import 'package:indiadaily/ui/widgets/banner_ad.dart';
 import 'package:indiadaily/util/string_utils.dart';
 import 'package:nested_scroll_views/nested_scroll_views.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -54,7 +55,7 @@ class NewsShotPage extends StatelessWidget {
                             "Good ${greeting()}",
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
+                                .titleLarge
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: GoogleFonts.prompt().fontFamily,
@@ -135,6 +136,8 @@ class NewsShotPage extends StatelessWidget {
                     ),
                   ),
                   Visibility(visible: sharing, child: const Brandings()),
+                  // ad widget
+                  const BannerAdWidget(),
                   // just some space
                   SizedBox(
                     height: Get.height * 0.1,

@@ -61,7 +61,7 @@ class _MarketPageState extends State<MarketPage> {
                   formatDate(DateTime.now(), [d, ' ', MM]),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontFamily: GoogleFonts.archivoBlack().fontFamily,
-                      color: Theme.of(context).textTheme.headline4?.color),
+                      color: Theme.of(context).textTheme.headlineMedium?.color),
                 ),
               ),
             ),

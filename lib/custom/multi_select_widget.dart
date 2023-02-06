@@ -58,7 +58,7 @@ class CustomMultiSelectField<V> extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.headline5?.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontFamily: GoogleFonts.archivoBlack().fontFamily,
                   ),
             ),
@@ -85,10 +85,10 @@ class CustomMultiSelectField<V> extends StatelessWidget {
             initialValue: initialValue,
             chipShape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            textStyle: Theme.of(context).textTheme.headline6?.copyWith(
+            textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontFamily: GoogleFonts.archivoBlack().fontFamily,
                 ),
-            selectedTextStyle: Theme.of(context).textTheme.headline6?.copyWith(
+            selectedTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: Colors.white,
                   fontFamily: GoogleFonts.archivoBlack().fontFamily,
                 ),

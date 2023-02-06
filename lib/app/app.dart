@@ -29,6 +29,8 @@ class _AppState extends State<App> {
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: PointerDeviceKind.values.toSet(),
       ),
+
+      /// light theme
       theme: FlexThemeData.light(
         scheme: FlexScheme.red,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
@@ -38,13 +40,15 @@ class _AppState extends State<App> {
             appBarCenterTitle: true,
             fabSchemeColor: SchemeColor.primary,
             bottomNavigationBarElevation: 2,
-            cardRadius: 2,
+            cardRadius: 3,
             cardElevation: 0,
             blendOnColors: false,
             blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         fontFamily: 'FF Infra',
       ),
+
+      /// dark theme
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.red,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
@@ -54,13 +58,15 @@ class _AppState extends State<App> {
             appBarCenterTitle: true,
             fabSchemeColor: SchemeColor.primary,
             bottomNavigationBarElevation: 2,
-            cardRadius: 2,
+            cardRadius: 3,
             cardElevation: 0,
             blendOnColors: false,
             blendTextTheme: false),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         fontFamily: GoogleFonts.montserrat().fontFamily,
       ),
+
+      /// theme mode
       themeMode: ThemeMode.system,
       initialBinding: AppBindings(firebaseAnalytics),
       getPages: getPages(),

@@ -86,7 +86,7 @@ class _NewsShotBottomRowState extends State<NewsShotBottomRow> {
             backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
             child: CircleAvatar(
               radius: 13,
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).colorScheme.background,
               backgroundImage: !logoError
                   ? CachedNetworkImageProvider(
                       newsShot.readMore.length > 10

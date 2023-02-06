@@ -28,7 +28,7 @@ class Hello extends StatelessWidget {
               textAlign: TextAlign.center,
               text: TextSpan(
                   text: 'India',
-                  style: Theme.of(context).textTheme.headline1?.copyWith(
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     fontFamily: GoogleFonts.archivoBlack().fontFamily,
                     shadows: <Shadow>[
                       Shadow(
@@ -36,7 +36,7 @@ class Hello extends StatelessWidget {
                           blurRadius: 2.0,
                           color: Theme.of(context)
                                   .textTheme
-                                  .headline1
+                                  .displayLarge
                                   ?.color
                                   ?.withOpacity(0.1) ??
                               Colors.grey.shade50),
@@ -45,7 +45,7 @@ class Hello extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: 'Daily',
-                      style: Theme.of(context).textTheme.headline1?.copyWith(
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         fontFamily: GoogleFonts.archivoBlack().fontFamily,
                         color: kPrimaryRed,
                         shadows: <Shadow>[
@@ -73,7 +73,7 @@ class Hello extends StatelessWidget {
                 blurRadius: 2.0,
                 color: Theme.of(context)
                         .textTheme
-                        .headline1
+                        .displayLarge
                         ?.color
                         ?.withOpacity(0.1) ??
                     Colors.black),
@@ -92,7 +92,7 @@ class Hello extends StatelessWidget {
                     blurRadius: 2.0,
                     color: Theme.of(context)
                             .textTheme
-                            .headline1
+                            .displayLarge
                             ?.color
                             ?.withOpacity(0.1) ??
                         Colors.black),

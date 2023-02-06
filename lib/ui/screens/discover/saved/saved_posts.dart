@@ -30,7 +30,7 @@ class SavedPosts extends StatelessWidget {
         textAlign: TextAlign.center,
         text: TextSpan(
           text: title.toString(),
-          style: Theme.of(context).textTheme.headline6?.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).primaryColor,
                 fontFamily: GoogleFonts.archivoBlack().fontFamily,
               ),
