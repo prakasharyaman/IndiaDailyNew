@@ -22,7 +22,7 @@ String? appTerminatedNotificationPayload;
 final StreamController<String?> backgroundOrForegroundNotificationStream =
     StreamController<String?>.broadcast();
 
-/// initializes flutter local notification
+/// initializes flutter local notification pliugin
 @pragma('vm:entry-point')
 initializeFlutterLocalNotificationPlugins() async {
   // check if notification launched the app or not

@@ -14,7 +14,9 @@ class TopicPreferences extends StatefulWidget {
 }
 
 class _TopicPreferencesState extends State<TopicPreferences> {
+  // controller for app
   AppController appController = Get.find<AppController>();
+  // list of selected topics
   List<String> selectedTopics = [];
 
   @override
@@ -28,15 +30,16 @@ class _TopicPreferencesState extends State<TopicPreferences> {
       body: Stack(
         children: [
           SafeArea(
-              child: CustomMultiSelectField(
-                  items: kTopicPreferencesList,
-                  subtitle: 'Select at least 3',
-                  onTap: (slectedValues) {
-                    selectedTopics = List<String>.from(slectedValues);
-                  },
-                  showDivider: true,
-                  initialValue: appController.userTopicPreferences,
-                  title: 'Which topics would you love to read?')),
+            child: CustomMultiSelectField(
+                items: kTopicPreferencesList,
+                subtitle: 'Select at least 3',
+                onTap: (slectedValues) {
+                  selectedTopics = List<String>.from(slectedValues);
+                },
+                showDivider: true,
+                initialValue: appController.userTopicPreferences,
+                title: 'Which topics would you love to read?'),
+          ),
           // buttons for skipping and continue
           Align(
             alignment: Alignment.bottomCenter,
@@ -45,32 +48,30 @@ class _TopicPreferencesState extends State<TopicPreferences> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextButton(
-                    onPressed: () {
-                      if (selectedTopics.length < 3) {
-                        EasyLoading.showToast('Select at least 3');
-                      } else {
-                        saveTopicPreferences(topicsList: selectedTopics);
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: kPrimaryRed,
+                  onPressed: () {
+                    if (selectedTopics.length < 3) {
+                      EasyLoading.showToast('Select at least 3');
+                    } else {
+                      saveTopicPreferences(topicsList: selectedTopics);
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: kPrimaryRed,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Continue',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontFamily: GoogleFonts.archivoBlack().fontFamily,
+                            color: Colors.white,
+                          ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Continue',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                fontFamily:
-                                    GoogleFonts.archivoBlack().fontFamily,
-                                color: Colors.white),
-                      ),
-                    )),
+                  ),
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -109,27 +110,27 @@ class _TopicPreferencesState extends State<TopicPreferences> {
     appController.runAppLogic();
   }
 }
-  // Expanded(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.all(8.0),
-  //                       child: TextButton(
-  //                           onPressed: () {
-  //                             showSkipDialog();
-  //                           },
-  //                           style: TextButton.styleFrom(
-  //                               side: BorderSide(color: kPrimaryRed)),
-  //                           child: Padding(
-  //                             padding: const EdgeInsets.all(8.0),
-  //                             child: Text(
-  //                               'Skip',
-  //                               style: Theme.of(context)
-  //                                   .textTheme
-  //                                   .titleMedium
-  //                                   ?.copyWith(
-  //                                       fontFamily: GoogleFonts.archivoBlack()
-  //                                           .fontFamily,
-  //                                       color: kPrimaryRed),
-  //                             ),
-  //                           )),
-  //                     ),
-  //                   ),
+// Expanded(
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: TextButton(
+//                           onPressed: () {
+//                             showSkipDialog();
+//                           },
+//                           style: TextButton.styleFrom(
+//                               side: BorderSide(color: kPrimaryRed)),
+//                           child: Padding(
+//                             padding: const EdgeInsets.all(8.0),
+//                             child: Text(
+//                               'Skip',
+//                               style: Theme.of(context)
+//                                   .textTheme
+//                                   .titleMedium
+//                                   ?.copyWith(
+//                                       fontFamily: GoogleFonts.archivoBlack()
+//                                           .fontFamily,
+//                                       color: kPrimaryRed),
+//                             ),
+//                           )),
+//                     ),
+//                   ),
