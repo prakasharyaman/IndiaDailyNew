@@ -29,6 +29,7 @@ class _TopicPreferencesState extends State<TopicPreferences> {
     return Scaffold(
       body: Stack(
         children: [
+          // multi select field
           SafeArea(
             child: CustomMultiSelectField(
                 items: kTopicPreferencesList,

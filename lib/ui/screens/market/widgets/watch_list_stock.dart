@@ -50,9 +50,14 @@ class WatchListStock extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  title(context,
-                      stockData.ticker.toString().replaceAll('.NS', '')),
-                  title(context, stockData.currentPrice!.toStringAsFixed(2)),
+                  title(
+                    context,
+                    stockData.ticker.toString().replaceAll('.NS', ''),
+                  ),
+                  title(
+                    context,
+                    stockData.currentPrice!.toStringAsFixed(2),
+                  ),
                 ],
               ),
               Row(
@@ -60,10 +65,12 @@ class WatchListStock extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(stockData.metaData!.shortName.toString(),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontFamily: 'FF Infra',
-                            )),
+                    child: Text(
+                      stockData.metaData!.shortName.toString(),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontFamily: 'FF Infra',
+                          ),
+                    ),
                   ),
                   Container(
                     constraints: const BoxConstraints(minWidth: 60),
@@ -87,7 +94,7 @@ class WatchListStock extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider()
+              const Divider(),
             ],
           ),
         ),
@@ -97,10 +104,12 @@ class WatchListStock extends StatelessWidget {
 
   /// title
   title(BuildContext context, String title) {
-    return Text(title,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(fontFamily: 'FF Infra Bold'));
+    return Text(
+      title,
+      style: Theme.of(context)
+          .textTheme
+          .titleMedium
+          ?.copyWith(fontFamily: 'FF Infra Bold'),
+    );
   }
 }

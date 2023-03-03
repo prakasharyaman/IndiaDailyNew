@@ -84,14 +84,18 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
           axisNameSize: 45,
           axisNameWidget: Row(
             children: [
+              // space
               const SizedBox(
                 width: 20,
               ),
+              // minimum of close list
               RotatedBox(
                 quarterTurns: 1,
                 child: Text(closeList.reduce(min).toInt().toString()),
               ),
+              // expand to  gather size
               const Spacer(),
+              // maximum close list
               RotatedBox(
                   quarterTurns: 1,
                   child: Text(

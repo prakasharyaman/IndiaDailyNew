@@ -29,6 +29,7 @@ class _MarketPageState extends State<MarketPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        // deny back and return to home main
         controller.homeController.changeBottomNavigationIndex(1);
         return false;
       },
@@ -201,18 +202,20 @@ class _MarketPageState extends State<MarketPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: RichText(
-                      text: TextSpan(
-                          text: 'Configure your ',
-                          style: Theme.of(context).textTheme.titleMedium,
-                          children: [
+                    text: TextSpan(
+                      text: 'Configure your ',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      children: [
                         TextSpan(
                           text: 'Watchlist.',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
-                        )
-                      ])),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 // add stocks
                 BottomSheetTile(

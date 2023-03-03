@@ -22,7 +22,8 @@ class MarketController extends GetxController {
 
   /// data repo
   DataRepository dataRepository = DataRepository();
-  // scroll controller fro market page
+
+  /// scroll controller fro market page
   ScrollController scrollController = ScrollController();
 
   /// list if news shots related to business to be shown

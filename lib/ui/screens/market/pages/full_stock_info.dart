@@ -292,7 +292,7 @@ class _FullStockInfoState extends State<FullStockInfo> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // hish , low , volume
+        // high , low , volume
         Card(
           margin: const EdgeInsets.all(10),
           child: tripleInfoRow(
@@ -322,13 +322,14 @@ class _FullStockInfoState extends State<FullStockInfo> {
   }
 
   /// three columns with information
-  Widget tripleInfoRow(
-      {required String h1,
-      required String t1,
-      required String h2,
-      required String t2,
-      required String h3,
-      required String t3}) {
+  Widget tripleInfoRow({
+    required String h1,
+    required String t1,
+    required String h2,
+    required String t2,
+    required String h3,
+    required String t3,
+  }) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
@@ -364,10 +365,13 @@ class _FullStockInfoState extends State<FullStockInfo> {
               .textTheme
               .titleSmall
               ?.copyWith(fontWeight: FontWeight.bold),
-        )
+        ),
       ],
     );
   }
 
-  showErrorScreen() {}
+  /// shows error screen
+  showErrorScreen() {
+    // use getx to create a dialog
+  }
 }
