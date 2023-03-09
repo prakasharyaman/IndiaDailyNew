@@ -97,16 +97,21 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
               const Spacer(),
               // maximum close list
               RotatedBox(
-                  quarterTurns: 1,
-                  child: Text(
-                      (((closeList.reduce(max) - closeList.reduce(min)) / 2) +
-                              closeList.reduce(min).round())
-                          .toInt()
-                          .toString())),
+                quarterTurns: 1,
+                child: Text(
+                  (((closeList.reduce(max) - closeList.reduce(min)) / 2) +
+                          closeList.reduce(min).round())
+                      .toInt()
+                      .toString(),
+                ),
+              ),
               const Spacer(),
               RotatedBox(
-                  quarterTurns: 1,
-                  child: Text(closeList.reduce(max).toInt().toString()))
+                quarterTurns: 1,
+                child: Text(
+                  closeList.reduce(max).toInt().toString(),
+                ),
+              ),
             ],
           ),
           //     sideTitles: SideTitles(
@@ -121,11 +126,13 @@ class _StockHistoricalChartState extends State<StockHistoricalChart> {
               const SizedBox(
                 width: 45,
               ),
+              //
               Text(formatDate(
                   DateTime.fromMillisecondsSinceEpoch(
                       timestampList.first.toInt() * 1000),
                   [d, ' ', M])),
               const Spacer(),
+              //
               Text(formatDate(
                   DateTime.fromMillisecondsSinceEpoch(
                       timestampList[timestampList.length ~/ 2].toInt() * 1000),

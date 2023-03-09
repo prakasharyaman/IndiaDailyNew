@@ -29,7 +29,7 @@ void main() {
     // register storage service
     getIt.registerSingleton<StorageServices>(StorageServices());
 
-    // initialize storage services
+    // initialize storage services using get it instance
     getIt<StorageServices>().initialize();
     // Setup preferred orientations,
     // and then run app.

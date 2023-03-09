@@ -6,6 +6,7 @@ import 'package:yahoofin/yahoofin.dart';
 
 import '../widgets/historical_chart.dart';
 
+/// function to show full stock info bottom sheet
 showFullStockInfo(
     {required BuildContext context,
     required String stockName,
@@ -23,6 +24,7 @@ showFullStockInfo(
       });
 }
 
+// ui interface for full stock info
 class FullStockInfo extends StatefulWidget {
   const FullStockInfo({super.key, this.stockQuote, required this.stockName});
   final StockQuote? stockQuote;
@@ -349,7 +351,7 @@ class _FullStockInfoState extends State<FullStockInfo> {
     );
   }
 
-  /// info column
+  /// info column for stocks sheet
   infoColumn({required String title, required String text}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -371,7 +373,8 @@ class _FullStockInfoState extends State<FullStockInfo> {
   }
 
   /// shows error screen
-  showErrorScreen() {
+  showErrorScreen() async {
     // use getx to create a dialog
+    Get.showDialog();
   }
 }
