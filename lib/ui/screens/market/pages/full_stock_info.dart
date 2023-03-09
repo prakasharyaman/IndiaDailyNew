@@ -375,6 +375,6 @@ class _FullStockInfoState extends State<FullStockInfo> {
   /// shows error screen
   showErrorScreen() async {
     // use getx to create a dialog
-    Get.showDialog();
+    // Get.showDialog();
   }
 }
