@@ -180,12 +180,13 @@ class AppController extends GetxController {
   showUpdateAvailableBottomSheet() {
     if (Get.context != null) {
       showModalBottomSheet(
-          context: Get.context!,
-          isDismissible: false,
-          builder: (context) {
-            var primaryColor = Theme.of(context).primaryColor;
-            return updateBottomSheetWidget(context, primaryColor);
-          });
+        context: Get.context!,
+        isDismissible: false,
+        builder: (context) {
+          var primaryColor = Theme.of(context).primaryColor;
+          return updateBottomSheetWidget(context, primaryColor);
+        },
+      );
     } else {
       showDailySnackBar(
           'An Update is Available for India Daily \n Please go to the Play Store to update the app');
@@ -241,7 +242,7 @@ SizedBox updateBottomSheetWidget(BuildContext context, Color primaryColor) {
             size: 100,
           ),
         )),
-        // row wit later and update button
+        // row with later and update button and fires function to open play store
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
