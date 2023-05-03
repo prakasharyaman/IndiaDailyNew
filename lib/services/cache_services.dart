@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
+// handles all cache relayed queries
 class CacheServices {
   /// Download images to cache.
   cacheImages({required List<String> imageUrlList}) async {
