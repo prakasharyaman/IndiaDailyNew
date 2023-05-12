@@ -165,6 +165,7 @@ class ScreenshotController {
         size: logicalSize,
         devicePixelRatio: pixelRatio ?? 1.0,
       ),
+      view: null,
     );
 
     final PipelineOwner pipelineOwner = PipelineOwner();
@@ -243,7 +244,6 @@ class ScreenshotController {
       ///
       ///retry untill capture is successfull
       ///
-
     } while (isDirty && retryCounter >= 0);
 
     return image; // Adapted to directly return the image and not the Uint8List

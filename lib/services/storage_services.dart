@@ -60,7 +60,7 @@ class StorageServices {
     await prefs.setStringList('savedPosts', savedPosts);
   }
 
-  /// saves article to storage
+  /// saves article to storage in
   saveArticle({required Article article}) async {
     savedArticles.add(article);
     SharedPreferences prefs = await SharedPreferences.getInstance();

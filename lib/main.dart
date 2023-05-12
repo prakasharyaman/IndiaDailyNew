@@ -44,7 +44,7 @@ void main() {
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // ignore: avoid_print
-  print('A Background message just showed up :  ${message.messageId}');
+  print('A Background message just showed up with id:  ${message.messageId}');
   // show a local notification , also saves to storage
   await showANotification(message: message);
 }

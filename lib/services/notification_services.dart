@@ -109,9 +109,11 @@ saveNotificationToStorage({required String notification}) async {
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> notifications = prefs.getStringList('notifications') ?? [];
+
     if (notifications.length > 50) {
       notifications = notifications.sublist(
           (notifications.length - 49), (notifications.length - 1));
+      debugPrint("notifcatiosn shortening");
     }
     notifications.add(notification);
     await prefs.setStringList('notifications', notifications);
@@ -121,7 +123,7 @@ saveNotificationToStorage({required String notification}) async {
   }
 }
 
-/// Converts given url image to base64 encoded image string.
+/// Converts given url image to base64 encoded image.
 @pragma('vm:entry-point')
 Future<String> base64encodedImage(String url) async {
   final http.Response response = await http.get(Uri.parse(url));
